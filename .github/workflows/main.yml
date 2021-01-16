@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.14.7'
+
+      - name: Configure git
+        env:
+          TOKEN: ${{ secrets.ACTIONS_TOKEN }}
+        run: git config --global url."https://hyprcubd:${TOKEN}@github.com".insteadOf "https://github.com"
+
+      - name: Build app
+        run: GOOS=linux go build -o main
+
+      - name: Bump version
+        uses: anothrNick/github-tag-action@1.26.0
+        id: bump
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          DEFAULT_BUMP: patch
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          repository: hyprcubd/reusefull/reusefull
+          registry: docker.pkg.github.com
+          tags: latest,${{ steps.bump.outputs.new_tag }}
+
+      - name: Push tag
+        uses: anothrNick/github-tag-action@1.26.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.ACTIONS_TOKEN }}
+          event-type: reusefull-release
+          repository: hyprcubd/deploy
+          client-payload: '{"tag": "${{ steps.bump.outputs.new_tag }}"}'
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_USERNAME: reusefull
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: Build
+          SLACK_MESSAGE: Created reusefull:${{ steps.bump.outputs.new_tag }}
+          SLACK_ICON_EMOJI: ':hyprcubd:'
+          SLACK_FOOTER:
