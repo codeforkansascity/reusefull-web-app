@@ -7,6 +7,7 @@ RUN go env -w GOPROXY=direct
 # RUN go mod download GOPROXY=direct
 # build
 ADD . .
+ADD templates /templates
 RUN go build -o /main
 # copy artifacts to a clean image
 FROM alpine
