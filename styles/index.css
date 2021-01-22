@@ -36,10 +36,6 @@ prevent conflict with Bootstrap's toggle-hiding **/
   }
 }
 
-.navbar-logo-main {
-  margin: 1rem 0 1.75rem;
-}
-
 .org-thumbnail-container {
   height: 30%;
   width: inherit;
