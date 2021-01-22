@@ -1,5 +1,10 @@
+body {
+  min-width: 320px;
+}
+
 button.navbar-toggler {
   width: 90vw;
+  min-width: 290px;
   border-radius: 0;
   background-color: #34637f;
 }
@@ -33,4 +38,42 @@ prevent conflict with Bootstrap's toggle-hiding **/
 
 .navbar-logo-main {
   margin: 1rem 0 1.75rem;
+}
+
+.org-thumbnail-container {
+  height: 30%;
+  width: inherit;
+}
+
+.org-thumbnail-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: green;
+}
+
+.org-thumbnail-overlay:hover {
+  opacity: 1;
+}
+
+.org-thumbnail:hover {
+  opacity: 0.75;
+}
+
+.donation-category {
+  margin: 0.1rem;
+  font-size: 0.75rem;
+}
+
+.mock-search {
+  height: 40rem;
+  width: 100%;
+  min-width: 290px;
+  background-color: #aaa;
 }
