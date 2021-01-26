@@ -1,0 +1,4 @@
+/* Hide inactive sections of form */
+.form-section {
+  display: none;
+}

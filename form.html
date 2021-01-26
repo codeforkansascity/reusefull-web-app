@@ -24,15 +24,19 @@
 
     <!-- Custom and Override CSS -->
     <link rel="stylesheet" href="/styles/index.css" />
+
+    <!-- Display styles for multi-step form -->
+    <link rel="stylesheet" href="/styles/multiForm.css" />
     <title>ReUseFull</title>
   </head>
   <body>
     <!-- Org Registration Form -->
     <div class="container col-md-6 mt-5">
-      <h3 class="text-center">Tell Us About Your Charity</h3>
-      <form>
+      <h2 class="text-center">Tell Us About Your Charity</h2>
+      <form id="orgRegistrationForm">
         <!-- Step 1 Fields -->
-        <section id="orgRegisterOne">
+        <section class="form-section">
+          <h3 class="text-center">Contact Information</h3>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="orgName">Organization Name</label>
@@ -79,8 +83,579 @@
               <input type="text" class="form-control" id="inputZip" />
             </div>
           </div>
-          <button class="btn btn-primary">Next</button>
         </section>
+        <!-- Step 2 Fields -->
+        <section class="form-section">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="orgSite">Organization Website</label>
+              <input type="text" class="form-control" id="orgSite" />
+            </div>
+            <div class="form-group col-md-6">
+              <label for="orgBudget">Budget Size</label>
+              <div
+                class="btn-group btn-group-toggle"
+                id="orgBudget"
+                data-toggle="buttons"
+              >
+                <label class="btn btn-secondary">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="0to5"
+                    autocomplete="off"
+                    checked
+                  />
+                  $0-5K
+                </label>
+                <label class="btn btn-secondary">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="6to25"
+                    autocomplete="off"
+                  />
+                  $6-25K
+                </label>
+                <label class="btn btn-secondary">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="26to100"
+                    autocomplete="off"
+                  />
+                  $26-100K
+                </label>
+                <label class="btn btn-secondary">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="100plus"
+                    autocomplete="off"
+                  />
+                  >$100K
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-row col-md-12 row justify-content-between">
+            <div class="form-group row col-md-4">
+              <input
+                type="checkbox"
+                class="form-control col-md-1 mr-2"
+                id="orgDropOff"
+              />
+              <label class="col-form-label" for="orgDropOff"
+                >We accept drop-offs</label
+              >
+            </div>
+            <div class="form-group row col-md-4">
+              <input
+                type="checkbox"
+                class="form-control col-md-1 mr-2"
+                id="orgPickUp"
+              />
+              <label class="col-form-label" for="orgPickUp"
+                >We pick up donations</label
+              >
+            </div>
+            <div class="form-group row col-md-4">
+              <input
+                type="checkbox"
+                class="form-control col-md-1 mr-2"
+                id="orgFaith"
+              />
+              <label class="col-form-label" for="orgFaith"
+                >We are faith-based</label
+              >
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="orgTaxID">Tax ID Number</label>
+              <input type="text" class="form-control" id="orgTaxID" />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="orgLogo">Upload Logo (.jpg, .png, or .gif)</label>
+              <input type="text" class="form-control" id="orgLogo" />
+              <button class="btn btn-secondary">SELECT</button>
+            </div>
+          </div>
+          <hr />
+          <!-- Second half of Section 2. Category Grid -->
+          <div class="text-center">
+            <h3>WHAT TYPE OF CHARITY ARE YOU?</h3>
+            <p>Select all that apply</p>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="animals"
+                  />
+                  <label class="col-form-label" for="animals"
+                    >Animals & Pets</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="arts"
+                  />
+                  <label class="col-form-label" for="arts">Arts & Music</label>
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="children"
+                  />
+                  <label class="col-form-label" for="children"
+                    >Children & Youth</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="college"
+                  />
+                  <label class="col-form-label" for="college"
+                    >College & Universities</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="domestic"
+                  />
+                  <label class="col-form-label" for="domestic"
+                    >Domestic Violence</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="education"
+                  />
+                  <label class="col-form-label" for="education"
+                    >Education & Literacy</label
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="environment"
+                  />
+                  <label class="col-form-label" for="environment"
+                    >Environment</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="food"
+                  />
+                  <label class="col-form-label" for="food"
+                    >Food & Nutrition</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="substance"
+                  />
+                  <label class="col-form-label" for="substance"
+                    >Health & Substance Abuse</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="healthcare"
+                  />
+                  <label class="col-form-label" for="healthcare"
+                    >Healthcare</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="housing"
+                  />
+                  <label class="col-form-label" for="housing"
+                    >Homelessness & Housing</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="immigrants"
+                  />
+                  <label class="col-form-label" for="immigrants"
+                    >Immigrants & Refugees</label
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="jobs"
+                  />
+                  <label class="col-form-label" for="jobs"
+                    >Job Training & Employment</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="media"
+                  />
+                  <label class="col-form-label" for="media"
+                    >Media & Journalism</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="justice"
+                  />
+                  <label class="col-form-label" for="justice"
+                    >Re-entry & Criminal Justice</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="seniors"
+                  />
+                  <label class="col-form-label" for="seniors"
+                    >Seniors & Caregivers</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="sports"
+                  />
+
+                  <label class="col-form-label" for="sports"
+                    >Sports & Recreation</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="other"
+                  />
+                  <label class="col-form-label" for="other">Other</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Category Grid -->
+          <div>
+            <div class="form-row">
+              <div class="form-group col-md-8 offset-md-2">
+                <label for="other">If Other, Please Describe</label>
+                <input type="text" class="form-control" id="other" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="mission">Charity's Mission</label>
+                <input type="text" class="form-control" id="mission" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Section 3 Donation Category Grid -->
+        <section class="form-section">
+          <div class="text-center">
+            <h3>WHAT TYPES OF ITEMS DO YOU ACCEPT?</h3>
+            <p>Select all that apply</p>
+          </div>
+          <div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="lgAppliances"
+                  />
+                  <label class="col-form-label" for="lgAppliances"
+                    >Appliances - Large</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="smAppliances"
+                  />
+                  <label class="col-form-label" for="smAppliances"
+                    >Appliances - Small</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="artsCrafts"
+                  />
+                  <label class="col-form-label" for="artsCrafts"
+                    >artsCrafts</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="babySupplies"
+                  />
+                  <label class="col-form-label" for="babySupplies"
+                    >Baby Supplies</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="bicycles"
+                  />
+                  <label class="col-form-label" for="bicycles">Bicycles</label>
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="books"
+                  />
+                  <label class="col-form-label" for="books"
+                    >Books & Magazines</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="building"
+                  />
+                  <label class="col-form-label" for="building"
+                    >Building Materials</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="clothing"
+                  />
+                  <label class="col-form-label" for="clothing">Clothing</label>
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="computers"
+                  />
+                  <label class="col-form-label" for="computers"
+                    >Computers & Technology</label
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="electronics"
+                  />
+                  <label class="col-form-label" for="electronics"
+                    >Electronics</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="furniture"
+                  />
+                  <label class="col-form-label" for="furniture"
+                    >Furniture</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="gardening"
+                  />
+                  <label class="col-form-label" for="gardening"
+                    >Gardening</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="homeDecor"
+                  />
+                  <label class="col-form-label" for="homeDecor"
+                    >Home Decor</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="hygiene"
+                  />
+                  <label class="col-form-label" for="hygiene"
+                    >Hygiene Products</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="kitchenware"
+                  />
+                  <label class="col-form-label" for="kitchenware"
+                    >Kitchenware</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="linens"
+                  />
+                  <label class="col-form-label" for="linens">Linens</label>
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="medicalSupplies"
+                  />
+                  <label class="col-form-label" for="medicalSupplies"
+                    >Medical Supplies</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="musicalInstruments"
+                  />
+                  <label class="col-form-label" for="musicalInstruments"
+                    >Musical Instruments</label
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="office"
+                  />
+                  <label class="col-form-label" for="office"
+                    >Office Supplies</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="petSupplies"
+                  />
+                  <label class="col-form-label" for="petSupplies"
+                    >Pet Supplies</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="schoolSupplies"
+                  />
+                  <label class="col-form-label" for="schoolSupplies"
+                    >School Supplies</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="tools"
+                  />
+                  <label class="col-form-label" for="tools">Tools</label>
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="toys"
+                  />
+                  <label class="col-form-label" for="toys"
+                    >Toys, Games, & Puzzles</label
+                  >
+                </div>
+                <div class="form-group row">
+                  <input
+                    type="checkbox"
+                    class="form-control col-md-1 mr-2"
+                    id="vehicles"
+                  />
+                  <label class="col-form-label" for="vehicles"
+                    >Vehicles & Boats</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Stepper Buttons -->
+        <button
+          type="button"
+          id="prevButton"
+          class="btn btn-secondary"
+          onclick="Step(-1)"
+        >
+          BACK
+        </button>
+        <button
+          type="button"
+          id="nextButton"
+          class="btn btn-primary"
+          onclick="Step(1)"
+        >
+          NEXT
+        </button>
       </form>
     </div>
     <!-- Bootstrap JS -->
@@ -94,5 +669,7 @@
       integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
       crossorigin="anonymous"
     ></script>
+    <!-- Logic to display sectioned form -->
+    <script src="js/multiForm.js"></script>
   </body>
 </html>
