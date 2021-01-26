@@ -9,7 +9,6 @@ const displaySection = (section) => {
   // Display active section
   const Sections = document.getElementsByClassName("form-section");
   Sections[section].style.display = "block";
-  console.log(Sections.length);
   // Display correct stepper buttons
   if (section == 0) {
     document.getElementById("prevButton").style.display = "none";
