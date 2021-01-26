@@ -9,14 +9,7 @@ button.navbar-toggler {
   background-color: #34637f;
 }
 
-.bi-list {
-  color: white;
-  font-weight: bold;
-}
-
 .toggler-label {
-  color: white;
-  margin-left: 0.5rem;
   padding-top: 0.1rem;
 }
 
@@ -36,28 +29,6 @@ prevent conflict with Bootstrap's toggle-hiding **/
   }
 }
 
-.org-thumbnail-container {
-  height: 30%;
-  width: inherit;
-}
-
-.org-thumbnail-overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: 0.5s ease;
-  background-color: green;
-}
-
-.org-thumbnail-overlay:hover {
-  opacity: 1;
-}
-
 .org-thumbnail:hover {
   opacity: 0.75;
 }
@@ -65,11 +36,4 @@ prevent conflict with Bootstrap's toggle-hiding **/
 .donation-category {
   margin: 0.1rem;
   font-size: 0.75rem;
-}
-
-.mock-search {
-  height: 40rem;
-  width: 100%;
-  min-width: 290px;
-  background-color: #aaa;
 }
