@@ -1,0 +1,63 @@
+{{ define "nav" }}
+<header>
+  <nav
+    class="navbar navbar-expand-md navbar-light flex-column flex-lg-row col-lg-10 ml-auto mr-auto"
+  >
+    <a class="navbar-brand" href="/">
+      <img
+        width="100"
+        height="100"
+        src="https://reusefull.org/wp-content/uploads/2020/06/reusefull-logo-175.png"
+        class="my-4"
+        alt="Re.Use.Full. logo"
+        srcset="
+          https://reusefull.org/wp-content/uploads/2020/06/reusefull-logo-175.png         175w,
+          https://reusefull.org/wp-content/uploads/2020/06/reusefull-logo-175-150x150.png 150w
+        "
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="bi bi-list"></i>
+      <p class="toggler-label">MENU</p>
+    </button>
+    <div
+      class="collapse navbar-collapse navbar-toggleable-md justify-content-end"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#"
+            >Home <span class="sr-only">(current)</span></a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Donate</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">FAQs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">For Charity Partners</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+{{ end }}
