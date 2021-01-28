@@ -42,3 +42,16 @@ prevent conflict with Bootstrap's toggle-hiding **/
 .grid-checkbox-input {
   width: 15px;
 }
+
+/* Removes excess height on location services button */
+#locationServices {
+  max-height: 3rem;
+  margin-top: 1rem;
+  align-self: center;
+}
+
+/* Change size on h3 within form */
+.form-section-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
