@@ -73,3 +73,9 @@ prevent conflict with Bootstrap's toggle-hiding **/
   min-width: 290px;
   background-color: #aaa;
 }
+
+/*
+This is to hide elements before Vue.js has loaded
+Prevents "flashing" of an empty error list for example
+*/
+[v-cloak] > * {display: none}

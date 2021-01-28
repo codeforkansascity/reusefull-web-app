@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+   {{ template "header" . }}
+    <title>ReUseFull</title>
+  </head>
+  <body>
+    {{ template "nav" . }}
+    <main>
+      <div class="container" id="app">
+          <h3>Tell us about your charity</h3>
+          <h5>Step 2 of 3</h5>
+          <div v-cloak>
+              <form
+                class="row"
+                @submit="checkForm"
+              >
+                <div class="col-md-12 mb-3">
+                  <p v-if="errors.length">
+                    <b>Please correct the following error(s):</b>
+                    <ul>
+                      <li v-for="error in errors">${ error }</li>
+                    </ul>
+                  </p>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="website" class="form-label">Organization Website</label>
+                  <input type="text" class="form-control" id="orgName" v-model="orgName">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="budget" class="form-label">Budget Size</label>
+                  <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="budget" id="budget1" value="1" v-model="budget">
+                    <label class="btn btn-outline-secondary" for="budget1">$0-5k</label>
+
+                    <input type="radio" class="btn-check" name="budget" id="budget2" value="2" v-model="budget">
+                    <label class="btn btn-outline-secondary" for="budget2">$6-25k</label>
+
+                    <input type="radio" class="btn-check" name="budget" id="budget3" value="3" v-model="budget">
+                    <label class="btn btn-outline-secondary" for="budget3">$26-100k</label>
+
+                    <input type="radio" class="btn-check" name="budget" id="budget4" value="4" v-model="budget">
+                    <label class="btn btn-outline-secondary" for="budget4">>$100k</label>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="dropoff" v-model="dropoff">
+                    <label class="form-check-label" for="dropoff">We accept drop-offs</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="pickup" v-model="pickup">
+                    <label class="form-check-label" for="pickup">We pick up donations</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="faith" v-model="faith">
+                    <label class="form-check-label" for="faith">Faith-based charity</label>
+                  </div>
+                </div>
+
+
+
+                <div class="col-12">
+                  <input type="button" class="btn btn-secondary" value="Back" onclick="history.back()">
+                  <button type="submit" class="btn btn-primary">Next ></button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/charitySignUp2.js"></script>
+  </body>
+</html>

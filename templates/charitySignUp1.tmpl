@@ -1,43 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-   {{ template "header" . }}
+    {{ template "header" . }}
+
+
+
     <title>ReUseFull</title>
   </head>
   <body>
     {{ template "nav" . }}
     <main>
-      <div class="container">
+      <div class="container" id=app>
           <h3>Tell us about your charity</h3>
-          <h5>Step 1</h5>
-          <div>
-              <form class="row">
+          <h5>Step 1 of 3</h5>
+          <h5>Contact Information</h5>
+          <div v-cloak>
+              <form
+                class="row"
+                @submit="checkForm"
+              >
+                 <div class="col-md-12 mb-3">
+                    <p v-if="errors.length">
+                      <b>Please correct the following error(s):</b>
+                      <ul>
+                        <li v-for="error in errors">${ error }</li>
+                      </ul>
+                    </p>
+                 </div>
                   <div class="col-md-6 mb-3">
                     <label for="orgName" class="form-label">Organization Name</label>
-                    <input required type="text" class="form-control" id="orgName">
+                    <input type="text" class="form-control" id="orgName" v-model="orgName">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="contactName" class="form-label">Contact Name</label>
-                    <input required type="text" class="form-control" id="contactName">
+                    <input type="text" class="form-control" id="contactName"  v-model="contactName">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input required type="email" class="form-control" id="email">
+                    <input type="email" class="form-control" id="email" v-model="email">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="phone" class="form-label">Phone</label>
-                    <input type="text" class="form-control" id="phone">
+                    <input type="text" class="form-control" id="phone" v-model="phone">
                   </div>
                   <div class="col-md-12 mb-3">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address">
+                    <input type="text" class="form-control" id="address" v-model="address">
                   </div>
                   <div class="col-md-4 mb-3">
                     <label for="city" class="form-label">City</label>
-                    <input type="text" class="form-control" id="city">
+                    <input type="text" class="form-control" id="city" v-model="city">
                   </div>
                   <div class="col-md-4 mb-3">
                     <label for="state" class="form-label">State</label>
-                    <select required id="state" class="form-select">
+                    <select id="state" class="form-select" v-model="state">
                       <option selected>Choose...</option>
                     	<option value="AL">Alabama</option>
                     	<option value="AK">Alaska</option>
@@ -94,23 +109,18 @@
                   </div>
                   <div class="col-md-4 mb-3">
                     <label for="zip" class="form-label">Zip</label>
-                    <input type="text" class="form-control" id="zip">
+                    <input type="text" class="form-control" id="zip" v-model="zip">
                   </div>
                   <div class="col-12">
                     <button type="submit" class="btn btn-primary">Next ></button>
                   </div>
-                </form>
+              </form>
             </div>
         </div>
     </main>
     <footer></footer>
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-      crossorigin="anonymous"></script>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/charitySignUp1.js"></script>
   </body>
 </html>
