@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+   {{ template "header" . }}
+    <title>ReUseFull</title>
+  </head>
+  <body>
+    {{ template "nav" . }}
+    <main>
+      <div class="container">
+      <h3>Tell Us About Your Charity</h3>
+      <h5>Step 2</h5>
+      <div>
+        <form class="row">
+          <div class="col-md-6 mb-3">
+            <label for="orgSite">Organization Website</label>
+            <input type="text" class="form-control" id="orgSite" />
+          </div>
+          <!-- Compound Button -->
+          <div class="col-md-6 mb-3">
+            <div class="d-flex flex-column">
+              <label for="orgBudget">Budget Size</label>
+              <div
+                class="btn-group btn-group-toggle"
+                id="orgBudget"
+                data-toggle="buttons"
+              >
+                <label class="btn btn-secondary text-nowrap">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="grassroots"
+                    autocomplete="off"
+                    checked
+                  />
+                  $0-5K
+                </label>
+                <label class="btn btn-secondary text-nowrap">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="small"
+                    autocomplete="off"
+                  />
+                  $6-25K
+                </label>
+                <label class="btn btn-secondary text-nowrap">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="medium"
+                    autocomplete="off"
+                  />
+                  $26-100K
+                </label>
+                <label class="btn btn-secondary text-nowrap">
+                  <input
+                    type="radio"
+                    name="options"
+                    id="large"
+                    autocomplete="off"
+                  />
+                  >$100K
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="orgDropOff"
+            />
+            <label class="col-form-label" for="orgDropOff"
+              >We accept drop-offs</label
+            >
+          </div>
+          <div class="col-md-4 mb-3 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="orgPickUp"
+            />
+            <label class="col-form-label" for="orgPickUp"
+              >We pick up donations</label
+            >
+          </div>
+          <div class="col-md-4 mb-3 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="orgFaith"
+            />
+            <label class="col-form-label" for="orgFaith"
+              >We are faith-based</label
+            >
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="orgTax">Tax ID Number</label>
+            <input type="text" class="form-control" id="orgTax" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="logo">Upload Logo (.jpg, .png, or .gif)</label>
+            <div class="d-flex">
+              <input type="text" class="form-control col-md-7 mr-2" id="logo" />
+              <button class="btn btn-secondary">SELECT</button>
+            </div>
+          </div>
+          <hr class="col-12" />
+
+          <!-- Second half of Section 2 -->
+          <div class="col-12 mb-3">
+            <h3>WHAT TYPE OF CHARITY ARE YOU?</h3>
+            <p>Select all that apply</p>
+          </div>
+
+          <!-- Checkbox Grid. Groups child elements into 3 columns-->
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="animals"
+            />
+            <label class="col-form-label" for="animals">Animals & Pets</label>
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="arts"
+            />
+            <label class="col-form-label" for="arts">Arts & Music</label>
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="children"
+            />
+            <label class="col-form-label" for="children"
+              >Children & Youth</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="college"
+            />
+            <label class="col-form-label" for="college"
+              >College & Universities</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="domestic"
+            />
+            <label class="col-form-label" for="domestic"
+              >Domestic Violence</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="education"
+            />
+            <label class="col-form-label" for="education"
+              >Education & Literacy</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="environment"
+            />
+            <label class="col-form-label" for="environment">Environment</label>
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="food"
+            />
+            <label class="col-form-label" for="food">Food & Nutrition</label>
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="health"
+            />
+            <label class="col-form-label" for="health"
+              >Health & Substance Abuse</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="healthcare"
+            />
+            <label class="col-form-label" for="healthcare">Healthcare</label>
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="homelessness"
+            />
+            <label class="col-form-label" for="homelessness"
+              >Homelessness & Housing</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="immigrants"
+            />
+            <label class="col-form-label" for="immigrants"
+              >Immigrants & Refugees</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="jobs"
+            />
+            <label class="col-form-label" for="jobs"
+              >Job Training & Employment</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="media"
+            />
+            <label class="col-form-label" for="media">Media & Journalism</label>
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="reentry"
+            />
+            <label class="col-form-label" for="reentry"
+              >Re-entry & Criminal Justice</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="seniors"
+            />
+            <label class="col-form-label" for="seniors"
+              >Seniors & Caregivers</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="sports"
+            />
+            <label class="col-form-label" for="sports"
+              >Sports & Recreation</label
+            >
+          </div>
+          <div class="col-md-4 row">
+            <input
+              type="checkbox"
+              class="form-control mx-2 grid-checkbox-input"
+              id="other"
+            />
+            <label class="col-form-label" for="other">Other</label>
+          </div>
+          <!-- End Category Grid -->
+
+          <div class="col-md-8 my-3">
+            <label for="description">If Other, Please Describe</label>
+            <input type="text" class="form-control" id="description" />
+          </div>
+          <div class="col-md-8 mb-3">
+            <label for="mission">Charity's Mission</label>
+            <input type="text" class="form-control textbox-lg" id="mission" />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">NEXT ></button>
+          </div>
+        </form>
+      </div>
+    </div>
+    </main>
+    <footer></footer>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"></script>
+  </body>
+</html>
