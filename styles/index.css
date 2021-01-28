@@ -37,3 +37,8 @@ prevent conflict with Bootstrap's toggle-hiding **/
   margin: 0.1rem;
   font-size: 0.75rem;
 }
+
+/* Styles checkbox input on grid to maintain constant size*/
+.grid-checkbox-input {
+  width: 15px;
+}

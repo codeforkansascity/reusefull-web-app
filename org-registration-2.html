@@ -25,8 +25,6 @@
     <!-- Custom and Override CSS -->
     <link rel="stylesheet" href="/styles/index.css" />
 
-    <!-- Display styles for multi-step form -->
-    <link rel="stylesheet" href="/styles/multiForm.css" />
     <title>ReUseFull</title>
   </head>
   <body>
@@ -34,56 +32,6 @@
     <div class="container col-md-6 mt-5">
       <h2 class="text-center">Tell Us About Your Charity</h2>
       <form id="orgRegistrationForm">
-        <!-- Step 1 Fields -->
-        <section class="form-section">
-          <h3 class="text-center">Contact Information</h3>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="orgName">Organization Name</label>
-              <input type="text" class="form-control" id="orgName" />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="contactName">Contact Name</label>
-              <input type="text" class="form-control" id="contactName" />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="contactEmail">Email</label>
-              <input type="email" class="form-control" id="contactEmail" />
-            </div>
-            <div class="form-group col-md-6">
-              <label for="contactPhone">Phone</label>
-              <input type="tel" class="form-control" id="contactPhone" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="contactAddress">Street Address</label>
-            <input
-              type="text"
-              class="form-control"
-              id="contactAddress"
-              placeholder="1234 Main St"
-            />
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="inputCity">City</label>
-              <input type="text" class="form-control" id="inputCity" />
-            </div>
-            <div class="form-group col-md-4">
-              <label for="inputState">State</label>
-              <select id="inputState" class="form-control">
-                <option selected>Choose...</option>
-                <option>...</option>
-              </select>
-            </div>
-            <div class="form-group col-md-4">
-              <label for="inputZip">Zip</label>
-              <input type="text" class="form-control" id="inputZip" />
-            </div>
-          </div>
-        </section>
         <!-- Step 2 Fields -->
         <section class="form-section">
           <div class="form-row">
@@ -289,7 +237,5 @@
       integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
       crossorigin="anonymous"
     ></script>
-    <!-- Logic to display sectioned form -->
-    <script src="js/multiForm.js"></script>
   </body>
 </html>
