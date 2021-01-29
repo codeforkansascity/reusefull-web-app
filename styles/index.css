@@ -55,3 +55,16 @@ prevent conflict with Bootstrap's toggle-hiding **/
   font-size: 1.25rem;
   font-weight: bold;
 }
+
+.textbox-lg {
+  height: 10rem;
+}
+
+.search-toolbar {
+  min-width: 1050px;
+}
+
+.toolbar-button {
+  height: 3rem;
+  align-self: flex-end;
+}

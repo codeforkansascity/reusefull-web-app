@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+
+    <!-- Bootstrap icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <!-- Custom and Override CSS -->
+    <link rel="stylesheet" href="/styles/index.css" />
+
+    <title>ReUseFull</title>
+  </head>
+  <body>
+    <main class="container">
+
+      <!-- Update Results form -->
+      <form>
+        <!-- Toolbar -->
+        <div class="container d-flex bg-primary pt-2 pb-3 search-toolbar">
+         
+          <!-- Category Dropdown Toggle -->
+          <button
+            class="btn btn-link text-light dropdown-toggle toolbar-button"
+            type="button"
+            id="categoryDropdown"
+            data-toggle="collapse"
+            data-target="#categoryList"
+            aria-controls="categoryList"
+            aria-expanded="false"
+          >
+            Select Item Types
+          </button>
+
+          <!-- Zip Code -->
+          <div class="col-md-2">
+            <label class="text-light for="zip">Your Zip Code</label>
+            <input type="text" class="form-control" id="zip" />
+          </div>
+
+          <!-- Size -->
+          <div class="col-md-2">
+            <label class="text-light" for="size">Organization Size</label>
+            <select class="custom-select" id="size" required>
+              <option selected disabled value="">Please Select</option>
+              <option value="grassroots">Grassroots ($0-5k)</option>
+              <option value="small">Small ($6-25k)</option>
+              <option value="medium">Medium ($26-100k)</option>
+              <option value="large">Large (>$100k)</option>
+            </select>
+          </div>
+
+          <!-- Focus -->
+          <div class="col-md-3">
+            <label class="text-light" for="focus">Organization Focus</label>
+            <select class="custom-select" id="focus" required>
+              <option selected disabled value="">Please Select</option>
+              <option value="animals">Animals & Pets</option>
+              <option value="arts">Arts & Music</option>
+              <option value="children">Children & Youth</option>
+              <option value="college">College & Universities</option>
+              <option value="domestic">Domestic Violence</option>
+              <option value="education">Education & Literacy</option>
+              <option value="environment">Environment</option>
+              <option value="food">Food & Nutrition</option>
+              <option value="health">Health & Substance Abuse</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="homelessness">Homelessness & Housing</option>
+              <option value="immigrants">Immigrants & Refugees</option>
+              <option value="jobs">Job Training & Employment</option>
+              <option value="media">Media & Journalism</option>
+              <option value="reentry">Re-entry & Criminal Justice</option>
+              <option value="seniors">Seniors & Caregivers</option>
+              <option value="sports">Sports & Recreation</option>
+            </select>
+          </div>
+
+          <!-- Pickup/Dropoff -->
+          <div class="align-self-end">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="pickup"
+                id="pickup"
+              />
+              <label class="text-light form-check-label" for="pickup"> Pickup </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="dropoff"
+                id="dropoff"
+              />
+              <label class="text-light form-check-label" for="dropoff"> Dropoff </label>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button class="btn btn-outline-light ml-auto toolbar-button" type="submit">
+            Update Results
+          </button>
+        </div>
+
+        <!-- Category Dropdown -->
+        <div
+          class="collapse pt-3 pl-3"
+          id="categoryList"
+          aria-labelledby="categoryDropdown"
+        >
+          <div class="col-12 row">
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="appliances-lg"
+                value="appliances-lg"
+              />
+              <label class="form-check-label" for="appliances-lg"
+                >Appliances - Large</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="appliances-sm"
+                value="appliances-sm"
+              />
+              <label class="form-check-label" for="appliances-sm"
+                >Appliances - Small</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="arts"
+                value="arts"
+              />
+              <label class="form-check-label" for="arts"
+                >Arts & Crafts Supplies</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="baby"
+                value="baby"
+              />
+              <label class="form-check-label" for="baby">Baby Supplies</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="bicycles"
+                value="bicycles"
+              />
+              <label class="form-check-label" for="bicycles">Bicycles</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="books"
+                value="books"
+              />
+              <label class="form-check-label" for="books"
+                >Books & Magazines</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="building"
+                value="building"
+              />
+              <label class="form-check-label" for="building"
+                >Building Materials</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="clothing"
+                value="clothing"
+              />
+              <label class="form-check-label" for="clothing">Clothing</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="computers"
+                value="computers"
+              />
+              <label class="form-check-label" for="computers"
+                >Computers & Technology</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="electronics"
+                value="electronics"
+              />
+              <label class="form-check-label" for="electronics"
+                >Electronics</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="furniture"
+                value="furniture"
+              />
+              <label class="form-check-label" for="furniture">Furniture</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="gardening"
+                value="gardening"
+              />
+              <label class="form-check-label" for="gardening"
+                >Gardening Equipment</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="decor"
+                value="decor"
+              />
+              <label class="form-check-label" for="decor">Home Decor</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="hygiene"
+                value="hygiene"
+              />
+              <label class="form-check-label" for="hygiene"
+                >Hygiene Products</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="kitchenware"
+                value="kitchenware"
+              />
+              <label class="form-check-label" for="kitchenware"
+                >Kitchenware</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="linens"
+                value="linens"
+              />
+              <label class="form-check-label" for="linens">Linens</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="medical"
+                value="medical"
+              />
+              <label class="form-check-label" for="medical"
+                >Medical Supplies</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="musical"
+                value="musical"
+              />
+              <label class="form-check-label" for="musical"
+                >Musical Instruments</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="office"
+                value="office"
+              />
+              <label class="form-check-label" for="office"
+                >Office Supplies</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="pet"
+                value="pet"
+              />
+              <label class="form-check-label" for="pet">Pet Supplies</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="school"
+                value="pet"
+              />
+              <label class="form-check-label" for="school"
+                >School Supplies</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="sports-equipment"
+                value="sports-equipment"
+              />
+              <label class="form-check-label" for="sports-equipment"
+                >Sports Equipment</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="tools"
+                value="tools"
+              />
+              <label class="form-check-label" for="tools">Tools</label>
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="toys"
+                value="toys"
+              />
+              <label class="form-check-label" for="toys"
+                >Toys, Games, & Puzzles</label
+              >
+            </div>
+            <div class="col-md-3 form-group form-check form-check-inline">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="vehicles"
+                value="vehicles"
+              />
+              <label class="form-check-label" for="vehicles"
+                >Vehicles & Boats</label
+              >
+            </div>
+          </div>
+          </div> 
+      </form>
+      
+      <!-- Results List -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Organization</th>
+            <th scope="col">Matching Items</th>
+            <th scope="col">Proximity</th>
+            <th scope="col">Size</th>
+            <th scope="col">Type</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Logo</th>
+            <td>Example Org Name</td>
+            <td>3</td>
+            <td>5-10 Miles</td>
+            <td>National</td>
+            <td>Housing</td>
+            <td><button class="btn btn-secondary">Learn More</button></td>
+          </tr>
+          <tr>
+            <th scope="row">Logo</th>
+            <td>Example Org Name</td>
+            <td>3</td>
+            <td>5-10 Miles</td>
+            <td>National</td>
+            <td>Housing</td>
+            <td><button class="btn btn-secondary">Learn More</button></td>
+          </tr>
+          <tr>
+            <th scope="row">Logo</th>
+            <td>Example Org Name</td>
+            <td>3</td>
+            <td>5-10 Miles</td>
+            <td>National</td>
+            <td>Housing</td>
+            <td><button class="btn btn-secondary">Learn More</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+    <!-- Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
