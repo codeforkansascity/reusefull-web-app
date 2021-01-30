@@ -12,20 +12,30 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ses"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/sessions"
 	_ "github.com/joho/godotenv/autoload"
+	"gopkg.in/auth0.v5/management"
 )
 
 var (
-	ss *sessions.FilesystemStore
-	db *sql.DB
-	t  = template.Must(template.ParseGlob("templates/*"))
+	ss     *sessions.FilesystemStore
+	sesSvc *ses.SES
+	db     *sql.DB
+	t      = template.Must(template.ParseGlob("templates/*"))
 
 	auth0ClientID     string
 	auth0ClientSecret string
+	authManager       *management.Management
+)
+
+const (
+	auth0DBConnectionID = "con_p2bySCWPL9MKhmH1"
 )
 
 func main() {
@@ -55,6 +65,19 @@ func main() {
 	}
 
 	var err error
+	authManager, err = management.New("reusefull.us.auth0.com", management.WithClientCredentials(auth0ClientID, auth0ClientSecret))
+	if err != nil {
+		panic(err)
+	}
+
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String("us-east-1")},
+	)
+	if err != nil {
+		panic(err)
+	}
+	sesSvc = ses.New(sess)
+
 	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:3306)/reusefull?parseTime=true&timeout=10s", user, pass, host))
 	if err != nil {
 		panic(err)
@@ -81,15 +104,20 @@ func main() {
 		r.Get("/charitylist", ListCharities)
 		r.Get("/charity/{id}", ViewCharity)
 		r.Get("/charity/{id}/edit", EditCharity)
-		r.Get("/charity/signup/step/1", CharitySignUp1)
-		r.Get("/charity/signup/step/2", CharitySignUp2)
-		r.Get("/charity/signup/step/3", CharitySignUp3)
-		r.Post("/charity/signup", CharitySignUpComplete)
 
 		r.Get("/auth/callback", CallbackHandler)
 		r.Get("/auth/login", LoginHandler)
 		r.Get("/auth/logout", LogoutHandler)
 	})
+
+	r.Get("/charity/signup/step/1", CharitySignUp1)
+	r.Get("/charity/signup/step/2", CharitySignUp2)
+	r.Get("/charity/signup/step/3", CharitySignUp3)
+	r.Get("/charity/signup/thankyou", CharitySignUpThanks)
+
+	r.Post("/api/v1/charity/register", CharityRegister)
+	r.Get("/api/v1/charity/types", GetCharityTypes)
+	r.Post("/api/v1/auth0/cb", ChangePasswordCallback)
 
 	srv := &http.Server{
 		Addr:         ":3000",

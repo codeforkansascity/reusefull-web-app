@@ -3,57 +3,85 @@ const app = new Vue({
   el: '#app',
   data: {
     errors: [],
-    orgName: null,
-    contactName: null,
-    email: null,
-    phone: null,
-    address: null,
-    city: null,
-    state: null,
-    zip: null
+    serverError: null,
+    itemTypes: [],
+    amazon: null,
+    cashDonate: null,
+    volunteer: null,
+    processing: false,
+  },
+  mounted() {
+    try {
+      step = JSON.parse(localStorage.getItem('step3'));
+      this.itemTypes = step.itemTypes
+      this.amazon = step.amazon
+      this.cashDonate = step.cashDonate
+      this.volunteer = step.volunteer
+    } catch(e) {
+      localStorage.removeItem('step3')
+    }
   },
   methods:{
     checkForm: function (e) {
-      return true;
-      if (this.orgName &&
-          this.contactName &&
-          this.email &&
-          this.phone &&
-          this.address &&
-          this.city &&
-          this.state &&
-          this.zip) {
-        return true;
-      }
+      e.preventDefault();
 
       this.errors = [];
 
-      if (!this.orgName) {
-        this.errors.push('Organization Name required.');
-      }
-      if (!this.contactName) {
-        this.errors.push('Contact Name required.');
-      }
-      if (!this.email) {
-        this.errors.push('Email required.');
-      }
-      if (!this.phone) {
-        this.errors.push('Phone required.');
-      }
-      if (!this.address) {
-        this.errors.push('Address required.');
-      }
-      if (!this.city) {
-        this.errors.push('City required.');
-      }
-      if (!this.state) {
-        this.errors.push('State required.');
-      }
-      if (!this.zip) {
-        this.errors.push('Zip required.');
+      if (this.itemTypes.length == 0) {
+        this.errors.push('Please select at least one item');
       }
 
-      e.preventDefault();
+      if (this.errors.length == 0 ) {
+        this.saveStep()
+        this.submitRegistration()
+      }
+    },
+    saveStep() {
+      localStorage.setItem('step3', JSON.stringify({
+        itemTypes: this.itemTypes,
+        amazon: this.amazon,
+        cashDonate: this.cashDonate,
+        volunteer: this.volunteer,
+      }))
+    },
+    submitRegistration: function() {
+      this.processing = true
+
+      try {
+        step1 = JSON.parse(localStorage.getItem('step1'))
+        step2 = JSON.parse(localStorage.getItem('step2'))
+      } catch(e) {
+        console.log(e)
+        return
+      }
+
+      org = {
+        itemTypes: this.itemTypes,
+        amazon: this.amazon,
+        cashDonate: this.cashDonate,
+        volunteer: this.volunteer,
+        ...step1,
+        ...step2
+      }
+      console.log(org)
+
+      fetch('/api/v1/charity/register', {
+        method: 'post',
+        body: JSON.stringify(org)
+      }).then(response => {
+        console.log(response)
+        if (response.ok) {
+          window.location.assign("/charity/signup/thankyou");
+        } else {
+          this.processing = false
+          if (response.status == 409) {
+            this.serverError = 'That email has already been registered.'
+          } else {
+            this.serverError= 'Error registering. Please try again later.'
+          }
+          return false
+        }
+      })
     }
   }
 })

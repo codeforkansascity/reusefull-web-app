@@ -7,24 +7,26 @@
     {{ template "nav" . }}
     <main>
       <div class="container" id="app">
-          <h3>Tell us about your charity</h3>
-          <h5>Step 2 of 3</h5>
+          <div class="col-md-12 mb-3 text-center">
+            <h3>Tell us about your charity</h3>
+            <h5>Step 2 of 3</h5>
+          </div>
           <div v-cloak>
               <form
                 class="row"
                 @submit="checkForm"
               >
                 <div class="col-md-12 mb-3">
-                  <p v-if="errors.length">
+                  <p v-if="errors.length" style="color:red">
                     <b>Please correct the following error(s):</b>
                     <ul>
-                      <li v-for="error in errors">${ error }</li>
+                      <li style="color:red" v-for="error in errors">${ error }</li>
                     </ul>
                   </p>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="website" class="form-label">Organization Website</label>
-                  <input type="text" class="form-control" id="orgName" v-model="orgName">
+                  <input type="text" class="form-control" id="website" v-model="website">
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="budget" class="form-label">Budget Size</label>
@@ -58,11 +60,55 @@
                   </div>
                 </div>
 
+                <div class="col-md-6 mb-3">
+                  <label for="taxID" class="form-label">Tax ID Number</label>
+                  <input type="text" class="form-control" id="taxID" v-model="taxID">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="file" class="form-label">Logo</label>
+                  <input type="file" name="file" @change="filePicked" accept="image/png, image/jpeg">
+                </div>
+                <div class="col-md-12 mb-3">
+                  <img :src="logo" height="200" v-if="logo">
+                </div>
 
+                <hr>
 
-                <div class="col-12">
-                  <input type="button" class="btn btn-secondary" value="Back" onclick="history.back()">
-                  <button type="submit" class="btn btn-primary">Next ></button>
+                <div class="col-md-12 mb-3 text-center">
+                  <h2>What type of charity are you? </h2>
+                  <p>Select all that apply</p>
+                </div>
+
+                {{ range .CharityTypes }}
+                <div class="col-lg-4 mb-1">
+                  <div class="form-check">
+                      <input type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charityTypes">
+                      <label for="{{.Id}}" class="form-label">{{.Name}}</label>
+                  </div>
+                </div>
+                {{ end }}
+                <div class="row justify-content-md-center">
+                  <div class="col-md-8 mb-1">
+                    <label for="other" class="form-label">If other please specify:</label>
+                    <input type="text" class="form-control" id="other" v-model="other">
+                  </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <label for="mission" class="form-label">Mission</label>
+                  <textarea rows="2" class="form-control" id="mission" v-model="mission"></textarea>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                  <label for="description" class="form-label">Description</label>
+                  <textarea rows="4" class="form-control" id="description" v-model="description"></textarea>
+                </div>
+
+                <div class="row mt-3 mb-5">
+                  <div class="col text-center">
+                    <input type="button" class="btn btn-secondary" value="Back" onclick="history.back()">
+                    <button type="submit" class="btn btn-primary">Next ></button>
+                  </div>
                 </div>
               </form>
             </div>

@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/json"
+	"strings"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -18,8 +21,14 @@ type Authenticator struct {
 	Ctx      context.Context
 }
 
+type PostChangePasswordHook struct {
+	UserID string `json:"user_id"`
+	Email  string `json:"email"`
+}
+
 const (
-	auth0Domain = "reusefull.us.auth0.com"
+	auth0Domain         = "reusefull.us.auth0.com"
+	auth0CallbackSecret = "1plCMKWXIsi1VpzO7gnC2tk6VnvCBX1dnwHDlTDe3Q"
 )
 
 func NewAuthenticator() (*Authenticator, error) {
@@ -201,4 +210,40 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		ctx := context.WithValue(r.Context(), "user", user)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func ChangePasswordCallback(w http.ResponseWriter, r *http.Request) {
+	auth := r.Header.Get("Authorization")
+	if len(auth) == 0 {
+		http.Error(w, "missing authorization header", 401)
+		return
+	}
+	parts := strings.Split(auth, " ")
+	if len(parts) != 2 || parts[1] != auth0CallbackSecret {
+		http.Error(w, "unauthorized", 401)
+		return
+	}
+
+	buf, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
+	user := PostChangePasswordHook{}
+	err = json.Unmarshal(buf, &user)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+	log.Println(user)
+
+	_, err = db.Exec("update set email_verified = true where id = ?", user.UserID)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
 }

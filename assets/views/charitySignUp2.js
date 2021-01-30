@@ -2,7 +2,6 @@ const app = new Vue({
   delimiters: ['${', '}'],
   el: '#app',
   data: {
-    loaded: false,
     errors: [],
     website: null,
     budget: null,
@@ -11,85 +10,90 @@ const app = new Vue({
     faith: null,
     taxID: null,
     logo: null,
-    zip: null,
-    charityType: [],
+    charityTypes: [],
+    other: null,
     mission: null,
     description: null
   },
   mounted() {
-    this.loaded = true
     if (localStorage.getItem('step2')) {
       try {
-        step1 = JSON.parse(localStorage.getItem('step2'));
-        // this.orgName = step1.orgName
-        // this.contactName = step1.contactName
-        // this.email = step1.email
-        // this.phone = step1.phone
-        // this.address = step1.address
-        // this.city = step1.city
-        // this.state = step1.state
-        // this.zip = step1.zip
+        step = JSON.parse(localStorage.getItem('step2'));
+        this.website = step.website
+        this.budget = step.budget
+        this.dropoff = step.dropoff
+        this.pickup = step.pickup
+        this.faith = step.faith
+        this.taxID = step.taxID
+        this.logo = step.logo
+        this.charityTypes = step.charityTypes
+        this.other = step.other
+        this.mission = step.mission
+        this.description = step.description
       } catch(e) {
         localStorage.removeItem('step2')
       }
     }
   },
   methods:{
+    filePicked(event) {
+      if (event.target.files.length == 0 ) {
+        console.log("no file picked")
+        return
+      }
+      file = event.target.files[0]
+      reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = e =>{
+        this.logo = e.target.result;
+        console.log(this.logo)
+      }
+
+    },
     saveStep() {
       localStorage.setItem('step2', JSON.stringify({
-        // orgName: this.orgName,
-        // contactName: this.contactName,
-        // email: this.email,
-        // phone: this.phone,
-        // address: this.address,
-        // city: this.city,
-        // state: this.state,
-        // zip: this.zip
+        website: this.website,
+        budget: this.budget,
+        dropoff: this.dropoff,
+        pickup: this.pickup,
+        faith: this.faith,
+        taxID: this.taxID,
+        logo: this.logo,
+        charityTypes: this.charityTypes,
+        other: this.other,
+        mission: this.mission,
+        description: this.description
       }))
     },
     checkForm: function (e) {
       e.preventDefault();
-      //
-      // if (this.orgName &&
-      //     this.contactName &&
-      //     this.email &&
-      //     this.phone &&
-      //     this.address &&
-      //     this.city &&
-      //     this.state && this.state != "Choose..." &&
-      //     this.zip) {
-      //   this.errors = [];
-      //   this.saveStep()
-      //   window.location.assign("/charity/signup/step/3")
-      //   return true;
-      // }
-      //
-      // this.errors = [];
-      //
-      // if (!this.orgName) {
-      //   this.errors.push('Organization Name required.');
-      // }
-      // if (!this.contactName) {
-      //   this.errors.push('Contact Name required.');
-      // }
-      // if (!this.email) {
-      //   this.errors.push('Email required.');
-      // }
-      // if (!this.phone) {
-      //   this.errors.push('Phone required.');
-      // }
-      // if (!this.address) {
-      //   this.errors.push('Address required.');
-      // }
-      // if (!this.city) {
-      //   this.errors.push('City required.');
-      // }
-      // if (this.state == "Choose...") {
-      //   this.errors.push('State required.');
-      // }
-      // if (!this.zip) {
-      //   this.errors.push('Zip required.');
-      // }
+
+      this.errors = [];
+
+      if (!this.website) {
+        this.errors.push('Website required.');
+      }
+      if (!this.budget) {
+        this.errors.push('Budget required.');
+      }
+      if (!this.taxID) {
+        this.errors.push('Tax ID required.');
+      }
+      if (this.charityTypes.length == 0 && !this.other) {
+        this.errors.push('At least one charity type is required')
+      }
+      if (!this.mission) {
+        this.errors.push('Mission required.');
+      }
+      if (!this.description) {
+        this.errors.push('Description required.');
+      }
+
+      if (this.errors.length == 0) {
+        this.saveStep();
+        window.location.assign("/charity/signup/step/3")
+        return true;
+      }
     }
   }
 })
