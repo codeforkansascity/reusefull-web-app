@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -14,8 +13,6 @@ const (
 	Sender  = "Re.Use.Full <hello@reusefull.org>"
 	CharSet = "UTF-8"
 )
-
-var tmpl = template.Must(template.ParseFiles("email.tmpl"))
 
 type EmailArgs struct {
 	Link      string
@@ -57,7 +54,7 @@ type EmailArgs struct {
 
 func sendNewAccountEmail(email, link string) error {
 	var b bytes.Buffer
-	err := tmpl.Execute(&b, EmailArgs{
+	err := t.ExecuteTemplate(&b, "email.tmpl", EmailArgs{
 		Link:      link,
 		Button:    "Complete Registration",
 		Message:   "Your account has been created and we are in the process of reviewing it. Please click the following button to verify your email and set your password.",
