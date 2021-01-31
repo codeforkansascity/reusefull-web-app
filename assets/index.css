@@ -9,18 +9,11 @@ button.navbar-toggler {
   background-color: #34637f;
 }
 
-.bi-list {
-  color: white;
-  font-weight: bold;
-}
-
 .toggler-label {
-  color: white;
-  margin-left: 0.5rem;
   padding-top: 0.1rem;
 }
 
-/** Setting flex props manually to
+/** Setting flex props manually to 
 prevent conflict with Bootstrap's toggle-hiding **/
 @media only screen and (max-width: 768px) {
   button.navbar-toggler {
@@ -36,28 +29,6 @@ prevent conflict with Bootstrap's toggle-hiding **/
   }
 }
 
-.org-thumbnail-container {
-  height: 30%;
-  width: inherit;
-}
-
-.org-thumbnail-overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: 0.5s ease;
-  background-color: green;
-}
-
-.org-thumbnail-overlay:hover {
-  opacity: 1;
-}
-
 .org-thumbnail:hover {
   opacity: 0.75;
 }
@@ -67,9 +38,30 @@ prevent conflict with Bootstrap's toggle-hiding **/
   font-size: 0.75rem;
 }
 
-.mock-search {
-  height: 40rem;
-  width: 100%;
-  min-width: 290px;
-  background-color: #aaa;
+/* Removes excess height on location services button */
+#locationServices {
+  max-height: 3rem;
+  margin-top: 1rem;
+  align-self: center;
+}
+
+/* Change size on h3 within form */
+.form-section-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.textbox-lg {
+  height: 10rem;
+}
+
+#searchToggle {
+  background-color: #0069d9;
+}
+
+/* Forces search menu to display when toggle not available */
+@media screen and (min-width: 991px) {
+  #searchMenu {
+    display: inline-block;
+  }
 }
