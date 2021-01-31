@@ -22,6 +22,12 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
 
+    <!-- Select2 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
+    />
+
     <!-- Custom and Override CSS -->
     <link rel="stylesheet" href="/styles/index.css" />
 
@@ -33,18 +39,34 @@
       <form>
         <!-- Toolbar -->
         <div class="container d-flex bg-primary pt-2 pb-3 search-toolbar">
-          <!-- Category Dropdown Toggle -->
-          <button
-            class="btn btn-link text-light dropdown-toggle toolbar-button"
-            type="button"
-            id="categoryDropdown"
-            data-toggle="collapse"
-            data-target="#categoryList"
-            aria-controls="categoryList"
-            aria-expanded="false"
-          >
-            Select Item Types
-          </button>
+          <!-- Size -->
+          <div class="col-md-3">
+            <label class="text-light" for="donation-category"
+              >Donation Category</label
+            >
+            <select
+              name="donation-category"
+              id="donation-category"
+              class="selectpicker"
+              data-live-search="true"
+              data-selected-text-format="count > 2"
+              multiple
+            >
+              <option
+                data-tokens="sweet home"
+                data-content="<span class='badge badge-pill badge-light category-badge'>Alabama</span>"
+                value="AL"
+              >
+                Alabama
+              </option>
+              <option
+                data-content="<span class='badge badge-pill badge-light category-badge'>Wyoming</span>"
+                value="WY"
+              >
+                Wyoming
+              </option>
+            </select>
+          </div>
 
           <!-- Zip Code -->
           <div class="col-md-2">
@@ -141,275 +163,6 @@
             Update Results
           </button>
         </div>
-
-        <!-- Category Dropdown -->
-        <div
-          class="collapse pt-3 pl-3"
-          id="categoryList"
-          aria-labelledby="categoryDropdown"
-        >
-          <div class="col-12 row">
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="appliances-lg"
-                value="appliances-lg"
-              />
-              <label class="form-check-label" for="appliances-lg"
-                >Appliances - Large</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="appliances-sm"
-                value="appliances-sm"
-              />
-              <label class="form-check-label" for="appliances-sm"
-                >Appliances - Small</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="arts"
-                value="arts"
-              />
-              <label class="form-check-label" for="arts"
-                >Arts & Crafts Supplies</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="baby"
-                value="baby"
-              />
-              <label class="form-check-label" for="baby">Baby Supplies</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="bicycles"
-                value="bicycles"
-              />
-              <label class="form-check-label" for="bicycles">Bicycles</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="books"
-                value="books"
-              />
-              <label class="form-check-label" for="books"
-                >Books & Magazines</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="building"
-                value="building"
-              />
-              <label class="form-check-label" for="building"
-                >Building Materials</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="clothing"
-                value="clothing"
-              />
-              <label class="form-check-label" for="clothing">Clothing</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="computers"
-                value="computers"
-              />
-              <label class="form-check-label" for="computers"
-                >Computers & Technology</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="electronics"
-                value="electronics"
-              />
-              <label class="form-check-label" for="electronics"
-                >Electronics</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="furniture"
-                value="furniture"
-              />
-              <label class="form-check-label" for="furniture">Furniture</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="gardening"
-                value="gardening"
-              />
-              <label class="form-check-label" for="gardening"
-                >Gardening Equipment</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="decor"
-                value="decor"
-              />
-              <label class="form-check-label" for="decor">Home Decor</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="hygiene"
-                value="hygiene"
-              />
-              <label class="form-check-label" for="hygiene"
-                >Hygiene Products</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="kitchenware"
-                value="kitchenware"
-              />
-              <label class="form-check-label" for="kitchenware"
-                >Kitchenware</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="linens"
-                value="linens"
-              />
-              <label class="form-check-label" for="linens">Linens</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="medical"
-                value="medical"
-              />
-              <label class="form-check-label" for="medical"
-                >Medical Supplies</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="musical"
-                value="musical"
-              />
-              <label class="form-check-label" for="musical"
-                >Musical Instruments</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="office"
-                value="office"
-              />
-              <label class="form-check-label" for="office"
-                >Office Supplies</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="pet"
-                value="pet"
-              />
-              <label class="form-check-label" for="pet">Pet Supplies</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="school"
-                value="pet"
-              />
-              <label class="form-check-label" for="school"
-                >School Supplies</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="sports-equipment"
-                value="sports-equipment"
-              />
-              <label class="form-check-label" for="sports-equipment"
-                >Sports Equipment</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="tools"
-                value="tools"
-              />
-              <label class="form-check-label" for="tools">Tools</label>
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="toys"
-                value="toys"
-              />
-              <label class="form-check-label" for="toys"
-                >Toys, Games, & Puzzles</label
-              >
-            </div>
-            <div class="col-md-3 form-group form-check form-check-inline">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="vehicles"
-                value="vehicles"
-              />
-              <label class="form-check-label" for="vehicles"
-                >Vehicles & Boats</label
-              >
-            </div>
-          </div>
-        </div>
       </form>
 
       <!-- Results List -->
@@ -467,5 +220,7 @@
       integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
       crossorigin="anonymous"
     ></script>
+    <!-- Multiselect JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
   </body>
 </html>

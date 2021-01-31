@@ -68,3 +68,7 @@ prevent conflict with Bootstrap's toggle-hiding **/
   height: 3rem;
   align-self: flex-end;
 }
+
+.category-badge {
+  font-size: 1rem;
+}
