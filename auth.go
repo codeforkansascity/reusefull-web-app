@@ -43,7 +43,7 @@ func NewAuthenticator() (*Authenticator, error) {
 	conf := oauth2.Config{
 		ClientID:     auth0ClientID,
 		ClientSecret: auth0ClientSecret,
-		RedirectURL:  "http://localhost:3000/auth/callback",
+		RedirectURL:  auth0RedirectURL,
 		Endpoint:     provider.Endpoint(),
 		Scopes:       []string{oidc.ScopeOpenID, "profile", "email"},
 	}
@@ -246,4 +246,6 @@ func ChangePasswordCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "server error", 500)
 		return
 	}
+
+	w.Write([]byte(`{"status":"ok"}`))
 }
