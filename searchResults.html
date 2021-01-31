@@ -25,7 +25,9 @@
     <!-- Select2 CSS -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css"
+      integrity="sha512-87wkTHUArAnTBwQ5XL6+G68i54R3TXYDZoXewRsdhIv/ztcEr2Z1Mrk+aXBCKOZUtih0XWiBhXv3/bWjHTL2Bw=="
+      crossorigin="anonymous"
     />
 
     <!-- Custom and Override CSS -->
@@ -34,139 +36,135 @@
     <title>ReUseFull</title>
   </head>
   <body>
-    <main class="container">
+    <main class="vw-100 px-5 row">
+      <!-- Mobile Toggle -->
+      <button
+        id="searchToggle"
+        class="btn btn-primary col-12 col-md-8 offset-md-2 d-md-block d-lg-none"
+        type="button"
+        data-toggle="collapse"
+        data-target="#searchMenu"
+        aria-expanded="false"
+      >
+        <i class="bi bi-search"></i>
+      </button>
       <!-- Update Results form -->
-      <form>
-        <!-- Toolbar -->
-        <div class="container d-flex bg-primary pt-2 pb-3 search-toolbar">
-          <!-- Size -->
-          <div class="col-md-3">
-            <label class="text-light" for="donation-category"
-              >Donation Category</label
-            >
-            <select
-              name="donation-category"
-              id="donation-category"
-              class="selectpicker"
-              data-live-search="true"
-              data-selected-text-format="count > 2"
-              multiple
-            >
-              <option
-                data-tokens="sweet home"
-                data-content="<span class='badge badge-pill badge-light category-badge'>Alabama</span>"
-                value="AL"
-              >
-                Alabama
-              </option>
-              <option
-                data-content="<span class='badge badge-pill badge-light category-badge'>Wyoming</span>"
-                value="WY"
-              >
-                Wyoming
-              </option>
-            </select>
-          </div>
-
-          <!-- Zip Code -->
-          <div class="col-md-2">
-            <label class="text-light" for="zip">Your Zip Code</label>
-            <input
-              type="text"
-              class="form-control"
-              id="zip"
-              name="zip-code"
-              pattern="[0-9]*"
-            />
-          </div>
-
-          <!-- Size -->
-          <div class="col-md-2">
-            <label class="text-light" for="size">Organization Size</label>
-            <select
-              class="custom-select"
-              id="size"
-              name="organization-size"
-              required
-            >
-              <option selected disabled value="">Please Select</option>
-              <option value="grassroots">Grassroots ($0-5k)</option>
-              <option value="small">Small ($6-25k)</option>
-              <option value="medium">Medium ($26-100k)</option>
-              <option value="large">Large (>$100k)</option>
-            </select>
-          </div>
-
-          <!-- Focus -->
-          <div class="col-md-3">
-            <label class="text-light" for="focus">Organization Focus</label>
-            <select
-              class="custom-select"
-              id="focus"
-              name="organization-focus"
-              required
-            >
-              <option selected disabled value="">Please Select</option>
-              <option value="animals">Animals & Pets</option>
-              <option value="arts">Arts & Music</option>
-              <option value="children">Children & Youth</option>
-              <option value="college">College & Universities</option>
-              <option value="domestic">Domestic Violence</option>
-              <option value="education">Education & Literacy</option>
-              <option value="environment">Environment</option>
-              <option value="food">Food & Nutrition</option>
-              <option value="health">Health & Substance Abuse</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="homelessness">Homelessness & Housing</option>
-              <option value="immigrants">Immigrants & Refugees</option>
-              <option value="jobs">Job Training & Employment</option>
-              <option value="media">Media & Journalism</option>
-              <option value="reentry">Re-entry & Criminal Justice</option>
-              <option value="seniors">Seniors & Caregivers</option>
-              <option value="sports">Sports & Recreation</option>
-            </select>
-          </div>
-
-          <!-- Pickup/Dropoff -->
-          <div class="align-self-end">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value="pickup"
-                id="pickup"
-                name="pickup"
-              />
-              <label class="text-light form-check-label" for="pickup">
-                Pickup
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value="dropoff"
-                id="dropoff"
-                name="dropoff"
-              />
-              <label class="text-light form-check-label" for="dropoff">
-                Dropoff
-              </label>
-            </div>
-          </div>
-
-          <!-- Submit -->
-          <button
-            class="btn btn-outline-light ml-auto toolbar-button"
-            type="submit"
+      <form
+        class="col-12 col-md-8 offset-md-2 col-lg-3 offset-lg-0 bg-primary p-3 collapse"
+        id="searchMenu"
+      >
+        <!-- Size -->
+        <div class="form-group">
+          <label class="text-light" for="donation-category"
+            >Donation Category</label
           >
-            Update Results
-          </button>
+          <select name="donation-category[]" id="donation-category" multiple>
+            <option value="grassroots">Grassroots</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="lg-appliance">Appliances-Lg</option>
+            <option value="grassroots">Grassroots</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+            <option value="lg-appliance2">Appliances-Lg Two</option>
+          </select>
         </div>
+
+        <!-- Zip Code -->
+        <div class="form-group">
+          <label class="text-light" for="zip">Your Zip Code</label>
+          <input
+            type="text"
+            class="form-control"
+            id="zip"
+            name="zip-code"
+            pattern="[0-9]*"
+          />
+        </div>
+
+        <!-- Size -->
+        <div class="form-group">
+          <label class="text-light" for="size">Organization Size</label>
+          <select
+            class="custom-select"
+            id="size"
+            name="organization-size"
+            required
+          >
+            <option selected disabled value="">Please Select</option>
+            <option value="grassroots">Grassroots ($0-5k)</option>
+            <option value="small">Small ($6-25k)</option>
+            <option value="medium">Medium ($26-100k)</option>
+            <option value="large">Large (>$100k)</option>
+          </select>
+        </div>
+
+        <!-- Focus -->
+        <div class="form-group">
+          <label class="text-light" for="focus">Organization Focus</label>
+          <select
+            class="custom-select"
+            id="focus"
+            name="organization-focus"
+            required
+          >
+            <option selected disabled value="">Please Select</option>
+            <option value="animals">Animals & Pets</option>
+            <option value="arts">Arts & Music</option>
+            <option value="children">Children & Youth</option>
+            <option value="college">College & Universities</option>
+            <option value="domestic">Domestic Violence</option>
+            <option value="education">Education & Literacy</option>
+            <option value="environment">Environment</option>
+            <option value="food">Food & Nutrition</option>
+            <option value="health">Health & Substance Abuse</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="homelessness">Homelessness & Housing</option>
+            <option value="immigrants">Immigrants & Refugees</option>
+            <option value="jobs">Job Training & Employment</option>
+            <option value="media">Media & Journalism</option>
+            <option value="reentry">Re-entry & Criminal Justice</option>
+            <option value="seniors">Seniors & Caregivers</option>
+            <option value="sports">Sports & Recreation</option>
+          </select>
+        </div>
+
+        <!-- Pickup/Dropoff -->
+        <div class="form-group form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="pickup"
+            id="pickup"
+            name="pickup"
+          />
+          <label class="text-light form-check-label" for="pickup">
+            Pickup
+          </label>
+        </div>
+        <div class="form-group form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="dropoff"
+            id="dropoff"
+            name="dropoff"
+          />
+          <label class="text-light form-check-label" for="dropoff">
+            Dropoff
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button class="btn btn-outline-light" type="submit">
+          Update Results
+        </button>
       </form>
 
       <!-- Results List -->
-      <table class="table">
+      <table class="table col-9">
         <thead>
           <tr>
             <th scope="col"></th>
@@ -220,7 +218,23 @@
       integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
       crossorigin="anonymous"
     ></script>
-    <!-- Multiselect JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <!-- Selectize JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.js"
+      integrity="sha512-WZ3VAWLJDOQRwRtR4nkn7g7Fb+TSDtdpdQdJgM5tSn82RKD/O84EqMPKqvF+3ypk5+IErlevC4WpbdbRG65uIg=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $("#donation-category").selectize({
+          plugins: ["remove_button"],
+          delimiter: ",",
+          persist: false,
+          create: false,
+          openOnFocus: true,
+          maxItems: 8,
+        });
+      });
+    </script>
   </body>
 </html>

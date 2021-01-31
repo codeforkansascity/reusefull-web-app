@@ -38,11 +38,6 @@ prevent conflict with Bootstrap's toggle-hiding **/
   font-size: 0.75rem;
 }
 
-/* Styles checkbox input on grid to maintain constant size*/
-.grid-checkbox-input {
-  width: 15px;
-}
-
 /* Removes excess height on location services button */
 #locationServices {
   max-height: 3rem;
@@ -60,15 +55,13 @@ prevent conflict with Bootstrap's toggle-hiding **/
   height: 10rem;
 }
 
-.search-toolbar {
-  min-width: 1050px;
+#searchToggle {
+  background-color: #0069d9;
 }
 
-.toolbar-button {
-  height: 3rem;
-  align-self: flex-end;
-}
-
-.category-badge {
-  font-size: 1rem;
+/* Forces search menu to display when toggle not available */
+@media screen and (min-width: 991px) {
+  #searchMenu {
+    display: inline-block;
+  }
 }
