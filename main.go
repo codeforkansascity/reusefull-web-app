@@ -64,7 +64,7 @@ func main() {
 	if !exists {
 		panic("AUTH0_CLIENT_SECRET not found")
 	}
-	
+
 	auth0RedirectURL, exists = os.LookupEnv("AUTH0_REDIRECT_URL")
 	if !exists {
 		panic("AUTH0_REDIRECT_URL not found")

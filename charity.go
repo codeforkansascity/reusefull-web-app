@@ -278,7 +278,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "user already exists", 409)
 			return
 		}
-		log.Println(err)
+		log.Println("user create error", err)
 		http.Error(w, "failed to create user", 503)
 		return
 	}

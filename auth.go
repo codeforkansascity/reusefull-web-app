@@ -240,7 +240,7 @@ func ChangePasswordCallback(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(user)
 
-	_, err = db.Exec("update user set email_verified = true where id = ?", user.UserID)
+	_, err = db.Exec("update user set email_verified = true where id = ?", "auth0|" +user.UserID)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "server error", 500)
