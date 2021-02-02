@@ -33,7 +33,7 @@
                 {{ range .ItemTypes }}
                 <div class="col-lg-4 mb-1">
                   <div class="form-check">
-                      <input type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="itemTypes">
+                      <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="itemTypes">
                       <label for="{{.Id}}" class="form-label">{{.Name}}</label>
                   </div>
                 </div>

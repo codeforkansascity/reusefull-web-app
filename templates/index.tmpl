@@ -4,7 +4,7 @@
    <body>
        {{ template "nav" . }}
        <a href="/charitylist">Charity List</a>
-       <a href="/charitysearch">Charity Search</a>
+       <a href="/donate/step/1">Donate</a>
        <br/>
        <br/>
        {{ if .User.LoggedIn }}
@@ -15,5 +15,8 @@
        <a href="/auth/login">Log in</a>
        <a href="/charity/signup/step/1">Charity Signup</a>
        {{ end }}
+
+
+       {{ template "footerScripts" . }}
    </body>
 </html>

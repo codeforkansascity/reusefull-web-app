@@ -31,7 +31,7 @@ var (
 
 	auth0ClientID     string
 	auth0ClientSecret string
-	auth0RedirectURL string
+	auth0RedirectURL  string
 	authManager       *management.Management
 )
 
@@ -110,20 +110,31 @@ func main() {
 		r.Get("/charitylist", ListCharities)
 		r.Get("/charity/{id}", ViewCharity)
 		r.Get("/charity/{id}/edit", EditCharity)
+		r.Put("/api/v1/charity/{id}", UpdateCharity)
 
 		r.Get("/auth/callback", CallbackHandler)
 		r.Get("/auth/login", LoginHandler)
 		r.Get("/auth/logout", LogoutHandler)
+
+		r.Get("/charity/signup/step/1", CharitySignUp1)
+		r.Get("/charity/signup/step/2", CharitySignUp2)
+		r.Get("/charity/signup/step/3", CharitySignUp3)
+		r.Get("/charity/signup/thankyou", CharitySignUpThanks)
+
+		r.Get("/donate/step/1", DonateStep1)
+		r.Get("/donate/step/2", DonateStep2)
+		r.Get("/donate/search", DonateSearchResults)
 	})
 
-	r.Get("/charity/signup/step/1", CharitySignUp1)
-	r.Get("/charity/signup/step/2", CharitySignUp2)
-	r.Get("/charity/signup/step/3", CharitySignUp3)
-	r.Get("/charity/signup/thankyou", CharitySignUpThanks)
+	r.Route("/api/v1", func(r chi.Router) {
+		r.Post("/charity/register", CharityRegister)
+		r.Get("/charity/types", GetCharityTypes)
+		r.Get("/charity/{id}", GetCharity)
 
-	r.Post("/api/v1/charity/register", CharityRegister)
-	r.Get("/api/v1/charity/types", GetCharityTypes)
-	r.Post("/api/v1/auth0/cb", ChangePasswordCallback)
+		r.Post("/auth0/cb", ChangePasswordCallback)
+
+		r.Post("/donate/search", DonateSearch)
+	})
 
 	srv := &http.Server{
 		Addr:         ":3000",

@@ -1,38 +1,39 @@
 {{ define "charityListCard" }}
 <!-- Card view markup -->
-<div
-  class="card d-flex flex-column flex-lg-row col-10 col-md-5 col-lg-8 mx-1 my-1"
->
-  <a href="/charity/{{.Id}}">
-    <img
-      src="https://reusefull.org/wp-content/uploads/2020/09/a-e1604757769660.jpg"
-      class="card-img-top org-thumbnail"
-      alt="Org logo"
-    />
-  </a>
-  <div class="card-body">
-    <h5 class="card-title"><a href="/charity/{{.Id}}">{{ .Name }}</a></h5>
-    <div class="card-text">
-      <div class="my-1">
-        <strong>Religious Organization:</strong>
-        {{ if .Religious }}Yes{{ else }} No {{ end }}
-      </div>
-      <div class="my-1"><strong>Pick-Up Service:</strong>
-          {{ if .Pickup }}Yes{{ else }} No {{ end }}
-      </div>
-      <div class="my-1"><strong>Resell Items:</strong>
-          {{ if .Resell }}Yes{{ else }} No {{ end }}
-      </div>
+<div class="card shadow p-3 mb-3 bg-white rounded">
+  <div class="row">
+    <div class="col-auto">
+      <a href="/charity/{{.Id}}">
+        <img
+          src="{{ .LogoURL }}"
+          class="img-fluid"
+          width="300"
+          alt="Org logo"
+        />
+      </a>
     </div>
-    <div>
-      <i class="bi bi-geo-alt-fill"></i>
-      <strong>Address:</strong>
-      <em>{{ .Address }} {{ .ZipCode }}</em>
-    </div>
-    <div>
-      <i class="bi bi-telephone-fill"></i>
-      <strong>Phone:</strong>
-      <a href="tel:{{.Phone}}">{{ .Phone }}</a>
+    <div class="col">
+      <div class="card-bock">
+        <h5 class="card-title"><a href="/charity/{{.Id}}">{{ .Name }}</a></h5>
+        <div class="card-text">
+          <div class="my-1"><strong>Pick-Up Service:</strong>
+              {{ if .Pickup }}Yes{{ else }} No {{ end }}
+          </div>
+          <div class="my-1"><strong>Dropoff:</strong>
+              {{ if .Dropoff }}Yes{{ else }} No {{ end }}
+          </div>
+        </div>
+        <div>
+          <i class="bi bi-geo-alt-fill"></i>
+          <strong>Address:</strong>
+          <em>{{ .Address }} {{ .ZipCode }}</em>
+        </div>
+        <div>
+          <i class="bi bi-telephone-fill"></i>
+          <strong>Phone:</strong>
+          <a href="tel:{{.Phone}}">{{ .Phone }}</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ template "header" . }}
+  <body>
+    {{ template "nav" . }}
+    <main>
+      <div class="container col-md-10 mt-3" id=app>
+        <h5 class="text-center">What Types of Organizations Would you like to donate to? </h2>
+        <p class="text-center mb-4">STEP 2 OF 2</p>
+          <div v-cloak>
+              <form
+                class="row"
+                @submit="checkForm"
+              >
+              <div class="col-md-12 mb-3">
+                <p v-if="errors.length">
+                  <b>Please correct the following error(s):</b>
+                  <ul>
+                    <li v-for="error in errors">${ error }</li>
+                  </ul>
+                </p>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-1 text-center">
+                  <h5>Where Are You Located?</h5>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-md-6 text-center align-self-center">
+                  <button type="button" class="btn btn-success"><i class="bi bi-geo-alt p-1"></i>Locate Me</button>
+                </div>
+                <div class="col-md-4">
+                  <label for="zip" class="form-label">Or Enter ZIP Code</label>
+                  <input type="text" class="form-control" id="zip" v-model="donate.zip">
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-md-10">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pickupDropoff" id="pickup1" value="1" v-model="donate.pickupDropoff" selected>
+                    <label class="form-check-label" for="pickup1">Charity will pickup my items</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="pickupDropoff" id="pickup2" value="2" v-model="donate.pickupDropoff">
+                    <label class="form-check-label" for="pickup2">I will drop-off items</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <div class="col-md-10">
+                  <label for="budget" class="form-label">Proximity to Charity</label><br>
+                  <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="proximity" id="proximity1" value="1" v-model="donate.proximity">
+                    <label class="btn btn-outline-secondary" for="proximity1">< 5 Miles</label>
+
+                    <input type="radio" class="btn-check" name="proximity" id="proximity2" value="2" v-model="donate.proximity">
+                    <label class="btn btn-outline-secondary" for="proximity2">6-10 Miles</label>
+
+                    <input type="radio" class="btn-check" name="proximity" id="proximity3" value="3" v-model="donate.proximity">
+                    <label class="btn btn-outline-secondary" for="proximity3">11-25 Miles</label>
+
+                    <input type="radio" class="btn-check" name="proximity" id="proximity4" value="4" v-model="donate.proximity">
+                    <label class="btn btn-outline-secondary" for="proximity4">>25 Miles</label>
+                  </div>
+                </div>
+              </div>
+              <hr/>
+
+              {{ range .CharityTypes }}
+              <div class="col-md-4 mb-1">
+                <div class="form-check p-1">
+                    <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="donate.charityTypes">
+                    <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
+                </div>
+              </div>
+              {{ end }}
+
+              <div class="row mt-3 mb-5">
+                <div class="col text-center">
+                  <input type="button" class="btn btn-secondary" value="< Back" onclick="window.location.assign('/donate/step/1')">
+                  <button type="submit" class="btn btn-primary">View Results ></button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </main>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/donate2.js"></script>
+  </body>
+</html>

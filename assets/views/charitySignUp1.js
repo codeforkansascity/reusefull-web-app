@@ -4,7 +4,7 @@ const app = new Vue({
   data: {
     loaded: false,
     errors: [],
-    orgName: null,
+    name: null,
     contactName: null,
     email: null,
     phone: null,
@@ -18,7 +18,7 @@ const app = new Vue({
     if (localStorage.getItem('step1')) {
       try {
         step1 = JSON.parse(localStorage.getItem('step1'));
-        this.orgName = step1.orgName
+        this.name = step1.name
         this.contactName = step1.contactName
         this.email = step1.email
         this.phone = step1.phone
@@ -34,7 +34,7 @@ const app = new Vue({
   methods:{
     saveStep() {
       localStorage.setItem('step1', JSON.stringify({
-        orgName: this.orgName,
+        name: this.name,
         contactName: this.contactName,
         email: this.email,
         phone: this.phone,
@@ -47,7 +47,7 @@ const app = new Vue({
     checkForm: function (e) {
       e.preventDefault();
 
-      if (this.orgName &&
+      if (this.name &&
           this.contactName &&
           this.email &&
           this.phone &&
@@ -62,7 +62,7 @@ const app = new Vue({
 
       this.errors = [];
 
-      if (!this.orgName) {
+      if (!this.name) {
         this.errors.push('Organization Name required.');
       }
       if (!this.contactName) {

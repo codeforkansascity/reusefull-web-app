@@ -81,9 +81,9 @@
 
                 {{ range .CharityTypes }}
                 <div class="col-lg-4 mb-1">
-                  <div class="form-check">
-                      <input type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charityTypes">
-                      <label for="{{.Id}}" class="form-label">{{.Name}}</label>
+                  <div class="form-check p-1">
+                      <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charityTypes">
+                      <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
                   </div>
                 </div>
                 {{ end }}

@@ -1,63 +1,67 @@
 {{ define "nav" }}
 <header>
-  <nav
-    class="navbar navbar-expand-md navbar-light flex-column flex-lg-row col-lg-10 ml-auto mr-auto"
-  >
-    <a class="navbar-brand" href="/">
-      <img
-        width="100"
-        height="100"
-        src="/assets/images/reusefull-logo-175.png"
-        class="my-4"
-        alt="Re.Use.Full. logo"
-        srcset="
-          /assets/images/reusefull-logo-175.png 175w,
-          /assets/images/reusefull-logo-150.png 150w
-        "
-      />
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="bi bi-list"></i>
-      <p class="toggler-label">MENU</p>
-    </button>
-    <div
-      class="collapse navbar-collapse navbar-toggleable-md justify-content-end"
-      id="navbarNav"
-    >
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"
-            >Home <span class="sr-only">(current)</span></a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Donate</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">FAQs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">For Charity Partners</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact Us</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <div class="container">
+    <nav class="navbar navbar-expand-md navbar-light">
+      <div class="container-fluid">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+          <div class="navbar-nav me-auto">
+            <a class="navbar-brand" href="/">
+              <img
+                width="100"
+                src="/assets/images/reusefull-logo-175.png"
+                class="d-inline-block align-top"
+                alt="Re.Use.Full"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="mx-auto order-0">
+          <a class="navbar-brand mx-auto" href="#"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="https://reusefull.org">Home</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/donate/step/1">Donate</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="https://reusefull.org/faqs/">FAQs</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                For Charity Partners
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/charity/signup/step/1">Signup</a></li>
+                <li><a class="dropdown-item" href="/profile/edit">Update Profile</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/become-a-charity-partner/">Charity Partner FAQs</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-bs-toggle="dropdown">
+                About Us
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="https://reusefull.org/get-involved/">Get Involved</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="btn btn-outline-info" href="/auth/login">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
 </header>
 {{ end }}

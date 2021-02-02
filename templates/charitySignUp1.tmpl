@@ -2,7 +2,6 @@
 <html lang="en">
     {{ template "header" . }}
     <title>ReUseFull</title>
-  </head>
   <body>
     {{ template "nav" . }}
     <main>
@@ -24,8 +23,8 @@
                     </p>
                  </div>
                   <div class="col-md-6 mb-3">
-                    <label for="orgName" class="form-label">Organization Name</label>
-                    <input type="text" class="form-control" id="orgName" v-model="orgName">
+                    <label for="name" class="form-label">Organization Name</label>
+                    <input type="text" class="form-control" id="name" v-model="name">
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="contactName" class="form-label">Contact Name</label>

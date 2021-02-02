@@ -6,7 +6,53 @@
   <body>
     {{ template "nav" . }}
     <main class="container">
-      <h1>{{ .Name }}</h1>
+      <div class="row">
+        <div class="col-md-10">
+          <h2>{{ .Name }}</h2>
+        </div>
+
+        <div class="col-md-2">
+          <a class="btn btn-outline-secondary" href="/charity/{{.Id}}/edit">Edit</a>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div class="col-md-4">
+          <img
+            src="{{ .LogoURL }}"
+            class="mb-4 img-fluid shadow bg-white rounded"
+            width="400"
+          >
+          <p>Address: {{ .Address }}</p>
+          <p>Phone: {{ .Phone }}</p>
+          <p>Pickup {{ .Pickup }} </p>
+          <p>Dropoff {{ .Dropoff }}</p>
+
+          <h5>Type of Charity</h5>
+          <ul>
+          {{ range .CharityTypeDescriptions }}
+            <li>{{ .}}</li>
+          {{ end }}
+          </ul>
+        </div>
+        <div class="col-md-8">
+          <h5>Mission</h5>
+          <p>{{ .Mission }}</p>
+          <h5>Description</h5>
+          <p>{{ .Description }}</p>
+
+          <h5>Items Accepted</h5>
+          <ul>
+          {{ range .ItemTypeDescriptions }}
+            <li>{{ .}}</li>
+          {{ end }}
+          </ul>
+        </div>
+
+
+      </div>
+
     </main>
     <footer></footer>
     {{ template "footerScripts" .}}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+   {{ template "header" . }}
+    <title>ReUseFull</title>
+  </head>
+  <body>
+    {{ template "nav" . }}
+    <main class="container" id="app">
+      <div class="row">
+        <div class="col">
+          <h2>{{.Charity.Name}}</h2>
+          <div v-if="loading">
+            <div class="spinner-border text-primary" role="status"></div>
+          </div>
+
+          <form
+            @submit="save"
+            class="mb-4"
+            v-cloak
+          >
+            <input type="hidden" v-model="id" v-init:id="{{.Charity.Id}}">
+
+            <div class="col mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" v-model="charity.name">
+            </div>
+
+            <div class="col mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address" v-model="charity.address">
+            </div>
+
+            <div class="col mb-3">
+              <label for="zip" class="form-label">Zip Code</label>
+              <input type="text" class="form-control" id="zip" v-model="charity.zip">
+            </div>
+
+            <div class="col mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" class="form-control" id="phone" v-model="charity.phone">
+            </div>
+
+            <div class="col mb-3">
+              <label for="contactName" class="form-label">Contact Name</label>
+              <input type="text" class="form-control" id="contactName" v-model="charity.contactName">
+            </div>
+
+            <div class="col mb-3">
+              <label for="mission" class="form-label">Mission</label>
+              <textarea rows="2" class="form-control" id="mission" v-model="charity.mission"></textarea>
+            </div>
+
+            <div class="col mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea rows="4" class="form-control" id="description" v-model="charity.description" ></textarea>
+            </div>
+
+            <div class="col mb-3">
+              <label for="cashDonate" class="form-label">Cash Donation Link</label>
+              <input type="text" class="form-control" id="cashDonate" v-model="charity.cashDonate">
+            </div>
+
+            <div class="col mb-3">
+              <label for="volunteer" class="form-label">Volunteer Signup</label>
+              <input type="text" class="form-control" id="volunteer" v-model="charity.volunteer">
+            </div>
+
+            <div class="col mb-3">
+              <label for="website" class="form-label">Website</label>
+              <input type="text" class="form-control" id="website" v-model="charity.website">
+            </div>
+
+            <div class="col mb-3">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="dropoff" v-model="charity.dropoff">
+                <label class="form-check-label" for="dropoff">We accept drop-offs</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="pickup" v-model="charity.pickup">
+                <label class="form-check-label" for="pickup">We pick up donations</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="faith" v-model="charity.faith">
+                <label class="form-check-label" for="faith">Faith-based charity</label>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="col-md-12 mb-3">
+              <h2>What type of charity are you? </h2>
+            </div>
+
+            {{ range .CharityTypes }}
+            <div class="col-md-4 mb-1">
+              <div class="form-check p-1">
+                  <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charity.charityTypes">
+                  <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
+              </div>
+            </div>
+            {{ end }}
+
+            <hr>
+            <div class="col-md-12 mb-3">
+              <h2>Items that your charity accepts: </h2>
+            </div>
+
+            {{ range .ItemTypes }}
+            <div class="col-lg-4 mb-1">
+              <div class="form-check p-1">
+                  <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charity.itemTypes">
+                  <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
+              </div>
+            </div>
+            {{ end }}
+
+            <div v-if="!saving" class="mt-4 mb-4">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            <div v-if="saving">
+              <div class="spinner-border text-success" role="status"></div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/charityEdit.js"></script>
+  </body>
+</html>
