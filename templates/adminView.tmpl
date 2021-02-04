@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+   {{ template "header" . }}
+    <title>ReUseFull</title>
+  </head>
+  <body>
+    {{ template "nav" . }}
+    <main class="container">
+      <div class="row align-items-center justify-content-center" id="app">
+        <h5>Needs Approval</h5>
+        <hr>
+        {{ range .Charities }}
+          {{ template "adminViewCharityCard" .}}
+        {{ end }}
+      </div>
+    </main>
+    <footer></footer>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/adminList.js"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+{{ define "adminViewCharityCard" }}
+
+<!-- Card view markup -->
+<div class="shadow p-3 mb-3 bg-white rounded">
+  <div class="row">
+    <div class="col-md-3 p-2">
+      <a href="/charity/{{.Id}}">
+        <img
+          src="{{ .LogoURL }}"
+          class="img-fluid"
+          alt="Org logo"
+        />
+      </a>
+    </div>
+    <div class="col mx-auto p-2">
+      <h5 class="card-title"><a href="/charity/{{.Id}}">{{ .Name }}</a></h5>
+      <div class="card-text">
+        <div class="my-1"><strong>Pick-Up Service:</strong>
+            {{ if .Pickup }}Yes{{ else }} No {{ end }}
+        </div>
+        <div class="my-1"><strong>Dropoff:</strong>
+            {{ if .Dropoff }}Yes{{ else }} No {{ end }}
+        </div>
+      </div>
+      <div>
+        <i class="bi bi-geo-alt-fill"></i>
+        <strong>Address:</strong>
+        <em>{{ .Address }} {{ .ZipCode }}</em>
+      </div>
+      <div>
+        <i class="bi bi-telephone-fill"></i>
+        <strong>Phone:</strong>
+        <a href="tel:{{.Phone}}">{{ .Phone }}</a>
+      </div>
+    </div>
+    <div class="col-lg-3 p-2 align-self-center text-center">
+      <a class="btn btn-success" v-on:click="approve({{.Id}})"><i class="bi bi-check2-circle p-1"></i>Approve</a>
+      <a class="btn btn-danger" v-on:click="deny({{.Id}})"><i class="bi bi-x-circle p-1"></i>Deny</a>
+    </div>
+  </div>
+</div>
+
+{{ end }}

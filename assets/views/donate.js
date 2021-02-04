@@ -2,56 +2,64 @@ const app = new Vue({
   delimiters: ['${', '}'],
   el: '#app',
   data: {
-    errors: [],
+    errorPickup: false,
+    errorItems: false,
+    errorCharity: false,
+    hasError: false,
     donate: {
       itemTypes: [],
       charityTypes: [],
-      budget: null,
+      anyCharityType: null,
       proximity: null,
       pickupDropoff: null,
-      zip: null
-    },
-    charities: []
+      zip: null,
+    }
   },
-  created() {
+  mounted() {
     try {
       donate = JSON.parse(localStorage.getItem('donate'));
       if (donate != null) {
         this.donate = donate
-        fetch('/api/v1/donate/search', {
-          method: 'post',
-          body: JSON.stringify(this.donate)
-        }).then(response => {
-          response.json().then(charities => {
-            this.charities = charities
-          })
-        })
       }
     } catch(e) {
       localStorage.removeItem('donate')
     }
   },
   methods:{
-    search: function (e) {
+    checkForm: function (e) {
       e.preventDefault();
+      console.log(this.donate.anyCharityType)
 
-      fetch('/api/v1/donate/search', {
-        method: 'post',
-        body: JSON.stringify(this.donate)
-      }).then(response => {
-        console.log(response)
-        // if (response.ok) {
-        //   window.location.assign("/charity/signup/thankyou");
-        // } else {
-        //   this.processing = false
-        //   if (response.status == 409) {
-        //     this.serverError = 'That email has already been registered.'
-        //   } else {
-        //     this.serverError= 'Error registering. Please try again later.'
-        //   }
-        //   return false
-        // }
-      })
+      this.hasError = false
+      this.errorPickup = false
+      this.errorItems = false
+      this.errorCharity = false
+
+      if (!this.donate.pickupDropoff) {
+        this.errorPickup = true
+        this.hasError = true
+      }
+
+      if (this.donate.itemTypes.length == 0) {
+        this.errorItems = true
+        this.hasError = true
+      }
+
+      if (this.donate.charityTypes.length == 0 && !this.donate.anyCharityType) {
+        this.errorCharity = true
+        this.hasError = true
+      }
+
+
+      if (this.hasError) {
+        return
+      }
+
+      this.saveStep();
+      window.location.assign("/donate/results")
+    },
+    saveStep() {
+      localStorage.setItem('donate', JSON.stringify(this.donate))
     },
   }
 })

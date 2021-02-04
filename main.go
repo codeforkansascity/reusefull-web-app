@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/aws/aws-sdk-go/service/ses"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -24,10 +24,12 @@ import (
 )
 
 var (
-	ss     *sessions.FilesystemStore
-	sesSvc *ses.SES
-	db     *sql.DB
-	t      = template.Must(template.ParseGlob("templates/*"))
+	ss            *sessions.FilesystemStore
+	sesSvc        *ses.SES
+	s3Uploader    *s3manager.Uploader
+	db            *sql.DB
+	authenticator *Authenticator
+	t             = template.Must(template.ParseGlob("templates/*"))
 
 	auth0ClientID     string
 	auth0ClientSecret string
@@ -76,13 +78,20 @@ func main() {
 		panic(err)
 	}
 
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String("us-east-1")},
-	)
+	authenticator, err = NewAuthenticator()
 	if err != nil {
 		panic(err)
 	}
+
+	sess, err := session.NewSession()
+	if err != nil {
+		panic(err)
+	}
+	// Simple Email Service
 	sesSvc = ses.New(sess)
+
+	// S3 Uploader
+	s3Uploader = s3manager.NewUploader(sess)
 
 	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:3306)/reusefull?parseTime=true&timeout=10s", user, pass, host))
 	if err != nil {
@@ -121,9 +130,10 @@ func main() {
 		r.Get("/charity/signup/step/3", CharitySignUp3)
 		r.Get("/charity/signup/thankyou", CharitySignUpThanks)
 
-		r.Get("/donate/step/1", DonateStep1)
-		r.Get("/donate/step/2", DonateStep2)
-		r.Get("/donate/search", DonateSearchResults)
+		r.Get("/donate", Donate)
+		r.Get("/donate/results", DonateSearchResults)
+
+		r.Get("/admin", AdminView)
 	})
 
 	r.Route("/api/v1", func(r chi.Router) {
@@ -134,6 +144,13 @@ func main() {
 		r.Post("/auth0/cb", ChangePasswordCallback)
 
 		r.Post("/donate/search", DonateSearch)
+
+		// Admin only api
+		r.Group(func(r chi.Router) {
+			r.Use(AuthMiddleware)
+			r.Put("/charity/{id}/approve", AdminCharityApprove)
+			r.Put("/charity/{id}/deny", AdminCharityDeny)
+		})
 	})
 
 	srv := &http.Server{

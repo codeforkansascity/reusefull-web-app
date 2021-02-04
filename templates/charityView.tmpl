@@ -8,43 +8,45 @@
     <main class="container">
       <div class="row">
         <div class="col-md-10">
-          <h2>{{ .Name }}</h2>
+          <h2>{{ .Charity.Name }}</h2>
         </div>
 
+        {{ if .User.CanEdit }}
         <div class="col-md-2">
-          <a class="btn btn-outline-secondary" href="/charity/{{.Id}}/edit">Edit</a>
+          <a class="btn btn-outline-secondary" href="/charity/{{.Charity.Id}}/edit">Edit</a>
         </div>
+        {{ end }}
       </div>
       <hr>
 
       <div class="row">
         <div class="col-md-4">
           <img
-            src="{{ .LogoURL }}"
+            src="{{ .Charity.LogoURL }}"
             class="mb-4 img-fluid shadow bg-white rounded"
             width="400"
           >
-          <p>Address: {{ .Address }}</p>
-          <p>Phone: {{ .Phone }}</p>
-          <p>Pickup {{ .Pickup }} </p>
-          <p>Dropoff {{ .Dropoff }}</p>
+          <p>Address: {{ .Charity.Address }}</p>
+          <p>Phone: {{ .Charity.Phone }}</p>
+          <p>Pickup {{ .Charity.Pickup }} </p>
+          <p>Dropoff {{ .Charity.Dropoff }}</p>
 
           <h5>Type of Charity</h5>
           <ul>
-          {{ range .CharityTypeDescriptions }}
+          {{ range .Charity.CharityTypeDescriptions }}
             <li>{{ .}}</li>
           {{ end }}
           </ul>
         </div>
         <div class="col-md-8">
           <h5>Mission</h5>
-          <p>{{ .Mission }}</p>
+          <p>{{ .Charity.Mission }}</p>
           <h5>Description</h5>
-          <p>{{ .Description }}</p>
+          <p>{{ .Charity.Description }}</p>
 
           <h5>Items Accepted</h5>
           <ul>
-          {{ range .ItemTypeDescriptions }}
+          {{ range .Charity.ItemTypeDescriptions }}
             <li>{{ .}}</li>
           {{ end }}
           </ul>

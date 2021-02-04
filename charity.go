@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/go-chi/chi"
 	"github.com/sethvargo/go-password/password"
 	auth0 "gopkg.in/auth0.v5"
@@ -50,11 +54,13 @@ type Charity struct {
 	TaxID                   string   `json:"taxID"`
 	UserID                  string   `json:"userID"`
 	Approved                bool     `json:"approved"`
+	EmailVerified           bool     `json:"emailVerified"`
 }
 
 type ErrorPage struct {
 	ErrorCode int
 	Error     string
+	Image     string
 }
 
 type CharityType struct {
@@ -110,8 +116,10 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.ExecuteTemplate(w, "charityList.tmpl", struct {
+		User      User
 		Charities []Charity
 	}{
+		User:      r.Context().Value("user").(User),
 		Charities: charities,
 	})
 }
@@ -137,7 +145,21 @@ func ViewCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	t.ExecuteTemplate(w, "charityView.tmpl", charity)
+	// Only admins or the owner of the charity can edit
+	user := r.Context().Value("user").(User)
+	if user.Admin {
+		user.CanEdit = true
+	} else if user.LoggedIn {
+		user.CanEdit = user.ID == charity.UserID
+	}
+
+	t.ExecuteTemplate(w, "charityView.tmpl", struct {
+		Charity Charity
+		User    User
+	}{
+		Charity: charity,
+		User:    user,
+	})
 }
 
 func GetCharity(w http.ResponseWriter, r *http.Request) {
@@ -185,6 +207,22 @@ func EditCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Only admins or the owner of the charity can edit
+	user := r.Context().Value("user").(User)
+	if user.LoggedIn {
+		user.CanEdit = true
+	} else if user.LoggedIn {
+		user.CanEdit = user.ID == charity.UserID
+	}
+	if !user.CanEdit {
+		t.ExecuteTemplate(w, "error.tmpl", ErrorPage{
+			ErrorCode: 403,
+			Error:     "Forbidden",
+			Image:     "https://memegenerator.net/img/instances/59208127/ah-ah-ah-you-didnt-say-the-magic-word.jpg",
+		})
+		return
+	}
+
 	ct, err := getCharityTypes()
 	if err != nil {
 		log.Println(err)
@@ -206,10 +244,12 @@ func EditCharity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.ExecuteTemplate(w, "charityEdit.tmpl", struct {
+		User         User
 		Charity      Charity
 		CharityTypes []CharityType
 		ItemTypes    []ItemType
 	}{
+		User:         user,
 		Charity:      charity,
 		CharityTypes: ct,
 		ItemTypes:    it,
@@ -223,7 +263,11 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: check for admin or owner of charity here
+	user := r.Context().Value("user").(User)
+	if !user.Admin {
+		http.Error(w, "Forbidden", 403)
+		return
+	}
 
 	buf, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -231,7 +275,6 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "server error", 500)
 		return
 	}
-	log.Println(string(buf))
 
 	charity := Charity{}
 	err = json.Unmarshal(buf, &charity)
@@ -240,7 +283,46 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "server error", 500)
 		return
 	}
-	log.Println(charity)
+
+	logoUpdatedPath := ""
+	// User is changing their logo
+	if len(charity.Logo) > 0 {
+		parts := strings.Split(charity.Logo, ",")
+		header := parts[0]
+
+		var key string
+		if strings.Contains(header, "image/png") {
+			key = fmt.Sprintf("/charities/%d.png", id)
+		} else if strings.Contains(header, "image/jpeg") {
+			key = fmt.Sprintf("/charities/%d.jpg", id)
+		} else {
+			log.Println(err)
+			http.Error(w, "unsupported image format:"+header, 400)
+			return
+		}
+
+		buf, err := base64.StdEncoding.DecodeString(parts[1])
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "issue decoding image", 500)
+			return
+		}
+
+		// Upload the file to S3.
+		result, err := s3Uploader.Upload(&s3manager.UploadInput{
+			Bucket: aws.String("reusefull"),
+			Key:    aws.String(key),
+			Body:   bytes.NewReader(buf),
+			ACL:    aws.String("public-read"),
+		})
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "server error", 400)
+			return
+		}
+		logoUpdatedPath = result.Location
+
+	}
 
 	tx, err := db.Begin()
 	if err != nil {
@@ -250,9 +332,20 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
+	if len(logoUpdatedPath) > 0 {
+		_, err = tx.Exec("update charity set logo_url = ? where id = ?", logoUpdatedPath, id)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "server error", 500)
+			return
+		}
+	}
+
 	_, err = tx.Exec(`update charity set
 		name = ?,
 		address = ?,
+		city = ?,
+		state = ?,
 		zip_code = ?,
 		phone = ?,
 		email = ?,
@@ -273,6 +366,8 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		`,
 		charity.Name,
 		charity.Address,
+		charity.City,
+		charity.State,
 		charity.ZipCode,
 		charity.Phone,
 		charity.Email,
@@ -339,8 +434,37 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//
+// func UpdateLogo(w http.ResponseWriter, r *http.Request) {
+// 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+// 	if err != nil {
+// 		http.Error(w, "missing id", 400)
+// 		return
+// 	}
+//
+// 	buf, err := ioutil.ReadAll(r.Body)
+// 	if err != nil {
+// 		http.Error(w, "missing id", 400)
+// 		return
+// 	}
+//
+// 	// fileBytes, err := ioutil.ReadAll(file)
+// 	// if err != nil {
+// 	// 	fmt.Println(err)
+// 	// }
+// 	// // write this byte array to our temporary file
+// 	// tempFile.Write(fileBytes)
+// 	// return that we have successfully uploaded our file!
+// 	fmt.Fprintf(w, "Successfully Uploaded File\n")
+//
+// }
+
 func CharitySignUp1(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "charitySignUp1.tmpl", nil)
+	t.ExecuteTemplate(w, "charitySignUp1.tmpl", struct {
+		User User
+	}{
+		User: r.Context().Value("user").(User),
+	})
 }
 
 func CharitySignUp2(w http.ResponseWriter, r *http.Request) {
@@ -355,8 +479,10 @@ func CharitySignUp2(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.ExecuteTemplate(w, "charitySignUp2.tmpl", struct {
+		User         User
 		CharityTypes []CharityType
 	}{
+		User:         r.Context().Value("user").(User),
 		CharityTypes: types,
 	})
 }
@@ -373,8 +499,10 @@ func CharitySignUp3(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.ExecuteTemplate(w, "charitySignUp3.tmpl", struct {
+		User      User
 		ItemTypes []ItemType
 	}{
+		User:      r.Context().Value("user").(User),
 		ItemTypes: types,
 	})
 }
@@ -403,9 +531,11 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	res, err := tx.Exec("insert into charity (name, address, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		charity.Name,
 		charity.Address,
+		charity.City,
+		charity.State,
 		charity.ZipCode,
 		charity.Phone,
 		charity.Email,
@@ -524,7 +654,11 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func CharitySignUpThanks(w http.ResponseWriter, r *http.Request) {
-	t.ExecuteTemplate(w, "charitySignUpThanks.tmpl", nil)
+	t.ExecuteTemplate(w, "charitySignUpThanks.tmpl", struct {
+		User User
+	}{
+		User: r.Context().Value("user").(User),
+	})
 }
 
 func GetCharityTypes(w http.ResponseWriter, r *http.Request) {

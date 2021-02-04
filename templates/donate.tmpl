@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ template "header" . }}
+  <body>
+    {{ template "nav" . }}
+    <main>
+      <div class="container col-md-10 mt-3" id=app>
+          <div v-cloak>
+              <form
+                class="row"
+                @submit="checkForm"
+              >
+
+
+              <div class="row">
+                <div class="col text-center">
+                  <h3>Donation Center</h3>
+                </div>
+              </div>
+
+              <div class="shadow p-4 mb-3 bg-white rounded">
+                <div class="row p-2">
+                  <h5 class="p-2">How would you like to get your donation to the charity?</h5>
+                  <div class="col-md-10 form-check">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" v-bind:class="{'is-invalid': errorPickup }" type="radio" name="pickupDropoff" id="pickup1" value="1" v-model="donate.pickupDropoff" selected>
+                      <label class="form-check-label" for="pickup1">Charity will pickup my items</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" v-bind:class="{'is-invalid': errorPickup }" type="radio" name="pickupDropoff" id="pickup2" value="2" v-model="donate.pickupDropoff">
+                      <label class="form-check-label" for="pickup2">I will drop-off items</label>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="shadow p-4 mb-3 bg-white rounded">
+                <div class="row p-3">
+                  <h5>What kinds of items do you have to donate?</h5>
+                  {{ range .ItemTypes }}
+                  <div class="col-md-4 mb-1">
+                    <div class="form-check p-1">
+                        <input class="form-check-input" v-bind:class="{'is-invalid': errorItems }" type="checkbox" value="{{.Id}}" id="it-{{.Id}}" v-model="donate.itemTypes">
+                        <label for="it-{{.Id}}" class="form-check-label">{{.Name}}</label>
+                    </div>
+                  </div>
+                  {{ end }}
+                </div>
+              </div>
+
+              <div class="shadow p-4 mb-3 bg-white rounded">
+                <div class="row p-2">
+                  <h5>What kind of organization do you want to donate to?</h5>
+
+                  <div class="col-md-4 mb-1">
+                    <div class="form-check p-1">
+                      <input class="form-check-input" v-bind:class="{'is-invalid': errorCharity }" id="anyCharity" type="checkbox" v-model="donate.anyCharityType">
+                      <label for="anyCharity" class="form-check-label">Any</label>
+                    </div>
+                  </div>
+                  <hr>
+
+                  {{ range .CharityTypes }}
+                  <div class="col-md-4 mb-1">
+                    <div class="form-check p-1">
+                        <input class="form-check-input" :disabled="donate.anyCharityType" v-bind:class="{'is-invalid': errorCharity }" type="checkbox" value="{{.Id}}" id="ct-{{.Id}}" v-model="donate.charityTypes">
+                        <label for="ct-{{.Id}}" class="form-check-label">{{.Name}}</label>
+                    </div>
+                  </div>
+                  {{ end }}
+                </div>
+              </div>
+
+              <div class="row mt-3 mb-5">
+                <div class="col text-center">
+                  <button type="submit" class="btn btn-primary">View Results ></button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </main>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/donate.js"></script>
+  </body>
+</html>

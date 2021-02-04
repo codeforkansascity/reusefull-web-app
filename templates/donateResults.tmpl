@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ template "header" . }}
+  <body>
+    {{ template "nav" . }}
+    <main>
+        <div class="container" id="app">
+          <a href="/donate">< Refine</a>
+
+          <!-- Results -->
+          <div class="row p-3 mb-5" v-cloak>
+            <div v-if="loading">
+              <div class="spinner-border text-info" role="status"></div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <h5>We found ${charities.length} matching charities</h5>
+                </div>
+              </div>
+              <charity-card
+                v-for="charity in charities"
+                v-bind:key="charity.id"
+                v-bind:charity="charity"
+              >
+              </charity-card>
+
+            </div>
+          </div>
+      </div>  <!-- container -->
+    </main>
+    {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/donateResults.js"></script>
+  </body>
+</html>

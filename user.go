@@ -1,7 +1,11 @@
 package main
 
 type User struct {
-	LoggedIn bool
+	ID       string
 	Name     string
 	Email    string
+	LoggedIn bool
+	Admin    bool
+	Charity  int
+	CanEdit  bool
 }

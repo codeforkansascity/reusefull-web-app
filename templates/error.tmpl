@@ -2,7 +2,6 @@
 <html lang="en">
    {{ template "header" . }}
    <body>
-       <h1>Oops - {{ .ErrorCode }}</h1>
-       <p>{{ .Error }}</p>
+       <h1>{{ .ErrorCode }} - {{ .Error }}</h1>
    </body>
 </html>

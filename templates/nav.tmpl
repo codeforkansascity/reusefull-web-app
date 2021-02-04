@@ -1,14 +1,14 @@
 {{ define "nav" }}
 <header>
   <div class="container">
-    <nav class="navbar navbar-expand-md navbar-light">
+    <nav class="navbar navbar-expand-md navbar-light mb-3">
       <div class="container-fluid">
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <div class="navbar-collapse collapse order-1 order-md-0 dual-collapse2">
           <div class="navbar-nav me-auto">
             <a class="navbar-brand" href="/">
               <img
-                width="100"
-                src="/assets/images/reusefull-logo-175.png"
+                width="150"
+                src="https://reusefull.s3.us-east-2.amazonaws.com/reusefull-logo-sm.png"
                 class="d-inline-block align-top"
                 alt="Re.Use.Full"
               />
@@ -21,28 +21,23 @@
               <span class="navbar-toggler-icon"></span>
           </button>
         </div>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div class="navbar-collapse collapse order-3 dual-collapse2">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="https://reusefull.org">Home</a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="/donate/step/1">Donate</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="https://reusefull.org/faqs/">FAQs</a>
+              <a class="nav-link" href="/donate">Donate</a>
             </li>
 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                For Charity Partners
+                FAQs
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/charity/signup/step/1">Signup</a></li>
-                <li><a class="dropdown-item" href="/profile/edit">Update Profile</a></li>
-                <li><a class="dropdown-item" href="https://reusefull.org/become-a-charity-partner/">Charity Partner FAQs</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/faqs/">Donate</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/become-a-charity-partner/">Charity Partner</a></li>
               </ul>
             </li>
 
@@ -55,8 +50,27 @@
               </ul>
             </li>
 
+            {{ if .User.Admin }}
+            <li class="nav-item mr-2">
+                <a class="btn btn-outline-primary mx-2" href="/admin">Admin Area</a>
+            </li>
+            {{ else if .User.LoggedIn }}
+            <li class="nav-item mr-2">
+                <a class="btn btn-outline-secondary mx-2" href="/charity/{{.User.Charity}}/edit">Edit Profile</a>
+            </li>
+            {{ else }}
+            <li class="nav-item mr-2">
+                <a class="btn btn-primary mx-2" href="/charity/signup/step/1">Charity Signup</a>
+            </li>
+            {{ end }}
+
+
             <li class="nav-item">
-              <a class="btn btn-outline-info" href="/auth/login">Login</a>
+              {{ if .User.LoggedIn }}
+              <a class="btn btn-outline-secondary" href="/auth/logout"><i class="bi bi-box-arrow-left p-1"></i>Logout</a>
+              {{ else }}
+              <a class="btn btn-outline-info" href="/auth/login"><i class="bi bi-person p-1"></i>Login</a>
+              {{ end }}
             </li>
           </ul>
         </div>

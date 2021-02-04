@@ -3,13 +3,14 @@ package main
 import (
 	"context"
 	"crypto/rand"
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
-	"strings"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"golang.org/x/oauth2"
@@ -18,7 +19,6 @@ import (
 type Authenticator struct {
 	Provider *oidc.Provider
 	Config   oauth2.Config
-	Ctx      context.Context
 }
 
 type PostChangePasswordHook struct {
@@ -32,9 +32,7 @@ const (
 )
 
 func NewAuthenticator() (*Authenticator, error) {
-	ctx := context.Background()
-
-	provider, err := oidc.NewProvider(ctx, "https://"+auth0Domain+"/")
+	provider, err := oidc.NewProvider(context.Background(), "https://"+auth0Domain+"/")
 	if err != nil {
 		log.Printf("failed to get provider: %v", err)
 		return nil, err
@@ -51,7 +49,6 @@ func NewAuthenticator() (*Authenticator, error) {
 	return &Authenticator{
 		Provider: provider,
 		Config:   conf,
-		Ctx:      ctx,
 	}, nil
 }
 
@@ -64,12 +61,6 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Query().Get("state") != session.Values["state"] {
 		http.Error(w, "Invalid state parameter", http.StatusBadRequest)
-		return
-	}
-
-	authenticator, err := NewAuthenticator()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -183,7 +174,6 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	log.Println(returnTo.String())
 	parameters.Add("returnTo", returnTo.String())
 	parameters.Add("client_id", auth0ClientID)
 	logoutUrl.RawQuery = parameters.Encode()
@@ -203,9 +193,20 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 		profile, ok := session.Values["profile"].(map[string]interface{})
 		if ok {
-			log.Println(profile)
 			user.LoggedIn = true
+			user.ID = profile["sub"].(string)
 			user.Name = profile["nickname"].(string)
+			user.Email = profile["email"].(string)
+
+			err = db.QueryRow("select admin from user where id = ?", user.ID).Scan(&user.Admin)
+			if err != nil && err != sql.ErrNoRows {
+				log.Println(err)
+			}
+
+			err = db.QueryRow("select id from charity where user_id = ?", user.ID).Scan(&user.Charity)
+			if err != nil && err != sql.ErrNoRows {
+				log.Println(err)
+			}
 		}
 		ctx := context.WithValue(r.Context(), "user", user)
 		next.ServeHTTP(w, r.WithContext(ctx))
@@ -238,9 +239,8 @@ func ChangePasswordCallback(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "server error", 500)
 		return
 	}
-	log.Println(user)
 
-	_, err = db.Exec("update user set email_verified = true where id = ?", "auth0|" +user.UserID)
+	_, err = db.Exec("update user set email_verified = true where id = ?", "auth0|"+user.UserID)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "server error", 500)

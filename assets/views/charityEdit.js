@@ -32,6 +32,20 @@ const app = new Vue({
     })
   },
   methods:{
+    filePicked(event) {
+      if (event.target.files.length == 0 ) {
+        console.log("no file picked")
+        return
+      }
+      file = event.target.files[0]
+      console.log(file)
+      reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = e =>{
+        this.charity.logo = e.target.result;
+      }
+
+    },
     save: function (e) {
       e.preventDefault();
 
