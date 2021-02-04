@@ -24,7 +24,7 @@ import (
 )
 
 var (
-	ss            *sessions.FilesystemStore
+	ss            *sessions.CookieStore
 	sesSvc        *ses.SES
 	s3Uploader    *s3manager.Uploader
 	db            *sql.DB
@@ -102,7 +102,7 @@ func main() {
 	db.SetMaxOpenConns(5)
 	db.SetMaxIdleConns(2)
 
-	ss = sessions.NewFilesystemStore("", []byte("8dp/Kx2veOxt1RdXMBMvlLbwH6oFJDofQyQ1pPodbjQ"))
+	ss = sessions.NewCookieStore([]byte("8dp/Kx2veOxt1RdXMBMvlLbwH6oFJDofQyQ1pPodbjQ"))
 	gob.Register(map[string]interface{}{})
 
 	r := chi.NewRouter()
