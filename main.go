@@ -34,6 +34,7 @@ var (
 	auth0ClientID     string
 	auth0ClientSecret string
 	auth0RedirectURL  string
+	auth0LogoutURL    string
 	authManager       *management.Management
 )
 
@@ -70,6 +71,11 @@ func main() {
 	auth0RedirectURL, exists = os.LookupEnv("AUTH0_REDIRECT_URL")
 	if !exists {
 		panic("AUTH0_REDIRECT_URL not found")
+	}
+
+	auth0LogoutURL, exists = os.LookupEnv("AUTH0_LOGOUT_URL")
+	if !exists {
+		panic("AUTH0_LOGOUT_URL not found")
 	}
 
 	var err error

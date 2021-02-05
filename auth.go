@@ -152,34 +152,20 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logoutUrl, err := url.Parse("https://" + auth0Domain)
-
+	logoutURL, err := url.Parse("https://" + auth0Domain)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	logoutUrl.Path += "/v2/logout"
+	logoutURL.Path += "/v2/logout"
 	parameters := url.Values{}
 
-	var scheme string
-	if r.TLS == nil {
-		scheme = "http"
-	} else {
-		scheme = "https"
-	}
-
-	returnTo, err := url.Parse(scheme + "://" + r.Host)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	log.Println(returnTo)
-	parameters.Add("returnTo", returnTo.String())
+	parameters.Add("returnTo", auth0LogoutURL)
 	parameters.Add("client_id", auth0ClientID)
-	logoutUrl.RawQuery = parameters.Encode()
+	logoutURL.RawQuery = parameters.Encode()
 
-	http.Redirect(w, r, logoutUrl.String(), http.StatusTemporaryRedirect)
+	http.Redirect(w, r, logoutURL.String(), http.StatusTemporaryRedirect)
 }
 
 func AuthMiddleware(next http.Handler) http.Handler {
