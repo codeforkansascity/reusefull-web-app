@@ -167,6 +167,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 		} else if req.PickupDropoff == "2" {
 			stmt += "and dropoff is true "
 		}
+		stmt += "and approved is true "
 
 		log.Println(stmt)
 		rows, err := db.Query(stmt)
