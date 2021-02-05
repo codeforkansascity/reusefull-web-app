@@ -167,6 +167,20 @@ func main() {
 	}
 	log.Println("Succesfully started")
 
+	go func() {
+		r := chi.NewRouter()
+		r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "https://app.reusefull.org"+r.RequestURI, 301)
+		})
+		srv := &http.Server{
+			Addr:         ":3001",
+			WriteTimeout: 10 * time.Second,
+			ReadTimeout:  10 * time.Second,
+			Handler:      r,
+		}
+		srv.ListenAndServe()
+	}()
+
 	err = srv.ListenAndServe()
 	if err != http.ErrServerClosed {
 		log.Fatalf("HTTP server ListenAndServe: %v", err)
