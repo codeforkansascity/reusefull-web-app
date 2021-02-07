@@ -26,7 +26,13 @@
             class="mb-4 img-fluid shadow bg-white rounded"
             width="400"
           >
-          <p>Address: {{ .Charity.Address }}</p>
+          <h5><a href="{{ .Charity.Website }}">{{.Charity.Website}}</a></h5>
+
+          <p>
+            {{ .Charity.Address }}<br>
+            {{ .Charity.City}}, {{ .Charity.State}} {{ .Charity.ZipCode }}
+          </p>
+
           <p>Phone: {{ .Charity.Phone }}</p>
           <p>Pickup {{ .Charity.Pickup }} </p>
           <p>Dropoff {{ .Charity.Dropoff }}</p>

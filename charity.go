@@ -729,12 +729,16 @@ func getCharity(id int) (Charity, error) {
 	taxID := sql.NullString{}
 	userID := sql.NullString{}
 	logoURL := sql.NullString{}
+	city := sql.NullString{}
+	state := sql.NullString{}
 
 	charity := Charity{}
-	err := db.QueryRow("select id, name, address, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
+	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
 		&charity.Id,
 		&charity.Name,
 		&charity.Address,
+		&city,
+		&state,
 		&charity.ZipCode,
 		&charity.Phone,
 		&charity.Email,
@@ -765,6 +769,8 @@ func getCharity(id int) (Charity, error) {
 	charity.TaxID = taxID.String
 	charity.UserID = userID.String
 	charity.LogoURL = logoURL.String
+	charity.City = city.String
+	charity.State = state.String
 
 	// Get all the associated charity types
 	rows, err := db.Query("select ct.type_id, t.name from charity_type ct, types t where ct.type_id = t.id and charity_id =?", id)
