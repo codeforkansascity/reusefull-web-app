@@ -30,8 +30,6 @@
                       <input class="form-check-input" v-bind:class="{'is-invalid': errorPickup }" type="radio" name="pickupDropoff" id="pickup2" value="2" v-model="donate.pickupDropoff">
                       <label class="form-check-label" for="pickup2">I will drop-off items</label>
                     </div>
-
-
                   </div>
                 </div>
               </div>
@@ -76,6 +74,7 @@
 
               <div class="row mt-3 mb-5">
                 <div class="col text-center">
+                  <button v-on:click="reset" class="btn btn-secondary">Reset</button>
                   <button type="submit" class="btn btn-primary">View Results ></button>
                 </div>
               </div>

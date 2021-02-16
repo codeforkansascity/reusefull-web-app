@@ -50,13 +50,27 @@ const app = new Vue({
         this.hasError = true
       }
 
-
       if (this.hasError) {
         return
       }
 
       this.saveStep();
       window.location.assign("/donate/results")
+    },
+    reset(e) {
+      e.preventDefault()
+
+      this.hasError = false
+      this.errorPickup = false
+      this.errorItems = false
+      this.errorCharity = false
+
+      this.donate.itemTypes = []
+      this.donate.charityTypes = []
+      this.donate.anyCharityType = null
+      this.donate.pickupDropoff = null
+      console.log('reset')
+      localStorage.removeItem('donate')
     },
     saveStep() {
       localStorage.setItem('donate', JSON.stringify(this.donate))
