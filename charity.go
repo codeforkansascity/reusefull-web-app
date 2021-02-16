@@ -284,44 +284,11 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logoUpdatedPath := ""
-	// User is changing their logo
-	if len(charity.Logo) > 0 {
-		parts := strings.Split(charity.Logo, ",")
-		header := parts[0]
-
-		var key string
-		if strings.Contains(header, "image/png") {
-			key = fmt.Sprintf("/charities/%d.png", id)
-		} else if strings.Contains(header, "image/jpeg") {
-			key = fmt.Sprintf("/charities/%d.jpg", id)
-		} else {
-			log.Println(err)
-			http.Error(w, "unsupported image format:"+header, 400)
-			return
-		}
-
-		buf, err := base64.StdEncoding.DecodeString(parts[1])
-		if err != nil {
-			log.Println(err)
-			http.Error(w, "issue decoding image", 500)
-			return
-		}
-
-		// Upload the file to S3.
-		result, err := s3Uploader.Upload(&s3manager.UploadInput{
-			Bucket: aws.String("reusefull"),
-			Key:    aws.String(key),
-			Body:   bytes.NewReader(buf),
-			ACL:    aws.String("public-read"),
-		})
-		if err != nil {
-			log.Println(err)
-			http.Error(w, "server error", 400)
-			return
-		}
-		logoUpdatedPath = result.Location
-
+	err = updateLogo(charity.Logo, id)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
 	}
 
 	tx, err := db.Begin()
@@ -331,15 +298,6 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer tx.Rollback()
-
-	if len(logoUpdatedPath) > 0 {
-		_, err = tx.Exec("update charity set logo_url = ? where id = ?", logoUpdatedPath, id)
-		if err != nil {
-			log.Println(err)
-			http.Error(w, "server error", 500)
-			return
-		}
-	}
 
 	_, err = tx.Exec(`update charity set
 		name = ?,
@@ -433,31 +391,6 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
-
-//
-// func UpdateLogo(w http.ResponseWriter, r *http.Request) {
-// 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
-// 	if err != nil {
-// 		http.Error(w, "missing id", 400)
-// 		return
-// 	}
-//
-// 	buf, err := ioutil.ReadAll(r.Body)
-// 	if err != nil {
-// 		http.Error(w, "missing id", 400)
-// 		return
-// 	}
-//
-// 	// fileBytes, err := ioutil.ReadAll(file)
-// 	// if err != nil {
-// 	// 	fmt.Println(err)
-// 	// }
-// 	// // write this byte array to our temporary file
-// 	// tempFile.Write(fileBytes)
-// 	// return that we have successfully uploaded our file!
-// 	fmt.Fprintf(w, "Successfully Uploaded File\n")
-//
-// }
 
 func CharitySignUp1(w http.ResponseWriter, r *http.Request) {
 	t.ExecuteTemplate(w, "charitySignUp1.tmpl", struct {
@@ -644,12 +577,22 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = sendNewAccountEmail(charity.Email, *ticket.Ticket)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, "email error", 500)
-		return
-	}
+	go func() {
+		err := updateLogo(charity.Logo, int(charityID))
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	}()
+
+	go func() {
+		err = sendNewAccountEmail(charity.Email, *ticket.Ticket)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "email error", 500)
+			return
+		}
+	}()
 
 }
 
@@ -677,6 +620,43 @@ func GetCharityTypes(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(out)
+}
+
+func updateLogo(data string, id int) error {
+	if len(data) == 0 {
+		return nil
+	}
+
+	parts := strings.Split(data, ",")
+	header := parts[0]
+
+	var key string
+	if strings.Contains(header, "image/png") {
+		key = fmt.Sprintf("/charities/%d.png", id)
+	} else if strings.Contains(header, "image/jpeg") {
+		key = fmt.Sprintf("/charities/%d.jpg", id)
+	} else {
+		return fmt.Errorf("unsupported image format:" + header)
+	}
+
+	buf, err := base64.StdEncoding.DecodeString(parts[1])
+	if err != nil {
+		return err
+	}
+
+	// Upload the file to S3.
+	result, err := s3Uploader.Upload(&s3manager.UploadInput{
+		Bucket: aws.String("reusefull"),
+		Key:    aws.String(key),
+		Body:   bytes.NewReader(buf),
+		ACL:    aws.String("public-read"),
+	})
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec("update charity set logo_url = ? where id = ?", result.Location, id)
+	return err
 }
 
 func getCharityTypes() ([]CharityType, error) {
