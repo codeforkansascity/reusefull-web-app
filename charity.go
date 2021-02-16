@@ -74,7 +74,7 @@ type ItemType struct {
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("select id, name, pickup, dropoff, address, phone, logo_url from charity")
+	rows, err := db.Query("select id, name, pickup, dropoff, address, phone, logo_url from charity order by name")
 	if err != nil {
 		log.Println(err)
 		t.ExecuteTemplate(w, "error.tmpl", ErrorPage{
