@@ -109,6 +109,10 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 			})
 			return
 		}
+
+		
+
+		charity.Phone = FormatPhone(charity.Phone)
 		charity.Pickup = pickup.Bool
 		charity.Dropoff = dropoff.Bool
 		charity.LogoURL = logoURL.String
@@ -152,6 +156,9 @@ func ViewCharity(w http.ResponseWriter, r *http.Request) {
 	} else if user.LoggedIn {
 		user.CanEdit = user.ID == charity.UserID
 	}
+
+	// Format charity phone num for display
+	charity.Phone = FormatPhone(charity.Phone)
 
 	t.ExecuteTemplate(w, "charityView.tmpl", struct {
 		Charity Charity

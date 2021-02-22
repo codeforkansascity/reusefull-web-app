@@ -59,6 +59,7 @@ func AdminView(w http.ResponseWriter, r *http.Request) {
 		charity.Dropoff = dropoff.Bool
 		charity.LogoURL = logoURL.String
 		charity.UserID = userID.String
+		charity.Phone = FormatPhone(charity.Phone)
 		charities = append(charities, charity)
 	}
 
