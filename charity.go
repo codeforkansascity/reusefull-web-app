@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -110,8 +111,6 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		
-
 		charity.Phone = FormatPhone(charity.Phone)
 		charity.Pickup = pickup.Bool
 		charity.Dropoff = dropoff.Bool
@@ -156,9 +155,6 @@ func ViewCharity(w http.ResponseWriter, r *http.Request) {
 	} else if user.LoggedIn {
 		user.CanEdit = user.ID == charity.UserID
 	}
-
-	// Format charity phone num for display
-	charity.Phone = FormatPhone(charity.Phone)
 
 	t.ExecuteTemplate(w, "charityView.tmpl", struct {
 		Charity Charity
@@ -758,6 +754,7 @@ func getCharity(id int) (Charity, error) {
 	charity.LogoURL = logoURL.String
 	charity.City = city.String
 	charity.State = state.String
+	charity.Phone = FormatPhone(charity.Phone)
 
 	// Get all the associated charity types
 	rows, err := db.Query("select ct.type_id, t.name from charity_type ct, types t where ct.type_id = t.id and charity_id =?", id)
@@ -799,4 +796,21 @@ func getCharity(id int) (Charity, error) {
 	}
 	rows.Close()
 	return charity, err
+}
+
+// Formats charity phone nums for display
+func FormatPhone(phone string) string {
+	/*
+		Some phone nums currently contain non-num chars.
+		Once cleaning performed on submission, this regex filter
+		probably won't be necessary.
+	*/
+	reg, err := regexp.Compile("[^0-9]+")
+	if err != nil {
+		log.Println(err)
+	}
+	cleanedPhone := reg.ReplaceAllString(phone, "")
+
+	formatted := fmt.Sprintf("(%s) %s-%s", cleanedPhone[0:3], cleanedPhone[3:6], cleanedPhone[6:])
+	return formatted
 }
