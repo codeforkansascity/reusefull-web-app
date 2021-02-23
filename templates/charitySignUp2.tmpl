@@ -79,14 +79,17 @@
                   <p>Select all that apply</p>
                 </div>
 
+                <div class="w-100 d-flex flex-column flex-wrap org-category-list">
                 {{ range .CharityTypes }}
-                <div class="col-lg-4 mb-1">
+                <div class="category-col mb-1">
                   <div class="form-check p-1">
                       <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charityTypes">
                       <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
                   </div>
                 </div>
                 {{ end }}
+                </div>
+
                 <div class="row justify-content-md-center">
                   <div class="col-md-8 mb-1">
                     <label for="other" class="form-label">If other please specify:</label>
