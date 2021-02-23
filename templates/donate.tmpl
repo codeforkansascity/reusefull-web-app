@@ -35,22 +35,24 @@
               </div>
 
 
-              <div class="shadow p-4 mb-3 bg-white rounded">
-                <div class="row p-3">
+              <div class="shadow py-4 mb-3 bg-white rounded">
+                <div class="row pt-4 px-4">
                   <h5>What kinds of items do you have to donate?</h5>
-                  {{ range .ItemTypes }}
-                  <div class="col-md-4 mb-1">
-                    <div class="form-check p-1">
-                        <input class="form-check-input" v-bind:class="{'is-invalid': errorItems }" type="checkbox" value="{{.Id}}" id="it-{{.Id}}" v-model="donate.itemTypes">
-                        <label for="it-{{.Id}}" class="form-check-label">{{.Name}}</label>
+                  <div class="w-100 d-flex flex-column flex-wrap category-list">
+                    {{ range .ItemTypes }}
+                    <div class="category-col mb-1">
+                        <div class="form-check p-1">
+                            <input class="form-check-input" v-bind:class="{'is-invalid': errorItems }" type="checkbox" value="{{.Id}}" id="it-{{.Id}}" v-model="donate.itemTypes">
+                            <label for="it-{{.Id}}" class="form-check-label">{{.Name}}</label>
+                        </div>
                     </div>
+                    {{ end }}
                   </div>
-                  {{ end }}
                 </div>
               </div>
 
               <div class="shadow p-4 mb-3 bg-white rounded">
-                <div class="row p-2">
+                <div class="row pt-4 px-4">
                   <h5>What kind of organization do you want to donate to?</h5>
 
                   <div class="col-md-4 mb-1">
@@ -60,15 +62,18 @@
                     </div>
                   </div>
                   <hr>
-
-                  {{ range .CharityTypes }}
-                  <div class="col-md-4 mb-1">
-                    <div class="form-check p-1">
-                        <input class="form-check-input" :disabled="donate.anyCharityType" v-bind:class="{'is-invalid': errorCharity }" type="checkbox" value="{{.Id}}" id="ct-{{.Id}}" v-model="donate.charityTypes">
-                        <label for="ct-{{.Id}}" class="form-check-label">{{.Name}}</label>
+                
+                <div class="w-100 d-flex flex-column flex-wrap org-category-list">
+                    {{ range .CharityTypes }}
+                    <div class="category-col mb-1">
+                        <div class="form-check p-1">
+                            <input class="form-check-input" :disabled="donate.anyCharityType" v-bind:class="{'is-invalid': errorCharity }" type="checkbox" value="{{.Id}}" id="ct-{{.Id}}" v-model="donate.charityTypes">
+                            <label for="ct-{{.Id}}" class="form-check-label">{{.Name}}</label>
+                        </div>
                     </div>
-                  </div>
-                  {{ end }}
+                    {{ end }}
+                </div>
+
                 </div>
               </div>
 
