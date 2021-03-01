@@ -37,7 +37,8 @@ const app = new Vue({
         name: this.name,
         contactName: this.contactName,
         email: this.email,
-        phone: this.phone,
+        // filter out non-num chars on submission
+        phone: this.phone.replace(/[^\d]/g, ""),
         address: this.address,
         city: this.city,
         state: this.state,
@@ -88,6 +89,26 @@ const app = new Vue({
       }
 
       console.log(this.errors.length)
+    }
+  },
+  watch: {
+      phone: function(num) {
+        /*
+            On change, filter any non-nums, and 
+            return formatted phone num for display.
+        */
+        const clean = num.replace(/[^\d]/g, "")
+        const cleanLen = clean.length
+
+        if (cleanLen < 4) {
+            this.phone = clean;
+        } else if (cleanLen < 7) {
+            this.phone = `(${clean.slice(0, 3)}) ${clean.slice(3)}`
+        } else {
+            this.phone = `(${clean.slice(0,3)}) ${clean.slice(3, 6)}-${clean.slice(6, 10)}`
+        }
+        
+        return this.phone
     }
   }
 })
