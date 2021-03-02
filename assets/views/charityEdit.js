@@ -1,12 +1,12 @@
-Vue.directive("init", {
+Vue.directive('init', {
   bind: function (el, binding, vnode) {
     vnode.context[binding.arg] = binding.value;
   },
 });
 
 const app = new Vue({
-  delimiters: ["${", "}"],
-  el: "#app",
+  delimiters: ['${', '}'],
+  el: '#app',
   data: {
     errors: [],
     id: null,
@@ -15,7 +15,7 @@ const app = new Vue({
     itemTypes: [],
     loading: true,
     saving: false,
-    message: "hello",
+    message: 'hello',
   },
   computed: {
     formPhone: {
@@ -25,7 +25,7 @@ const app = new Vue({
             return formatted phone num for display.
         */
         if (this.charity.phone) {
-          const clean = this.charity.phone.replace(/[^\d]/g, "");
+          const clean = this.charity.phone.replace(/[^\d]/g, '');
           const cleanLen = clean.length;
 
           if (cleanLen < 4) {
@@ -42,7 +42,7 @@ const app = new Vue({
       },
       set(num) {
         // update phone in data with new input
-        const clean = num.replace(/[^\d]/g, "");
+        const clean = num.replace(/[^\d]/g, '');
         if (clean.length <= 10) {
           this.charity.phone = clean;
           console.log(this.charity.phone);
@@ -51,11 +51,11 @@ const app = new Vue({
     },
   },
   mounted() {
-    fetch("/api/v1/charity/" + this.id, {
-      method: "get",
+    fetch('/api/v1/charity/' + this.id, {
+      method: 'get',
     }).then((response) => {
       if (response.status !== 200) {
-        console.log("error " + response.status);
+        console.log('error ' + response.status);
         return;
       }
 
@@ -68,7 +68,7 @@ const app = new Vue({
   methods: {
     filePicked(event) {
       if (event.target.files.length == 0) {
-        console.log("no file picked");
+        console.log('no file picked');
         return;
       }
       file = event.target.files[0];
@@ -89,16 +89,16 @@ const app = new Vue({
         Removes any remaining chars in phone num. Odd bug pollutes data 
         with the display phone num if the edited number is unchanged.
       */
-      this.charity.phone = this.charity.phone.replace(/[^\d]/g, "");
+      this.charity.phone = this.charity.phone.replace(/[^\d]/g, '');
 
-      console.log("saving");
+      console.log('saving');
 
-      fetch("/api/v1/charity/" + this.id, {
-        method: "put",
+      fetch('/api/v1/charity/' + this.id, {
+        method: 'put',
         body: JSON.stringify(this.charity),
       }).then((response) => {
         console.log(response);
-        window.location.assign("/charity/" + this.id);
+        window.location.assign('/charity/' + this.id);
       });
     },
   },

@@ -1,6 +1,6 @@
 const app = new Vue({
-  delimiters: ["${", "}"],
-  el: "#app",
+  delimiters: ['${', '}'],
+  el: '#app',
   data: {
     loaded: false,
     errors: [],
@@ -21,7 +21,7 @@ const app = new Vue({
             return formatted phone num for display.
         */
         if (this.phone) {
-          const clean = this.phone.replace(/[^\d]/g, "");
+          const clean = this.phone.replace(/[^\d]/g, '');
           const cleanLen = clean.length;
 
           if (cleanLen < 4) {
@@ -38,7 +38,7 @@ const app = new Vue({
       },
       set(num) {
         // update phone in data with new input
-        const clean = num.replace(/[^\d]/g, "");
+        const clean = num.replace(/[^\d]/g, '');
         if (clean.length <= 10) {
           this.phone = clean;
         }
@@ -47,9 +47,9 @@ const app = new Vue({
   },
   mounted() {
     this.loaded = true;
-    if (localStorage.getItem("step1")) {
+    if (localStorage.getItem('step1')) {
       try {
-        step1 = JSON.parse(localStorage.getItem("step1"));
+        step1 = JSON.parse(localStorage.getItem('step1'));
         this.name = step1.name;
         this.contactName = step1.contactName;
         this.email = step1.email;
@@ -59,14 +59,14 @@ const app = new Vue({
         this.state = step1.state;
         this.zip = step1.zip;
       } catch (e) {
-        localStorage.removeItem("step1");
+        localStorage.removeItem('step1');
       }
     }
   },
   methods: {
     saveStep() {
       localStorage.setItem(
-        "step1",
+        'step1',
         JSON.stringify({
           name: this.name,
           contactName: this.contactName,
@@ -90,39 +90,39 @@ const app = new Vue({
         this.address &&
         this.city &&
         this.state &&
-        this.state != "Choose..." &&
+        this.state != 'Choose...' &&
         this.zip
       ) {
         this.saveStep();
-        window.location.assign("/charity/signup/step/2");
+        window.location.assign('/charity/signup/step/2');
         return true;
       }
 
       this.errors = [];
 
       if (!this.name) {
-        this.errors.push("Organization Name required.");
+        this.errors.push('Organization Name required.');
       }
       if (!this.contactName) {
-        this.errors.push("Contact Name required.");
+        this.errors.push('Contact Name required.');
       }
       if (!this.email) {
-        this.errors.push("Email required.");
+        this.errors.push('Email required.');
       }
       if (!this.phone) {
-        this.errors.push("Phone required.");
+        this.errors.push('Phone required.');
       }
       if (!this.address) {
-        this.errors.push("Address required.");
+        this.errors.push('Address required.');
       }
       if (!this.city) {
-        this.errors.push("City required.");
+        this.errors.push('City required.');
       }
-      if (this.state == "Choose...") {
-        this.errors.push("State required.");
+      if (this.state == 'Choose...') {
+        this.errors.push('State required.');
       }
       if (!this.zip) {
-        this.errors.push("Zip required.");
+        this.errors.push('Zip required.');
       }
 
       console.log(this.errors.length);
