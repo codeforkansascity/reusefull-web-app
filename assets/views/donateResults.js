@@ -1,13 +1,27 @@
-
 Vue.component('charity-card', {
-  props: ['charity'],
-  data() {
-    return {
-      charityLink: '/charity/'+this.charity.id,
-      phoneLink: 'tel:'+this.charity.phone,
-      phone: `(${this.charity.phone.substr(0,3)}) ${this.charity.phone.substr(4,3)}-${this.charity.phone.substr(6,4)}`,
-      mapLink: 'https://www.google.com/maps/dir/?api=1&destination='+ encodeURIComponent(this.charity.address)
-    }
+  props: { charity: Object },
+  computed: {
+    charityLink() {
+      return `/charity/${this.charity.id}`;
+    },
+    phoneLink() {
+      return `tel:${this.charity.phone}`;
+    },
+    phone() {
+      const clean = this.charity.phone.replace(/[^\d]/g, '');
+      return (
+        `(${clean.slice(0, 3)})` +
+        ` ${clean.slice(3, 6)}` +
+        `-${clean.slice(6, 10)}`
+      );
+    },
+    mapLink() {
+      return (
+        `https://www.google.com/` +
+        `maps/dir/?api=1&destination=` +
+        `${encodeURIComponent(this.charity.address)}`
+      );
+    },
   },
   template: `
   <div class="card shadow p-3 mb-3 bg-white rounded">
@@ -50,7 +64,7 @@ Vue.component('charity-card', {
     </div>
   </div>
   </div>
-    `
+    `,
 });
 
 const app = new Vue({
@@ -64,32 +78,31 @@ const app = new Vue({
       anyCharityType: null,
       budget: null,
       pickupDropoff: null,
-      zip: null
+      zip: null,
     },
     loading: true,
-    charities: []
+    charities: [],
   },
   created() {
-    console.log("created")
+    console.log('created');
     try {
       donate = JSON.parse(localStorage.getItem('donate'));
       if (donate != null) {
-        this.donate = donate
+        this.donate = donate;
         fetch('/api/v1/donate/search', {
           method: 'post',
-          body: JSON.stringify(this.donate)
-        }).then(response => {
-          response.json().then(charities => {
-            this.charities = charities
-            this.loading = false
-            console.log(charities)
-          })
-        })
+          body: JSON.stringify(this.donate),
+        }).then((response) => {
+          response.json().then((charities) => {
+            this.charities = charities;
+            this.loading = false;
+            console.log(charities);
+          });
+        });
       }
-    } catch(e) {
-      localStorage.removeItem('donate')
+    } catch (e) {
+      localStorage.removeItem('donate');
     }
   },
-  methods:{
-  }
+  methods: {},
 });
