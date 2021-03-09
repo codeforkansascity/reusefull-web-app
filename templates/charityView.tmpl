@@ -26,7 +26,7 @@
             class="mb-4 img-fluid shadow bg-white rounded"
             width="400"
           >
-          <h5><a href="{{ .Charity.Website }}">{{.Charity.Website}}</a></h5>
+          <h5><a href="{{ .Charity.Website }}" target="_blank">{{.Charity.Website}}</a></h5>
 
           <p>
             {{ .Charity.Address }}<br>
@@ -34,8 +34,18 @@
           </p>
 
           <p>Phone: {{ .Charity.Phone }}</p>
-          <p>Pickup {{ .Charity.Pickup }} </p>
-          <p>Dropoff {{ .Charity.Dropoff }}</p>
+          <p>Contact Name: {{ .Charity.ContactName }}</p>
+          <p>Pickup: {{ if .Charity.Pickup }}Yes{{ else }}No{{ end }}</p>
+          <p>Dropoff: {{ if .Charity.Dropoff }}Yes{{ else }}No{{ end }}</p>
+          {{ if .Charity.CashDonationLink }}
+            <p>Cash Donation Link: <a href="{{ .Charity.CashDonationLink }}" target="_blank">{{ .Charity.CashDonationLink }}</a></p>
+          {{ end }}
+          {{ if .Charity.AmazonWishlist }}
+            <p>Amazon Wishlist: <a href="{{ .Charity.AmazonWishlist }}" target="_blank">{{ .Charity.AmazonWishlist }}</a></p>
+          {{ end }}
+          {{ if .Charity.VolunteerSignup }}            
+            <p>Volunteer Signup: <a href="{{ .Charity.VolunteerSignup }}" target="_blank">{{ .Charity.VolunteerSignup }}</a></p>
+          {{ end }}
 
           <h5>Type of Charity</h5>
           <ul>
@@ -57,8 +67,7 @@
           {{ end }}
           </ul>
         </div>
-
-
+        
       </div>
 
     </main>

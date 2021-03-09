@@ -123,12 +123,17 @@
 
             <div class="col mb-3">
               <label for="phone" class="form-label">Phone</label>
-              <input type="text" class="form-control" id="phone" v-model="charity.phone">
+              <input type="tel" maxlength="14" class="form-control" id="phone" v-model="formPhone">
             </div>
 
             <div class="col mb-3">
               <label for="contactName" class="form-label">Contact Name</label>
               <input type="text" class="form-control" id="contactName" v-model="charity.contactName">
+            </div>
+
+            <div class="col mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" v-model="charity.email">
             </div>
 
             <div class="col mb-3">

@@ -1,7 +1,7 @@
 Vue.directive('init', {
-  bind: function(el, binding, vnode) {
+  bind: function (el, binding, vnode) {
     vnode.context[binding.arg] = binding.value;
-  }
+  },
 });
 
 const app = new Vue({
@@ -15,36 +15,69 @@ const app = new Vue({
     itemTypes: [],
     loading: true,
     saving: false,
+    message: 'hello',
+  },
+  computed: {
+    formPhone: {
+      get() {
+        /*
+            On change, filter any non-nums, and 
+            return formatted phone num for display.
+        */
+        if (this.charity.phone) {
+          const clean = this.charity.phone.replace(/[^\d]/g, '');
+          const cleanLen = clean.length;
+
+          if (cleanLen < 4) {
+            return clean;
+          } else if (cleanLen < 7) {
+            return `(${clean.slice(0, 3)}) ${clean.slice(3)}`;
+          } else {
+            return `(${clean.slice(0, 3)}) ${clean.slice(3, 6)}-${clean.slice(
+              6,
+              10
+            )}`;
+          }
+        }
+      },
+      set(num) {
+        // update phone in data with new input
+        const clean = num.replace(/[^\d]/g, '');
+        if (clean.length <= 10) {
+          this.charity.phone = clean;
+          console.log(this.charity.phone);
+        }
+      },
+    },
   },
   mounted() {
-    fetch('/api/v1/charity/'+this.id, {
+    fetch('/api/v1/charity/' + this.id, {
       method: 'get',
-    }).then(response => {
+    }).then((response) => {
       if (response.status !== 200) {
-        console.log('error ' + response.status)
-        return
+        console.log('error ' + response.status);
+        return;
       }
 
-      response.json().then(data => {
-        this.loading = false
-        this.charity = data
-      })
-    })
+      response.json().then((data) => {
+        this.loading = false;
+        this.charity = data;
+      });
+    });
   },
-  methods:{
+  methods: {
     filePicked(event) {
-      if (event.target.files.length == 0 ) {
-        console.log("no file picked")
-        return
+      if (event.target.files.length == 0) {
+        console.log('no file picked');
+        return;
       }
-      file = event.target.files[0]
-      console.log(file)
+      file = event.target.files[0];
+      console.log(file);
       reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = e =>{
+      reader.onload = (e) => {
         this.charity.logo = e.target.result;
-      }
-
+      };
     },
     save: function (e) {
       e.preventDefault();
@@ -52,16 +85,21 @@ const app = new Vue({
       this.errors = [];
       this.saving = true;
 
-      console.log('saving')
+      /* 
+        Removes any remaining chars in phone num. Odd bug pollutes data 
+        with the display phone num if the edited number is unchanged.
+      */
+      this.charity.phone = this.charity.phone.replace(/[^\d]/g, '');
 
-      fetch('/api/v1/charity/'+this.id, {
+      console.log('saving');
+
+      fetch('/api/v1/charity/' + this.id, {
         method: 'put',
-        body: JSON.stringify(this.charity)
-      }).then(response => {
-        console.log(response)
-        window.location.assign('/charity/'+this.id)
-      })
-
+        body: JSON.stringify(this.charity),
+      }).then((response) => {
+        console.log(response);
+        window.location.assign('/charity/' + this.id);
+      });
     },
-  }
+  },
 });

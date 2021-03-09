@@ -26,18 +26,21 @@
                 </div>
 
                 <div class="col-md-12 mb-3 text-center">
-                  <h2>What types of items do you accept? </h2>
+                  <h2 class="required-label">What types of items do you accept? </h2>
                   <p>Select all that apply</p>
                 </div>
 
-                {{ range .ItemTypes }}
-                <div class="col-lg-4 mb-1">
-                  <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="itemTypes">
-                      <label for="{{.Id}}" class="form-label">{{.Name}}</label>
-                  </div>
+                <div class="w-100 d-flex flex-column flex-wrap category-list">
+                    {{ range .ItemTypes }}
+                    <div class="category-col mb-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="itemTypes">
+                        <label for="{{.Id}}" class="form-label">{{.Name}}</label>
+                    </div>
+                    </div>
+                    {{ end }}
                 </div>
-                {{ end }}
+
                 <hr>
 
                 <div class="row justify-content-md-center">

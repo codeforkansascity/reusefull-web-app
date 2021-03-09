@@ -3,15 +3,39 @@ body {
 }
 
 .nav-link {
-    border-bottom: 2px solid transparent;
+  border-bottom: 2px solid transparent;
 }
 
 .nav-link:hover {
-    border-bottom: 2px solid #d0d0d0;
+  border-bottom: 2px solid #d0d0d0;
+}
+
+/* 
+Places an asterisk after required field labels 
+*/
+.required-label::after {
+  content: " *";
+  color: red;
 }
 
 /*
 This is to hide elements before Vue.js has loaded
 Prevents "flashing" of an empty error list for example
 */
-[v-cloak] > * {display: none}
+[v-cloak] > * {
+  display: none;
+}
+
+@media (min-width: 768px) {
+    .category-list {
+        max-height: 450px;
+    }
+    .category-col {
+        width: 33%;
+        margin-right: 18px;
+    }
+
+    .org-category-list {
+        max-height: 280px;
+    }
+}

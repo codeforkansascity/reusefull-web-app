@@ -25,11 +25,11 @@
                   </p>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="website" class="form-label">Organization Website</label>
+                  <label for="website" class="form-label required-label">Organization Website</label>
                   <input type="text" class="form-control" id="website" v-model="website">
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="budget" class="form-label">Budget Size</label>
+                  <label for="budget" class="form-label required-label">Budget Size</label>
                   <div class="btn-group" role="group">
                     <input type="radio" class="btn-check" name="budget" id="budget1" value="1" v-model="budget">
                     <label class="btn btn-outline-secondary" for="budget1">$0-5k</label>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="taxID" class="form-label">Tax ID Number</label>
+                  <label for="taxID" class="form-label required-label">Tax ID Number</label>
                   <input type="text" class="form-control" id="taxID" v-model="taxID">
                 </div>
                 <div class="col-md-6 mb-3">
@@ -75,18 +75,21 @@
                 <hr>
 
                 <div class="col-md-12 mb-3 text-center">
-                  <h2>What type of charity are you? </h2>
+                  <h2 class="required-label">What type of charity are you? </h2>
                   <p>Select all that apply</p>
                 </div>
 
+                <div class="w-100 d-flex flex-column flex-wrap org-category-list">
                 {{ range .CharityTypes }}
-                <div class="col-lg-4 mb-1">
+                <div class="category-col mb-1">
                   <div class="form-check p-1">
                       <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charityTypes">
                       <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
                   </div>
                 </div>
                 {{ end }}
+                </div>
+
                 <div class="row justify-content-md-center">
                   <div class="col-md-8 mb-1">
                     <label for="other" class="form-label">If other please specify:</label>
@@ -95,12 +98,12 @@
                 </div>
 
                 <div class="col-md-12 mb-3">
-                  <label for="mission" class="form-label">Mission</label>
+                  <label for="mission" class="form-label required-label">Mission</label>
                   <textarea rows="2" class="form-control" id="mission" v-model="mission"></textarea>
                 </div>
 
                 <div class="col-md-12 mb-3">
-                  <label for="description" class="form-label">Description</label>
+                  <label for="description" class="form-label required-label">Description</label>
                   <textarea rows="4" class="form-control" id="description" v-model="description"></textarea>
                 </div>
 
