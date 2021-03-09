@@ -84,7 +84,6 @@ const app = new Vue({
     charities: [],
   },
   created() {
-    console.log('created');
     try {
       donate = JSON.parse(localStorage.getItem('donate'));
       if (donate != null) {
