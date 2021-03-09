@@ -52,7 +52,7 @@ Vue.component('charity-card', {
         <div>
           <i class="bi bi-geo-alt-fill"></i>
           <strong>Address:</strong>
-          <em>{{charity.address}} </em>
+          <em>{{charity.address}}, {{charity.city}}, {{charity.state}} {{charity.zip}}</em>
           <a target="_blank" :href="mapLink"><i class="bi bi-geo p-1"></i>Directions</a>
         </div>
         <div>
@@ -96,7 +96,6 @@ const app = new Vue({
           response.json().then((charities) => {
             this.charities = charities;
             this.loading = false;
-            console.log(charities);
           });
         });
       }
