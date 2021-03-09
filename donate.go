@@ -149,7 +149,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 
 	charities := []Charity{}
 	if itBits.GetCardinality() > 0 {
-		stmt := "select c.id, c.name, c.address, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff from charity c where c.id in ("
+		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff from charity c where c.id in ("
 
 		first := true
 		it := itBits.Iterator()
@@ -185,6 +185,9 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				&charity.Id,
 				&charity.Name,
 				&charity.Address,
+				&charity.City,
+				&charity.State,
+				&charity.ZipCode,
 				&charity.Phone,
 				&charity.Mission,
 				&logoURL,
