@@ -598,6 +598,12 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "email error", 500)
 			return
 		}
+		err = sendAdminNotificationEmail(charity.Name)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "email error", 500)
+			return
+		}
 	}()
 
 }

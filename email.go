@@ -67,6 +67,15 @@ func sendNewAccountEmail(email, link string) error {
 	return sendEmail(email, "Re.Use.Full Account Registration", b.String())
 }
 
+/* 
+	Notifies admin of new organizations pending approval.
+*/
+func sendAdminNotificationEmail(orgName string) error {
+	notificationSubject := fmt.Sprintf("New Organization- %s", orgName)
+	notificationMessage := fmt.Sprintf("%s has completed registration, and is ready for approval. Please log in and visit https://app.reusefull.org/admin to review their listing.", orgName)
+	return sendEmail("leslie@reusefull.org", notificationSubject, notificationMessage)
+}
+
 func sendEmail(email, subject, body string) error {
 	input := &ses.SendEmailInput{
 		Destination: &ses.Destination{
