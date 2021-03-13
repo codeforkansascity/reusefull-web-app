@@ -45,7 +45,6 @@ const app = new Vue({
         const clean = num.replace(/[^\d]/g, '');
         if (clean.length <= 10) {
           this.charity.phone = clean;
-          console.log(this.charity.phone);
         }
       },
     },
