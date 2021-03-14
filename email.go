@@ -72,7 +72,7 @@ func sendNewAccountEmail(email, link string) error {
 */
 func sendAdminNotificationEmail(orgName string) error {
 	notificationMessage := fmt.Sprintf("%s has completed registration, and is ready for approval. Please log in and visit https://app.reusefull.org/admin to review their listing.", orgName)
-	return sendEmail("bbradforddesign@gmail.com", "New Organization Registered", notificationMessage)
+	return sendEmail("leslie@reusefull.org", "New Organization Registered", notificationMessage)
 }
 
 func sendEmail(email, subject, body string) error {
