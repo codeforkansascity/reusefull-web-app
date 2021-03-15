@@ -8,8 +8,8 @@
     <main>
       <div class="container" id="app">
           <div class="col-md-12 mb-3 text-center">
-            <h3>Tell us about your charity</h3>
-            <h5>Step 2 of 3</h5>
+            <h2>Tell us about your charity</h2>
+            <p class="fs-5">Step 2 of 3</p>
           </div>
           <div v-cloak>
               <form
@@ -29,7 +29,7 @@
                   <input type="text" class="form-control" id="website" v-model="website">
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="budget" class="form-label required-label">Budget Size</label>
+                  <label for="budget" class="form-label col-12 required-label">Budget Size</label>
                   <div class="btn-group" role="group">
                     <input type="radio" class="btn-check" name="budget" id="budget1" value="1" v-model="budget">
                     <label class="btn btn-outline-secondary" for="budget1">$0-5k</label>
@@ -43,6 +43,10 @@
                     <input type="radio" class="btn-check" name="budget" id="budget4" value="4" v-model="budget">
                     <label class="btn btn-outline-secondary" for="budget4">>$100k</label>
                   </div>
+                </div>
+
+                <div class="col-md-12 mb-0 text-left">
+                  <p class="fs-6 required-label">Please select a pick-up or drop-off option</p>
                 </div>
 
                 <div class="col-md-12 mb-3">
@@ -65,7 +69,7 @@
                   <input type="text" class="form-control" id="taxID" v-model="taxID">
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="file" class="form-label">Logo</label>
+                  <label for="file" class="col-12 form-label">Logo</label>
                   <input type="file" name="file" @change="filePicked" accept="image/png, image/jpeg">
                 </div>
                 <div class="col-md-12 mb-3">
@@ -75,8 +79,8 @@
                 <hr>
 
                 <div class="col-md-12 mb-3 text-center">
-                  <h2 class="required-label">What type of charity are you? </h2>
-                  <p>Select all that apply</p>
+                  <h3 class="required-label">What type of charity are you?</h3>
+                  <p class="fs-5">Select all that apply</p>
                 </div>
 
                 <div class="w-100 d-flex flex-column flex-wrap org-category-list">
