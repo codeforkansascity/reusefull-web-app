@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-var (
-	hereKey = "EvuC4m1owocrq4WHrdjLNDTyMxfyysf8b00StffLGjk"
-)
-
 type Location struct {
 	Title      string `json:"title"`
 	ID         string `json:"id"`
@@ -22,15 +18,19 @@ type Location struct {
 	}
 }
 
-func geocode(address string) (*Location, error) {
+func Geocode(address string) (*Location, error) {
+	if len(hereToken) == 0 {
+		return nil, fmt.Errorf("here token not found")
+	}
+
 	req, err := http.NewRequest("GET", "https://geocode.search.hereapi.com/v1/geocode", nil)
 	if err != nil {
 		return nil, err
 	}
 
 	q := req.URL.Query()
-	q.Add("q", "723 Cottonwood Ln, Liberty MO 64068")
-	q.Add("apiKey", hereKey)
+	q.Add("q", address)
+	q.Add("apiKey", hereToken)
 	req.URL.RawQuery = q.Encode()
 
 	resp, err := http.DefaultClient.Do(req)
