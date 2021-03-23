@@ -12,10 +12,12 @@
             <div v-if="loading">
               <div class="spinner-border text-info" role="status"></div>
             </div>
+
             <div class="col">
               <div class="row">
                 <div class="col">
                   <h5>We found ${charities.length} matching charities</h5>
+                  <div id="map" style='height: 400px;'></div>
                 </div>
               </div>
               <charity-card

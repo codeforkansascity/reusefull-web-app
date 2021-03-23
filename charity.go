@@ -43,6 +43,8 @@ type Charity struct {
 	ZipCode                 string   `json:"zip"`
 	LogoURL                 string   `json:"logoURL"`
 	Logo                    string   `json:"logo"`
+	Lat                     float64  `json:"lat"`
+	Lng                     float64  `json:"lng"`
 	Mission                 string   `json:"mission"`
 	Description             string   `json:"description"`
 	ItemTypes               []string `json:"itemTypes"`
@@ -432,6 +434,12 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Println("saved in dgraph")
 
+		_, err = db.Exec("update charity set lat=?, lng=? where id = ?", loc.Position.Lat, loc.Position.Lng, charity.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
 	}()
 
 }
@@ -653,6 +661,12 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Println("saved in dgraph")
+
+		_, err = db.Exec("update charity set lat=?, lng=? where id = ?", loc.Position.Lat, loc.Position.Lng, charity.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
 
 	}()
 

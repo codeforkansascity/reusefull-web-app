@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"encoding/gob"
 	"fmt"
@@ -124,6 +125,39 @@ func main() {
 	db.SetConnMaxLifetime(time.Minute * 5)
 	db.SetMaxOpenConns(5)
 	db.SetMaxIdleConns(2)
+
+	charities := struct {
+		Data struct {
+			QueryCharity []struct {
+				CharityID int64
+				Location  struct {
+					Latitude  float64
+					Longitude float64
+				}
+			}
+		}
+	}{}
+	err = dc.RawQuery(context.Background(), `
+		{
+		  queryCharity {
+		    Location {
+		      latitude
+		      longitude
+		    }
+		    CharityID
+		  }
+		}
+		`, &charities)
+	if err != nil {
+		panic(err)
+	}
+	for _, c := range charities.Data.QueryCharity {
+		log.Println("updating charity ", c.CharityID)
+		_, err = db.Exec("update charity set lat=?, lng=? where id=?", c.Location.Latitude, c.Location.Longitude, c.CharityID)
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	ss = sessions.NewCookieStore([]byte("8dp/Kx2veOxt1RdXMBMvlLbwH6oFJDofQyQ1pPodbjQ"))
 	gob.Register(map[string]interface{}{})
