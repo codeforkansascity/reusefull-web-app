@@ -15,6 +15,7 @@ import (
 type DonateSearchRequest struct {
 	Zip            string   `json:"zip"`
 	OrgSize        string   `json:"orgSize"`
+	Resell		   bool		`json:"resells"`
 	ItemTypes      []string `json:"itemTypes"`
 	CharityTypes   []string `json:"charityTypes"`
 	AnyCharityType bool     `json:"anyCharityType"`
@@ -85,6 +86,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req := DonateSearchRequest{}
+	log.Println(req)
 	err = json.Unmarshal(buf, &req)
 	if err != nil {
 		log.Println(err)

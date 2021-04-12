@@ -7,6 +7,7 @@ const app = new Vue({
     errorCharity: false,
     hasError: false,
     donate: {
+      resell: false,
       itemTypes: [],
       charityTypes: [],
       anyCharityType: null,

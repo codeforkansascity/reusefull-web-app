@@ -73,6 +73,7 @@ const app = new Vue({
   data: {
     errors: [],
     donate: {
+      resell: false,
       itemTypes: [],
       charityTypes: [],
       anyCharityType: null,
