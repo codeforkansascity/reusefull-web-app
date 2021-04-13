@@ -77,28 +77,29 @@ func sendAdminNotificationEmail(orgName string) error {
 }
 
 /*
-	Sends email containing contact form submission details
+  Sends email containing contact form submission details
 */
 func sendContactEmail(recipient string, senderEmail string, senderName string, body string) error {
-	var b bytes.Buffer
-	err := t.ExecuteTemplate(&b, "email.tmpl", EmailArgs{
-		Link:      fmt.Sprintf("mailto:%s", senderEmail),
-		Button:    "Respond",
-		Message:   body,
-		Sender:	   senderName,
-		Preheader: "New contact form submission.",
-	})
-	if err != nil {
-		return err
-	}
+  var b bytes.Buffer
+  err := t.ExecuteTemplate(&b, "email.tmpl", EmailArgs{
+    Link:      fmt.Sprintf("mailto:%s", senderEmail),
+    Button:    "Respond",
+    Message:   body,
+    Sender:    senderName,
+    Preheader: "New contact form submission.",
+  })
+  if err != nil {
+    return err
+  }
 
-	err = sendEmail(recipient, "Re.Use.Full Donor Message", b.String())
-	if err != nil {
-		return err
-	}
+  err = sendEmail(recipient, "Re.Use.Full Donor Message", b.String())
+  if err != nil {
+    return err
+  }
 
-	return nil
+  return nil
 }
+
 
 func sendEmail(email, subject, body string) error {
 	input := &ses.SendEmailInput{

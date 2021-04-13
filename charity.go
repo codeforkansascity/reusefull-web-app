@@ -17,6 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/go-chi/chi"
 	"github.com/sethvargo/go-password/password"
+	"golang.org/x/net/context"
 	auth0 "gopkg.in/auth0.v5"
 	"gopkg.in/auth0.v5/management"
 )
@@ -40,10 +41,10 @@ type Charity struct {
 	City                    string   `json:"city"`
 	State                   string   `json:"state"`
 	ZipCode                 string   `json:"zip"`
-	Lat                     string   `json:"lat"`
-	Long                    string   `json:"long"`
 	LogoURL                 string   `json:"logoURL"`
 	Logo                    string   `json:"logo"`
+	Lat                     float64  `json:"lat"`
+	Lng                     float64  `json:"lng"`
 	Mission                 string   `json:"mission"`
 	Description             string   `json:"description"`
 	ItemTypes               []string `json:"itemTypes"`
@@ -402,6 +403,51 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Geocode
+	go func() {
+		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
+		log.Println("Geocoding address ", address)
+		loc, err := Geocode(address)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = dc.RawQuery(context.Background(), fmt.Sprintf(`
+			mutation {
+				updateCharity(input: {
+					filter: {
+						CharityID: {eq: %d}
+					},
+					set: {
+						Address: "%s",
+						City: "%s",
+						State: "%s",
+						Zip: "%s",
+						FullAddress: "%s",
+						Location: {
+							longitude: %f,
+							latitude: %f
+						},
+					}
+				}) {
+					numUids
+				}
+			}
+			`, charity.Id, charity.Address, charity.City, charity.State, charity.ZipCode, loc.Title, loc.Position.Lng, loc.Position.Lat), nil)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		log.Println("saved in dgraph")
+
+		_, err = db.Exec("update charity set lat=?, lng=? where id = ?", loc.Position.Lat, loc.Position.Lng, charity.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+	}()
+
 }
 
 func CharitySignUp1(w http.ResponseWriter, r *http.Request) {
@@ -588,6 +634,47 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "database error", 500)
 		return
 	}
+
+	// Geocode
+	go func() {
+		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
+		log.Println("Geocoding address ", address)
+		loc, err := Geocode(address)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = dc.RawQuery(context.Background(), fmt.Sprintf(`
+			mutation MyMutation {
+				addCharity(input: {
+					CharityID: %d,
+					Address: "%s",
+					City: "%s",
+					State: "%s",
+					Zip: "%s",
+					Location: {
+						longitude: %f,
+						latitude: %f
+					},
+					FullAddress: "%s"}) {
+					numUids
+				}
+			}
+			`, charity.Id, charity.Address, charity.City, charity.State, charity.ZipCode,
+			loc.Position.Lng, loc.Position.Lat, loc.Title), nil)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		log.Println("saved in dgraph")
+
+		_, err = db.Exec("update charity set lat=?, lng=? where id = ?", loc.Position.Lat, loc.Position.Lng, charity.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+	}()
 
 	go func() {
 		err := updateLogo(charity.Logo, int(charityID))
