@@ -168,6 +168,8 @@ func main() {
 
 		r.Post("/donate/search", DonateSearch)
 
+		r.Post("/charity/{id}/contact", CharityContact)
+
 		// Admin only api
 		r.Group(func(r chi.Router) {
 			r.Use(AuthMiddleware)

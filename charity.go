@@ -75,6 +75,12 @@ type ItemType struct {
 	Name string `json:"name"`
 }
 
+type Message struct {
+	Sender string `json:"sender"`
+	Body string `json:"body"`
+	Name string `json:"name"`
+}
+
 func ListCharities(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query("select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url from charity order by name")
 	if err != nil {
@@ -892,6 +898,54 @@ func getCharity(id int) (Charity, error) {
 	}
 	rows.Close()
 	return charity, err
+}
+
+/* 
+	Sends an email from the contact form on a charity page to the contact email
+	associated with that charity's ID.
+*/
+func CharityContact(w http.ResponseWriter, r *http.Request) {
+
+	// Extract message details from request body
+	buf, err := ioutil.ReadAll(r.Body)
+	message := Message{}
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+	err = json.Unmarshal(buf, &message)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
+	// Get charity's ID from URL params
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "id error", 400)
+		return
+	}
+
+	// Retrieve contact email associated with that charity
+	charityEmail := sql.NullString{}
+	err = db.QueryRow("select email from charity where id = ?", id).Scan(&charityEmail)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
+	// Send a formatted message with the sender's name, message, and contact email
+	err = sendContactEmail(charityEmail.String, message.Sender, message.Name, message.Body)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
 }
 
 // Formats charity phone nums for display

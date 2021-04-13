@@ -19,6 +19,7 @@ type EmailArgs struct {
 	Button    string
 	Message   string
 	Preheader string
+	Sender	  string
 }
 
 //
@@ -74,6 +75,31 @@ func sendAdminNotificationEmail(orgName string) error {
 	notificationMessage := fmt.Sprintf("%s has completed registration, and is ready for approval. Please log in and visit https://app.reusefull.org/admin to review their listing.", orgName)
 	return sendEmail("leslie@reusefull.org", "New Organization Registered", notificationMessage)
 }
+
+/*
+  Sends email containing contact form submission details
+*/
+func sendContactEmail(recipient string, senderEmail string, senderName string, body string) error {
+  var b bytes.Buffer
+  err := t.ExecuteTemplate(&b, "email.tmpl", EmailArgs{
+    Link:      fmt.Sprintf("mailto:%s", senderEmail),
+    Button:    "Respond",
+    Message:   body,
+    Sender:    senderName,
+    Preheader: "New contact form submission.",
+  })
+  if err != nil {
+    return err
+  }
+
+  err = sendEmail(recipient, "Re.Use.Full Donor Message", b.String())
+  if err != nil {
+    return err
+  }
+
+  return nil
+}
+
 
 func sendEmail(email, subject, body string) error {
 	input := &ses.SendEmailInput{
