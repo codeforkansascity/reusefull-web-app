@@ -61,6 +61,7 @@ const app = new Vue({
       response.json().then((data) => {
         this.loading = false;
         this.charity = data;
+        console.log(data)
       });
     });
   },
@@ -84,10 +85,7 @@ const app = new Vue({
       this.errors = [];
       this.saving = true;
 
-      /* 
-        Removes any remaining chars in phone num. Odd bug pollutes data 
-        with the display phone num if the edited number is unchanged.
-      */
+      // Removes any remaining chars in phone num.
       this.charity.phone = this.charity.phone.replace(/[^\d]/g, '');
 
       console.log('saving');

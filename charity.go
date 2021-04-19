@@ -470,7 +470,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, resell, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		charity.Name,
 		charity.Address,
 		charity.City,
@@ -488,6 +488,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		charity.Pickup,
 		charity.Dropoff,
 		charity.Faith,
+		charity.Resell,
 		charity.TaxID,
 	)
 	if err != nil {
@@ -717,6 +718,7 @@ func getCharity(id int) (Charity, error) {
 	pickup := sql.NullBool{}
 	dropoff := sql.NullBool{}
 	faith := sql.NullBool{}
+	resell := sql.NullBool{}
 	approved := sql.NullBool{}
 	taxID := sql.NullString{}
 	userID := sql.NullString{}
@@ -725,7 +727,7 @@ func getCharity(id int) (Charity, error) {
 	state := sql.NullString{}
 
 	charity := Charity{}
-	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
+	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, resell, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
 		&charity.Id,
 		&charity.Name,
 		&charity.Address,
@@ -745,6 +747,7 @@ func getCharity(id int) (Charity, error) {
 		&pickup,
 		&dropoff,
 		&faith,
+		&resell,
 		&approved,
 		&taxID,
 		&userID,
@@ -757,6 +760,7 @@ func getCharity(id int) (Charity, error) {
 	charity.Pickup = pickup.Bool
 	charity.Dropoff = dropoff.Bool
 	charity.Faith = faith.Bool
+	charity.Resell = resell.Bool
 	charity.Approved = approved.Bool
 	charity.TaxID = taxID.String
 	charity.UserID = userID.String
