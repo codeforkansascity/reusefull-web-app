@@ -15,7 +15,7 @@ import (
 type DonateSearchRequest struct {
 	Zip            string   `json:"zip"`
 	OrgSize        string   `json:"orgSize"`
-	Resell		   bool		`json:"resells"`
+	Resell		   bool		`json:"resell"`
 	ItemTypes      []string `json:"itemTypes"`
 	CharityTypes   []string `json:"charityTypes"`
 	AnyCharityType bool     `json:"anyCharityType"`
@@ -151,7 +151,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 
 	charities := []Charity{}
 	if itBits.GetCardinality() > 0 {
-		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff from charity c where c.id in ("
+		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff, c.resell from charity c where c.id in ("
 
 		first := true
 		it := itBits.Iterator()
@@ -169,6 +169,14 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 		} else if req.PickupDropoff == "2" {
 			stmt += "and dropoff is true "
 		}
+
+		// Adding "resells items" to query
+		if req.Resell == true {
+			stmt += "and resell is true "
+		} else if req.Resell == false {
+			stmt += "and resell is false "
+		}
+
 		stmt += "and approved is true "
 
 		log.Println(stmt)
@@ -195,6 +203,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				&logoURL,
 				&charity.Pickup,
 				&charity.Dropoff,
+				&charity.Resell,
 			)
 			if err != nil {
 				log.Println(err)
