@@ -15,7 +15,6 @@ const app = new Vue({
     itemTypes: [],
     loading: true,
     saving: false,
-    message: 'hello',
   },
   computed: {
     formPhone: {

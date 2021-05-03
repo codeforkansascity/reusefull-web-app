@@ -16,6 +16,8 @@ type DonateSearchRequest struct {
 	Zip            string   `json:"zip"`
 	OrgSize        string   `json:"orgSize"`
 	Resell		   bool		`json:"resell"`
+	Faith 		   bool		`json:"faith"`
+	NewItems	   bool		`json:"newItems"`
 	ItemTypes      []string `json:"itemTypes"`
 	CharityTypes   []string `json:"charityTypes"`
 	AnyCharityType bool     `json:"anyCharityType"`
@@ -151,7 +153,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 
 	charities := []Charity{}
 	if itBits.GetCardinality() > 0 {
-		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff, c.resell from charity c where c.id in ("
+		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff, c.resell, c.new_items from charity c where c.id in ("
 
 		first := true
 		it := itBits.Iterator()
@@ -175,6 +177,20 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 			stmt += "and resell is true "
 		} else if req.Resell == false {
 			stmt += "and resell is false "
+		}
+
+		// "faith"
+		if req.Faith == true {
+			stmt += "and faith is true "
+		} else if req.Faith == false {
+			stmt += "and faith is false "
+		}
+
+		// "new items only"
+		if req.NewItems == true {
+			stmt += "and new_items is true "
+		} else if req.NewItems == false {
+			stmt += "and new_items is false "
 		}
 
 		stmt += "and approved is true "
@@ -204,6 +220,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				&charity.Pickup,
 				&charity.Dropoff,
 				&charity.Resell,
+				&charity.NewItems,
 			)
 			if err != nil {
 				log.Println(err)

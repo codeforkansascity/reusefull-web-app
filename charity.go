@@ -32,6 +32,7 @@ type Charity struct {
 	Pickup                  bool     `json:"pickup"`
 	Dropoff                 bool     `json:"dropoff"`
 	Resell                  bool     `json:"resell"`
+	NewItems				bool 	 `json:"newItems"`
 	AmazonWishlist          string   `json:"amazon"`
 	GoodItems               bool     `json:"goodItems"`
 	CashDonationLink        string   `json:"cashDonate"`
@@ -325,6 +326,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		resell = ?,
 		faith = ?,
 		good_items = ?,
+		new_items = ?,
 		taxid = ?
 		where id = ?
 		`,
@@ -347,6 +349,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		charity.Resell,
 		charity.Faith,
 		charity.GoodItems,
+		charity.NewItems,
 		charity.TaxID,
 		id)
 	if err != nil {
@@ -470,7 +473,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, resell, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, resell, new_items, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		charity.Name,
 		charity.Address,
 		charity.City,
@@ -489,6 +492,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		charity.Dropoff,
 		charity.Faith,
 		charity.Resell,
+		charity.NewItems,
 		charity.TaxID,
 	)
 	if err != nil {
@@ -719,6 +723,7 @@ func getCharity(id int) (Charity, error) {
 	dropoff := sql.NullBool{}
 	faith := sql.NullBool{}
 	resell := sql.NullBool{}
+	newItems := sql.NullBool{}
 	approved := sql.NullBool{}
 	taxID := sql.NullString{}
 	userID := sql.NullString{}
@@ -727,7 +732,7 @@ func getCharity(id int) (Charity, error) {
 	state := sql.NullString{}
 
 	charity := Charity{}
-	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, resell, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
+	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, resell, new_items, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
 		&charity.Id,
 		&charity.Name,
 		&charity.Address,
@@ -748,6 +753,7 @@ func getCharity(id int) (Charity, error) {
 		&dropoff,
 		&faith,
 		&resell,
+		&newItems,
 		&approved,
 		&taxID,
 		&userID,
@@ -761,6 +767,7 @@ func getCharity(id int) (Charity, error) {
 	charity.Dropoff = dropoff.Bool
 	charity.Faith = faith.Bool
 	charity.Resell = resell.Bool
+	charity.NewItems = newItems.Bool
 	charity.Approved = approved.Bool
 	charity.TaxID = taxID.String
 	charity.UserID = userID.String
