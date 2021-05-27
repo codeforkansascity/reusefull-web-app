@@ -174,6 +174,10 @@
                 <input class="form-check-input" type="checkbox" id="faith" v-model="charity.faith">
                 <label class="form-check-label" for="faith">Faith-based charity</label>
               </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="resell" v-model="charity.resell">
+                <label class="form-check-label" for="resell">We resell items</label>
+              </div>
             </div>
 
             <hr>
@@ -195,6 +199,12 @@
             <div class="col-md-12 mb-3">
               <h2>Items that your charity accepts: </h2>
             </div>
+
+            <div class="col-md-12 mb-3">
+              <input class="form-check-input" type="checkbox" id="newItems" v-model="charity.newItems">
+              <label for="newItems" class="form-check-label">New items only</label>
+            </div>
+            <hr>
 
             {{ range .ItemTypes }}
             <div class="col-lg-4 mb-1">

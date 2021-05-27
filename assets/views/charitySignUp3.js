@@ -5,6 +5,7 @@ const app = new Vue({
     errors: [],
     serverError: null,
     itemTypes: [],
+    newItems: false,
     amazon: null,
     cashDonate: null,
     volunteer: null,
@@ -14,6 +15,7 @@ const app = new Vue({
     try {
       step = JSON.parse(localStorage.getItem('step3'));
       this.itemTypes = step.itemTypes
+      this.newItems = step.newItems
       this.amazon = step.amazon
       this.cashDonate = step.cashDonate
       this.volunteer = step.volunteer
@@ -39,6 +41,7 @@ const app = new Vue({
     saveStep() {
       localStorage.setItem('step3', JSON.stringify({
         itemTypes: this.itemTypes,
+        newItems: this.newItems,
         amazon: this.amazon,
         cashDonate: this.cashDonate,
         volunteer: this.volunteer,
@@ -57,6 +60,7 @@ const app = new Vue({
 
       org = {
         itemTypes: this.itemTypes,
+        newItems: this.newItems,
         amazon: this.amazon,
         cashDonate: this.cashDonate,
         volunteer: this.volunteer,

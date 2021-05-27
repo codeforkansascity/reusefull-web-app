@@ -31,6 +31,17 @@
                       <label class="form-check-label" for="pickup2">I will drop-off items</label>
                     </div>
                   </div>
+                  <h5 class="p-2">Do you have any extra considerations?</h5>
+                  <div class="col-md-10">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" v-model="donate.resell" type="checkbox" name="resell">
+                        <label class="form-check-label" for="resell">Include organizations that resell items</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" v-model="donate.faith" type="checkbox" name="faith">
+                        <label class="form-check-label" for="faith">Include faith-based organizations</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -38,6 +49,15 @@
               <div class="shadow py-4 mb-3 bg-white rounded">
                 <div class="row pt-4 px-4">
                   <h5>What kinds of items do you have to donate?</h5>
+
+                  <div class="col-md-4 mb-1">
+                    <div class="form-check p-1">
+                    <input class="form-check-input" type="checkbox" id="newItems" v-model="donate.newItems">
+                    <label for="newItems" class="form-label">New items only</label>
+                    </div>
+                  </div>
+                  <hr>
+
                   <div class="w-100 d-flex flex-column flex-wrap category-list">
                     {{ range .ItemTypes }}
                     <div class="category-col mb-1">

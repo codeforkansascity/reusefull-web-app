@@ -7,6 +7,9 @@ const app = new Vue({
     errorCharity: false,
     hasError: false,
     donate: {
+      resell: false,
+      newItems: false,
+      faith: false,
       itemTypes: [],
       charityTypes: [],
       anyCharityType: null,
@@ -67,6 +70,9 @@ const app = new Vue({
 
       this.donate.itemTypes = []
       this.donate.charityTypes = []
+      this.donate.resell = null
+      this.donate.faith = null
+      this.donate.newItems = null
       this.donate.anyCharityType = null
       this.donate.pickupDropoff = null
       console.log('reset')

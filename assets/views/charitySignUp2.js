@@ -8,6 +8,7 @@ const app = new Vue({
     dropoff: null,
     pickup: null,
     faith: null,
+    resell: null,
     taxID: null,
     logo: null,
     charityTypes: [],
@@ -24,6 +25,7 @@ const app = new Vue({
         this.dropoff = step.dropoff
         this.pickup = step.pickup
         this.faith = step.faith
+        this.resell = step.resell
         this.taxID = step.taxID
         this.logo = step.logo
         this.charityTypes = step.charityTypes
@@ -57,6 +59,7 @@ const app = new Vue({
         dropoff: this.dropoff,
         pickup: this.pickup,
         faith: this.faith,
+        resell: this.resell,
         taxID: this.taxID,
         logo: this.logo,
         charityTypes: this.charityTypes,
