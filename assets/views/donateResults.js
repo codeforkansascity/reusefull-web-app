@@ -98,6 +98,42 @@ const app = new Vue({
           response.json().then((charities) => {
             this.charities = charities;
             this.loading = false;
+
+            console.log("creating new map")
+            var map = new mapboxgl.Map({
+              container: 'map', // container id
+              accessToken: 'pk.eyJ1IjoiaHlwcm5pY2siLCJhIjoiY2ttYTBidnYyMW45dTJ2cGJxbmxjMGsyMiJ9.po3lOo4mj9GAEdBBnMjDLA',
+              style: 'mapbox://styles/mapbox/streets-v11', // style URL
+              center: [-94.57, 39.12],
+              zoom: 9 // starting zoom
+            });
+
+            for (const c of charities) {
+              console.log(c)
+              var el = document.createElement('div');
+              el.className = 'marker'
+
+              // make a marker for each feature and add to the map
+              new mapboxgl.Marker(el)
+                .setLngLat([c.lng, c.lat])
+                .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+                  .setHTML(`
+                    <div class="card">
+                      <div class="text-center">
+                        <img src="${c.logoURL}" class="card-img-top" style="width: 100px;">
+                      </div>
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="/charity/${c.id}">${c.name}</a></h5>
+                        <p class="card-text">${c.mission}</p>
+                        <p class="card-text"><small class="text-muted">3 miles away</small></p>
+                      </div>
+                    </div>
+                  `)
+                )
+                .addTo(map)
+            }
+
+
           });
         });
       }

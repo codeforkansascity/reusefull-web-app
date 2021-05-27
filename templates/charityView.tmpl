@@ -5,7 +5,7 @@
   </head>
   <body>
     {{ template "nav" . }}
-    <main class="container">
+    <main class="container" id="app">
       <div class="row">
         <div class="col-md-10">
           <h2>{{ .Charity.Name }}</h2>
@@ -34,6 +34,56 @@
           </p>
 
           <p>Phone: {{ .Charity.Phone }}</p>
+
+          <!-- Trigger to open contact modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          <i class="bi bi-envelope"></i> Contact
+          </button>
+  
+          <!-- Contact modal -->
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Contact Form</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form class="row">
+                            <div class="mb-3 col">
+                                <label for="contactName" class="form-label">Name</label>
+                                <input type="text" v-model="name" class="form-control" id="contactName">
+                            </div>
+                            <div class="mb-3 col">
+                                <label for="contactEmail" class="form-label">Email</label>
+                                <input type="email" v-model="sender" class="form-control" id="contactEmail">
+                            </div>
+                            <div class="mb-3">
+                                <label for="contactMessage" class="form-label">Message</label>
+                                <textarea v-model="body" class="form-control" id="contactMessage" rows="4" cols="30">
+                                </textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" v-on:click="contact({{ .Charity.Id }})" class="btn btn-primary" v-bind:disabled="sent">
+                            <i class="bi bi-check" v-bind:hidden="!sent"></i>
+                            <span v-if="!sent">Send Message</span>
+                            <span v-if="sent">Message Sent!</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+          <!-- End Contact Modal -->
+          </div>
+
           <p>Contact Name: {{ .Charity.ContactName }}</p>
           <p>Pickup: {{ if .Charity.Pickup }}Yes{{ else }}No{{ end }}</p>
           <p>Dropoff: {{ if .Charity.Dropoff }}Yes{{ else }}No{{ end }}</p>
@@ -55,23 +105,27 @@
           </ul>
         </div>
         <div class="col-md-8">
-          <h5>Mission</h5>
-          <p>{{ .Charity.Mission }}</p>
-          <h5>Description</h5>
-          <p>{{ .Charity.Description }}</p>
+            
+            <h5>Mission</h5>
+            <p>{{ .Charity.Mission }}</p>
+            <h5>Description</h5>
+            <p>{{ .Charity.Description }}</p>
 
-          <h5>Items Accepted</h5>
-          <ul>
-          {{ range .Charity.ItemTypeDescriptions }}
-            <li>{{ .}}</li>
-          {{ end }}
-          </ul>
-        </div>
+            <h5>Items Accepted</h5>
+            <ul>
+            {{ range .Charity.ItemTypeDescriptions }}
+                <li>{{ .}}</li>
+            {{ end }}
+            </ul>
         
+        </div>
+
       </div>
 
     </main>
     <footer></footer>
     {{ template "footerScripts" .}}
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/assets/views/charity.js"></script>
   </body>
 </html>

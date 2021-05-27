@@ -79,6 +79,9 @@ const app = new Vue({
       if (!this.budget) {
         this.errors.push('Budget required.');
       }
+      if (!this.pickup && !this.dropoff) {
+        this.errors.push('Pick-up or Drop-off option required.')
+      }
       if (!this.taxID) {
         this.errors.push('Tax ID required.');
       }
