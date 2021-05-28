@@ -223,8 +223,8 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				&charity.Dropoff,
 				&charity.Resell,
 				&charity.NewItems,
-        &lat,
-        &lng
+        			&lat,
+        			&lng,
 			)
 			if err != nil {
 				log.Println(err)
