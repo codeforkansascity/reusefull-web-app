@@ -71,10 +71,10 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" v-on:click="contact({{ .Charity.Id }})" class="btn btn-primary" id="charityContact" v-bind:disabled="sent">
+                        <button type="button" v-on:click="contact({{ .Charity.Id }})" class="btn btn-primary charityContact" v-bind:disabled="sent">
                             <i class="bi bi-check" v-bind:hidden="!sent"></i>
-                            <span v-if="!sent">Send Message</span>
-                            <span v-if="sent">Message Sent!</span>
+                            <span class="charityContact" v-if="!sent">Send Message</span>
+                            <span class="charityContact" v-if="sent">Message Sent!</span>
                         </button>
                     </div>
 
