@@ -83,7 +83,8 @@ type Message struct {
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url from charity order by name")
+	rows, err := db.Query(`select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url
+		from charity where approved is true order by name`)
 	if err != nil {
 		log.Println(err)
 		t.ExecuteTemplate(w, "error.tmpl", ErrorPage{
@@ -911,7 +912,7 @@ func getCharity(id int) (Charity, error) {
 	return charity, err
 }
 
-/* 
+/*
 	Sends an email from the contact form on a charity page to the contact email
 	associated with that charity's ID.
 */
