@@ -11,10 +11,38 @@
                 @submit="checkForm"
               >
 
-
               <div class="row">
                 <div class="col text-center">
                   <h3>Donation Center</h3>
+                </div>
+              </div>
+
+              <div class="shadow p-4 mb-3 bg-white rounded">
+                <div class="row p-2">
+                  <div class="col">
+                    <h5 class="p-2">Where are you located?</h5>
+                    <div class="row">
+                      <div class="col">
+                        <button :disabled="locating" v-on:click="locateUser" class="btn btn-success">
+                          <span v-if="locating" class="spinner-border spinner-border-sm text-light" role="status"></span>
+                          Use My Location
+                        </button>
+                      </div>
+                      <div class="col">
+                        <p v-if="locateError" style="color: red">Geolocation failed. Try using zip code.</p>
+                      </div>
+                      <div class="col">
+                        <label class="form-label" for="userZip">Or Enter Zip:</label>
+                        <input class="form-input" type="text" name="userZip" id="userZip" v-model="donate.userZip">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row p-2">
+                  <div class="col">
+                    <label for="proximity" class="form-label">Proximity - ${donate.proximity} miles</label>
+                    <input type="range" class="form-range" min="5" max="50" step="5" id="proximity" v-model="donate.proximity">
+                  </div>
                 </div>
               </div>
 
@@ -62,7 +90,7 @@
                     </div>
                   </div>
                   <hr>
-                
+
                 <div class="w-100 d-flex flex-column flex-wrap org-category-list">
                     {{ range .CharityTypes }}
                     <div class="category-col mb-1">

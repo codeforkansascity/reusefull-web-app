@@ -6,11 +6,15 @@ const app = new Vue({
     errorItems: false,
     errorCharity: false,
     hasError: false,
+    locating: false,
+    locateError: false,
     donate: {
       itemTypes: [],
       charityTypes: [],
       anyCharityType: null,
-      proximity: null,
+      proximity: '25',
+      lat: null,
+      long: null,
       pickupDropoff: null,
       zip: null,
     }
@@ -26,6 +30,32 @@ const app = new Vue({
     }
   },
   methods:{
+    locateUser: function(e) {
+      e.preventDefault();
+      self = this
+
+      if (navigator.geolocation) {
+        this.locating = true
+        var success =  function(pos) {
+          self.locating = false
+          console.log("got position" + pos)
+        }
+        var error = function(err) {
+          console.log(err)
+          self.locating = false
+          self.locateError = true
+          console.log("geo error " + err )
+        }
+        var options = {
+          enableHighAccuracy: false,
+          timeout: 2000,
+          maximumAge: 1000*60*60
+        }
+        navigator.geolocation.getCurrentPosition(success, error, options)
+      } else {
+        console.log("Geolocation is not supported by this browser.")
+      }
+    },
     checkForm: function (e) {
       e.preventDefault();
       console.log(this.donate.anyCharityType)
