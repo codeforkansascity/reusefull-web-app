@@ -26,7 +26,7 @@
             class="mb-4 img-fluid shadow bg-white rounded"
             width="400"
           >
-          <h5><a href="{{ .Charity.Website }}" target="_blank">{{.Charity.Website}}</a></h5>
+          <h5><a class="charityWebsiteLink" href="{{ .Charity.Website }}" target="_blank">{{.Charity.Website}}</a></h5>
 
           <p>
             {{ .Charity.Address }}<br>
@@ -88,13 +88,13 @@
           <p>Pickup: {{ if .Charity.Pickup }}Yes{{ else }}No{{ end }}</p>
           <p>Dropoff: {{ if .Charity.Dropoff }}Yes{{ else }}No{{ end }}</p>
           {{ if .Charity.CashDonationLink }}
-            <p>Cash Donation Link: <a href="{{ .Charity.CashDonationLink }}" target="_blank">{{ .Charity.CashDonationLink }}</a></p>
+            <p>Cash Donation Link: <a class="cashDonationLink" href="{{ .Charity.CashDonationLink }}" target="_blank">{{ .Charity.CashDonationLink }}</a></p>
           {{ end }}
           {{ if .Charity.AmazonWishlist }}
-            <p>Amazon Wishlist: <a href="{{ .Charity.AmazonWishlist }}" target="_blank">{{ .Charity.AmazonWishlist }}</a></p>
+            <p>Amazon Wishlist: <a class="amazonWishlistLink" href="{{ .Charity.AmazonWishlist }}" target="_blank">{{ .Charity.AmazonWishlist }}</a></p>
           {{ end }}
           {{ if .Charity.VolunteerSignup }}            
-            <p>Volunteer Signup: <a href="{{ .Charity.VolunteerSignup }}" target="_blank">{{ .Charity.VolunteerSignup }}</a></p>
+            <p>Volunteer Signup: <a class="volunteerSingupLink" href="{{ .Charity.VolunteerSignup }}" target="_blank">{{ .Charity.VolunteerSignup }}</a></p>
           {{ end }}
 
           <h5>Type of Charity</h5>
