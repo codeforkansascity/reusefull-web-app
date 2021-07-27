@@ -93,6 +93,7 @@ const app = new Vue({
         this.donate = donate;
         
         // emit an event for analytics to track how often an item category is searched for
+        window.dataLayer = window.dataLayer || []
         for (item of this.donate.itemTypes) {
           window.dataLayer.push({event: "item_category_search", itemCategory: item})
         }
