@@ -91,6 +91,12 @@ const app = new Vue({
       donate = JSON.parse(localStorage.getItem('donate'));
       if (donate != null) {
         this.donate = donate;
+        
+        // emit an event for analytics to track how often an item category is searched for
+        for (item of this.donate.itemTypes) {
+          window.dataLayer.push({event: "item_category_search", itemCategory: item})
+        }
+          
         fetch('/api/v1/donate/search', {
           method: 'post',
           body: JSON.stringify(this.donate),
