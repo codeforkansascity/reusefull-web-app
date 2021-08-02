@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"net/http"
 )
 
@@ -16,6 +17,11 @@ type Location struct {
 		Lat float32
 		Lng float32
 	}
+}
+
+type Coordinate struct {
+	Latitude  float64
+	Longitude float64
 }
 
 func Geocode(address string) (*Location, error) {
@@ -56,4 +62,26 @@ func Geocode(address string) (*Location, error) {
 	}
 
 	return &output.Items[0], nil
+}
+
+// Distance uses the Harversine (great circle distance) formula
+// for determining the distance between two coordinates
+// Converted to Go from this answer:
+//   https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+func Distance(lat1, lng1, lat2, lng2 float64) float64 {
+	earthRadiusKM := float64(6371)
+
+	dLat := deg2rad(lat2 - lat1)
+	dLon := deg2rad(lng2 - lng1)
+
+	a := math.Sin(dLat/2)*math.Sin(dLat/2) +
+		math.Cos(deg2rad(lat1))*math.Cos(deg2rad(lat2))*
+			math.Sin(dLon/2)*math.Sin(dLon/2)
+
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+	return earthRadiusKM * c
+}
+
+func deg2rad(deg float64) float64 {
+	return deg * (math.Pi / 180)
 }

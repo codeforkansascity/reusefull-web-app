@@ -45,6 +45,7 @@ type Charity struct {
 	Logo                    string   `json:"logo"`
 	Lat                     float64  `json:"lat"`
 	Lng                     float64  `json:"lng"`
+	Distance                float64  `json:"distance"`
 	Mission                 string   `json:"mission"`
 	Description             string   `json:"description"`
 	ItemTypes               []string `json:"itemTypes"`
@@ -77,8 +78,8 @@ type ItemType struct {
 
 type Message struct {
 	Sender string `json:"sender"`
-	Body string `json:"body"`
-	Name string `json:"name"`
+	Body   string `json:"body"`
+	Name   string `json:"name"`
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
@@ -900,7 +901,7 @@ func getCharity(id int) (Charity, error) {
 	return charity, err
 }
 
-/* 
+/*
 	Sends an email from the contact form on a charity page to the contact email
 	associated with that charity's ID.
 */

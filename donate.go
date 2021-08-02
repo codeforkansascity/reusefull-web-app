@@ -7,19 +7,32 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/RoaringBitmap/roaring"
 )
 
+const metersPerMile = 1609
+
 type DonateSearchRequest struct {
-	Zip            string   `json:"zip"`
 	OrgSize        string   `json:"orgSize"`
 	ItemTypes      []string `json:"itemTypes"`
 	CharityTypes   []string `json:"charityTypes"`
 	AnyCharityType bool     `json:"anyCharityType"`
 	PickupDropoff  string   `json:"pickupDropoff"`
 	Proximity      string   `json:"proximity"`
+	Zip            string   `json:"zip"`
+	Lat            float64  `json:"lat"`
+	Lng            float64  `json:"lng"`
+}
+
+type Zip struct {
+	ID       string `json:"id"`
+	Location struct {
+		Latitude  float64 `json:"latitude"`
+		Longitude float64 `json:"longitude"`
+	} `json:"location"`
 }
 
 func Donate(w http.ResponseWriter, r *http.Request) {
@@ -93,6 +106,83 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("%+v", req)
 
+	// Check if we need to look up the lat/long for a zip
+	if req.Lat == 0 && req.Lng == 0 && len(req.Zip) > 0 {
+		zipLocation := struct {
+			Data struct {
+				GetZip *Zip
+			}
+		}{}
+		err = dc.RawQuery(r.Context(), fmt.Sprintf(`
+		{
+		  getZip(id: "%s") {
+		    location {
+		      latitude
+		      longitude
+		    }
+		  }
+		}`, req.Zip), &zipLocation)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "server error", 500)
+			return
+		}
+		log.Println("got zip location")
+		req.Lat = zipLocation.Data.GetZip.Location.Latitude
+		req.Lng = zipLocation.Data.GetZip.Location.Longitude
+	}
+	locBits := roaring.New()
+	if req.Lat != 0 {
+		proximity, err := strconv.Atoi(req.Proximity)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "invalid proximity", 400)
+			return
+		}
+		charityDistance := struct {
+			Data struct {
+				QueryCharity []struct {
+					ID       int
+					Location struct {
+						Latitude  float64
+						Longitude float64
+					}
+				}
+			}
+		}{}
+		err = dc.RawQuery(r.Context(), fmt.Sprintf(`
+			{
+			  queryCharity(filter: {Location: {near: {distance: %d, coordinate: {longitude: %f, latitude: %f}}}}) {
+			    id: CharityID
+				Location {
+			      latitude
+			      longitude
+			    }
+			  }
+			}`, proximity*metersPerMile, req.Lng, req.Lat), &charityDistance)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "server error", 500)
+			return
+		}
+		log.Println(charityDistance.Data.QueryCharity)
+		if len(charityDistance.Data.QueryCharity) == 0 {
+			data, err := json.Marshal([]Charity{})
+			if err != nil {
+				log.Println(err)
+				http.Error(w, "server error", 500)
+				return
+			}
+			w.Write(data)
+			return
+		}
+
+		for _, charity := range charityDistance.Data.QueryCharity {
+			log.Println("charity within location: ", charity.ID, charity.Location)
+			locBits.AddInt(charity.ID)
+		}
+	}
+
 	itBits := roaring.New()
 	if len(req.ItemTypes) > 0 {
 		stmt := "select distinct charity_id from charity_item where item_id in (" + strings.Join(req.ItemTypes, ",") + ")"
@@ -145,7 +235,10 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 	if !req.AnyCharityType {
 		itBits.And(ctBits)
 	}
-	log.Println(itBits.String())
+	log.Println("itbits:", itBits.String())
+	log.Println("locBits:", locBits.String())
+	itBits.And(locBits)
+	log.Println("itbits:", itBits.String())
 
 	charities := []Charity{}
 	if itBits.GetCardinality() > 0 {
@@ -206,6 +299,9 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 			charity.LogoURL = logoURL.String
 			charity.Lat = lat.Float64
 			charity.Lng = lng.Float64
+			if req.Lat != 0 {
+				charity.Distance = Distance(req.Lat, req.Lng, charity.Lat, charity.Lng)
+			}
 			charities = append(charities, charity)
 		}
 	}
