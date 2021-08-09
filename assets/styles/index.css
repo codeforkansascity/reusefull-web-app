@@ -27,6 +27,11 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+/* wraps long links in profile views */
+.cashDonationLink, .amazonWishlistLink, .volunteerSignupLink, .charityWebsiteLink {
+  word-break: break-all;
+}
+
 /*
 Places an asterisk after required field labels
 */
