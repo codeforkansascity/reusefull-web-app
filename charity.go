@@ -983,13 +983,12 @@ func FormatPhone(phone string) string {
 	return formatted
 }
 
-// forcing absolute URL
 func convertToAbsoluteURL(url string) string {
-   	if len(url) > 4 {
-       		if url[:4] != "http" {
-            		url = "http://" + url
-        	}
-    	}
-	
-	return url
+    if len(url) > 4 {
+        if url[:4] != "http" {
+            url = "http://" + url
+        }
+    }
+
+    return url
 }
