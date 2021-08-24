@@ -985,8 +985,11 @@ func FormatPhone(phone string) string {
 
 // forcing absolute URL
 func convertToAbsoluteURL(url string) string {
-        if url[:4] != "http" {
-                url = "http://" + url
-        }
+   	if len(url) > 4 {
+       		if url[:4] != "http" {
+            		url = "http://" + url
+        	}
+    	}
+	
 	return url
 }
