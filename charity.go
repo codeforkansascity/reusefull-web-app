@@ -869,6 +869,12 @@ func getCharity(id int) (Charity, error) {
 	charity.City = city.String
 	charity.State = state.String
 	charity.Phone = FormatPhone(charity.Phone)
+	
+	// change relative links to absolute
+	charity.Website = convertToAbsoluteURL(charity.Website)
+	charity.AmazonWishlist = convertToAbsoluteURL(charity.AmazonWishlist)
+	charity.CashDonationLink = convertToAbsoluteURL(charity.CashDonationLink)
+	charity.VolunteerSignup = convertToAbsoluteURL(charity.VolunteerSignup)
 
 	// Get all the associated charity types
 	rows, err := db.Query("select ct.type_id, t.name from charity_type ct, types t where ct.type_id = t.id and charity_id =?", id)
@@ -975,4 +981,12 @@ func FormatPhone(phone string) string {
 
 	formatted := fmt.Sprintf("(%s) %s-%s", cleanedPhone[0:3], cleanedPhone[3:6], cleanedPhone[6:])
 	return formatted
+}
+
+// forcing absolute URL
+func convertToAbsoluteURL(url string) string {
+        if url[:4] != "http" {
+                url = "http://" + url
+        }
+	return url
 }
