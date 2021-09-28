@@ -153,7 +153,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 
 	charities := []Charity{}
 	if itBits.GetCardinality() > 0 {
-		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff, c.resell, c.new_items from charity c where c.id in ("
+		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff, c.resell, c.new_items, c.lat, c.lng from charity c where c.id in ("
 
 		first := true
 		it := itBits.Iterator()
@@ -206,6 +206,8 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 
 		for rows.Next() {
 			logoURL := sql.NullString{}
+			lat := sql.NullFloat64{}
+			lng := sql.NullFloat64{}
 			charity := Charity{}
 			err = rows.Scan(
 				&charity.Id,
@@ -221,6 +223,8 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				&charity.Dropoff,
 				&charity.Resell,
 				&charity.NewItems,
+        			&lat,
+        			&lng,
 			)
 			if err != nil {
 				log.Println(err)
@@ -228,6 +232,8 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			charity.LogoURL = logoURL.String
+			charity.Lat = lat.Float64
+			charity.Lng = lng.Float64
 			charities = append(charities, charity)
 		}
 	}

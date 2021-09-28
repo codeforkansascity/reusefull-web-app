@@ -10,8 +10,30 @@ body {
   border-bottom: 2px solid #d0d0d0;
 }
 
-/* 
-Places an asterisk after required field labels 
+.marker {
+  background-image: url('pin.svg');
+  background-size: cover;
+  width: 24px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* wraps long links in profile views */
+.cashDonationLink, .amazonWishlistLink, .volunteerSignupLink, .charityWebsiteLink {
+  word-break: break-all;
+}
+
+/*
+Places an asterisk after required field labels
 */
 .required-label::after {
   content: " *";

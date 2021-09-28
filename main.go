@@ -19,6 +19,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/sessions"
+	"github.com/hyprcubd/dgraphql"
 	_ "github.com/joho/godotenv/autoload"
 	"gopkg.in/auth0.v5/management"
 )
@@ -35,7 +36,11 @@ var (
 	auth0ClientSecret string
 	auth0RedirectURL  string
 	auth0LogoutURL    string
+	hereToken         string
+	dgraphToken       string
 	authManager       *management.Management
+
+	dc *dgraphql.Client
 )
 
 const (
@@ -77,6 +82,18 @@ func main() {
 	if !exists {
 		panic("AUTH0_LOGOUT_URL not found")
 	}
+
+	hereToken, exists = os.LookupEnv("HERE_TOKEN")
+	if !exists {
+		panic("HERE_TOKEN not found")
+	}
+
+	dgraphToken, exists = os.LookupEnv("DGRAPH_TOKEN")
+	if !exists {
+		panic("DGRAPH_TOKEN not found")
+	}
+
+	dc = dgraphql.New("https://reusefull.us-west-2.aws.cloud.dgraph.io/graphql", dgraphToken)
 
 	var err error
 	authManager, err = management.New("reusefull.us.auth0.com", management.WithClientCredentials(auth0ClientID, auth0ClientSecret))
@@ -151,6 +168,8 @@ func main() {
 
 		r.Post("/donate/search", DonateSearch)
 
+		r.Post("/charity/{id}/contact", CharityContact)
+
 		// Admin only api
 		r.Group(func(r chi.Router) {
 			r.Use(AuthMiddleware)
@@ -160,26 +179,12 @@ func main() {
 	})
 
 	srv := &http.Server{
-		Addr:         ":3000",
+		Addr:         ":80",
 		WriteTimeout: 30 * time.Second,
 		ReadTimeout:  30 * time.Second,
 		Handler:      r,
 	}
 	log.Println("Succesfully started")
-
-	go func() {
-		r := chi.NewRouter()
-		r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
-			http.Redirect(w, r, "https://app.reusefull.org"+r.RequestURI, 301)
-		})
-		srv := &http.Server{
-			Addr:         ":3001",
-			WriteTimeout: 10 * time.Second,
-			ReadTimeout:  10 * time.Second,
-			Handler:      r,
-		}
-		srv.ListenAndServe()
-	}()
 
 	err = srv.ListenAndServe()
 	if err != http.ErrServerClosed {

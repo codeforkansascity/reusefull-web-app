@@ -17,6 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/go-chi/chi"
 	"github.com/sethvargo/go-password/password"
+	"golang.org/x/net/context"
 	auth0 "gopkg.in/auth0.v5"
 	"gopkg.in/auth0.v5/management"
 )
@@ -32,7 +33,7 @@ type Charity struct {
 	Pickup                  bool     `json:"pickup"`
 	Dropoff                 bool     `json:"dropoff"`
 	Resell                  bool     `json:"resell"`
-	NewItems				bool 	 `json:"newItems"`
+	NewItems				        bool 	   `json:"newItems"`
 	AmazonWishlist          string   `json:"amazon"`
 	GoodItems               bool     `json:"goodItems"`
 	CashDonationLink        string   `json:"cashDonate"`
@@ -41,10 +42,10 @@ type Charity struct {
 	City                    string   `json:"city"`
 	State                   string   `json:"state"`
 	ZipCode                 string   `json:"zip"`
-	Lat                     string   `json:"lat"`
-	Long                    string   `json:"long"`
 	LogoURL                 string   `json:"logoURL"`
 	Logo                    string   `json:"logo"`
+	Lat                     float64  `json:"lat"`
+	Lng                     float64  `json:"lng"`
 	Mission                 string   `json:"mission"`
 	Description             string   `json:"description"`
 	ItemTypes               []string `json:"itemTypes"`
@@ -57,7 +58,7 @@ type Charity struct {
 	UserID                  string   `json:"userID"`
 	Approved                bool     `json:"approved"`
 	EmailVerified           bool     `json:"emailVerified"`
-	Paused					bool	 `json:"paused"`
+	Paused					        bool	   `json:"paused"`
 }
 
 type ErrorPage struct {
@@ -76,8 +77,15 @@ type ItemType struct {
 	Name string `json:"name"`
 }
 
+type Message struct {
+	Sender string `json:"sender"`
+	Body string `json:"body"`
+	Name string `json:"name"`
+}
+
 func ListCharities(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url from charity order by name")
+	rows, err := db.Query(`select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url
+		from charity where approved is true order by name`)
 	if err != nil {
 		log.Println(err)
 		t.ExecuteTemplate(w, "error.tmpl", ErrorPage{
@@ -402,6 +410,51 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Geocode
+	go func() {
+		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
+		log.Println("Geocoding address ", address)
+		loc, err := Geocode(address)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = dc.RawQuery(context.Background(), fmt.Sprintf(`
+			mutation {
+				updateCharity(input: {
+					filter: {
+						CharityID: {eq: %d}
+					},
+					set: {
+						Address: "%s",
+						City: "%s",
+						State: "%s",
+						Zip: "%s",
+						FullAddress: "%s",
+						Location: {
+							longitude: %f,
+							latitude: %f
+						},
+					}
+				}) {
+					numUids
+				}
+			}
+			`, charity.Id, charity.Address, charity.City, charity.State, charity.ZipCode, loc.Title, loc.Position.Lng, loc.Position.Lat), nil)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		log.Println("saved in dgraph")
+
+		_, err = db.Exec("update charity set lat=?, lng=? where id = ?", loc.Position.Lat, loc.Position.Lng, charity.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+	}()
+
 }
 
 func CharitySignUp1(w http.ResponseWriter, r *http.Request) {
@@ -591,6 +644,47 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "database error", 500)
 		return
 	}
+
+	// Geocode
+	go func() {
+		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
+		log.Println("Geocoding address ", address)
+		loc, err := Geocode(address)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		err = dc.RawQuery(context.Background(), fmt.Sprintf(`
+			mutation MyMutation {
+				addCharity(input: {
+					CharityID: %d,
+					Address: "%s",
+					City: "%s",
+					State: "%s",
+					Zip: "%s",
+					Location: {
+						longitude: %f,
+						latitude: %f
+					},
+					FullAddress: "%s"}) {
+					numUids
+				}
+			}
+			`, charity.Id, charity.Address, charity.City, charity.State, charity.ZipCode,
+			loc.Position.Lng, loc.Position.Lat, loc.Title), nil)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		log.Println("saved in dgraph")
+
+		_, err = db.Exec("update charity set lat=?, lng=? where id = ?", loc.Position.Lat, loc.Position.Lng, charity.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+	}()
 
 	go func() {
 		err := updateLogo(charity.Logo, int(charityID))
@@ -783,11 +877,11 @@ func getCharity(id int) (Charity, error) {
 	charity.Phone = FormatPhone(charity.Phone)
 	charity.Paused = paused.Bool
 
-// change relative links to absolute
-charity.Website = convertToAbsoluteURL(charity.Website)
-charity.AmazonWishlist = convertToAbsoluteURL(charity.AmazonWishlist)
-charity.CashDonationLink = convertToAbsoluteURL(charity.CashDonationLink)
-charity.VolunteerSignup = convertToAbsoluteURL(charity.VolunteerSignup)
+	// change relative links to absolute
+	charity.Website = convertToAbsoluteURL(charity.Website)
+	charity.AmazonWishlist = convertToAbsoluteURL(charity.AmazonWishlist)
+	charity.CashDonationLink = convertToAbsoluteURL(charity.CashDonationLink)
+	charity.VolunteerSignup = convertToAbsoluteURL(charity.VolunteerSignup)
 
 	// Get all the associated charity types
 	rows, err := db.Query("select ct.type_id, t.name from charity_type ct, types t where ct.type_id = t.id and charity_id =?", id)
@@ -831,6 +925,54 @@ charity.VolunteerSignup = convertToAbsoluteURL(charity.VolunteerSignup)
 	return charity, err
 }
 
+/*
+	Sends an email from the contact form on a charity page to the contact email
+	associated with that charity's ID.
+*/
+func CharityContact(w http.ResponseWriter, r *http.Request) {
+
+	// Extract message details from request body
+	buf, err := ioutil.ReadAll(r.Body)
+	message := Message{}
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+	err = json.Unmarshal(buf, &message)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
+	// Get charity's ID from URL params
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "id error", 400)
+		return
+	}
+
+	// Retrieve contact email associated with that charity
+	charityEmail := sql.NullString{}
+	err = db.QueryRow("select email from charity where id = ?", id).Scan(&charityEmail)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
+	// Send a formatted message with the sender's name, message, and contact email
+	err = sendContactEmail(charityEmail.String, message.Sender, message.Name, message.Body)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "server error", 500)
+		return
+	}
+
+}
+
 // Formats charity phone nums for display
 func FormatPhone(phone string) string {
 	/*
@@ -849,11 +991,11 @@ func FormatPhone(phone string) string {
 }
 
 func convertToAbsoluteURL(url string) string {
-	if len(url) > 4 {
-		if url[:4] != "http" {
-			url = "http://" + url
-		}
-	}
+    if len(url) > 4 {
+        if url[:4] != "http" {
+            url = "http://" + url
+        }
+    }
 
-	return url
+    return url
 }
