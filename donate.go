@@ -193,7 +193,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 			stmt += "and new_items is false "
 		}
 
-		stmt += "and approved is true "
+		stmt += "and paused is false and approved is true "
 
 		log.Println(stmt)
 		rows, err := db.Query(stmt)

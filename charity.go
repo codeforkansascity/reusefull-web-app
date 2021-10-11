@@ -33,7 +33,7 @@ type Charity struct {
 	Pickup                  bool     `json:"pickup"`
 	Dropoff                 bool     `json:"dropoff"`
 	Resell                  bool     `json:"resell"`
-	NewItems				bool 	 `json:"newItems"`
+	NewItems				        bool 	   `json:"newItems"`
 	AmazonWishlist          string   `json:"amazon"`
 	GoodItems               bool     `json:"goodItems"`
 	CashDonationLink        string   `json:"cashDonate"`
@@ -58,6 +58,7 @@ type Charity struct {
 	UserID                  string   `json:"userID"`
 	Approved                bool     `json:"approved"`
 	EmailVerified           bool     `json:"emailVerified"`
+	Paused					        bool	   `json:"paused"`
 }
 
 type ErrorPage struct {
@@ -335,7 +336,8 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		faith = ?,
 		good_items = ?,
 		new_items = ?,
-		taxid = ?
+		taxid = ?,
+		paused = ?
 		where id = ?
 		`,
 		charity.Name,
@@ -359,6 +361,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		charity.GoodItems,
 		charity.NewItems,
 		charity.TaxID,
+		charity.Paused,
 		id)
 	if err != nil {
 		log.Println("db error update", err)
@@ -526,7 +529,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, resell, new_items, taxid) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, resell, new_items, taxid, paused) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		charity.Name,
 		charity.Address,
 		charity.City,
@@ -547,6 +550,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		charity.Resell,
 		charity.NewItems,
 		charity.TaxID,
+		false,
 	)
 	if err != nil {
 		log.Println(err)
@@ -824,9 +828,10 @@ func getCharity(id int) (Charity, error) {
 	logoURL := sql.NullString{}
 	city := sql.NullString{}
 	state := sql.NullString{}
+	paused := sql.NullBool{}
 
 	charity := Charity{}
-	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, resell, new_items, approved, taxid, user_id, logo_url from charity where id = ?", id).Scan(
+	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, resell, new_items, approved, taxid, user_id, logo_url, paused from charity where id = ?", id).Scan(
 		&charity.Id,
 		&charity.Name,
 		&charity.Address,
@@ -852,6 +857,7 @@ func getCharity(id int) (Charity, error) {
 		&taxID,
 		&userID,
 		&logoURL,
+		&paused,
 	)
 	charity.ContactName = contactName.String
 	charity.Mission = mission.String
@@ -869,7 +875,8 @@ func getCharity(id int) (Charity, error) {
 	charity.City = city.String
 	charity.State = state.String
 	charity.Phone = FormatPhone(charity.Phone)
-	
+	charity.Paused = paused.Bool
+
 	// change relative links to absolute
 	charity.Website = convertToAbsoluteURL(charity.Website)
 	charity.AmazonWishlist = convertToAbsoluteURL(charity.AmazonWishlist)

@@ -60,7 +60,6 @@ const app = new Vue({
       response.json().then((data) => {
         this.loading = false;
         this.charity = data;
-        console.log(data)
       });
     });
   },

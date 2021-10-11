@@ -15,169 +15,172 @@
 
           <form
             @submit="save"
-            class="mb-4"
+            class="mb-4 row"
             v-cloak
           >
             <input type="hidden" v-model="id" v-init:id="{{.Charity.Id}}">
 
-            <div class="col mb-3">
-              <div class="row">
-                <div class="col-md-5">
-                  <img :src="charity.logoURL" width=400>
+            <div>
+
+                <div class="col mb-3">
+                    <div class="row">
+                        <div class="col-md-5">
+                        <img :src="charity.logoURL" width=400>
+                        </div>
+                        <div class="col-md-2">
+                        <h1> -> </h1>
+                        </div>
+                        <div class="col-md-5">
+                        <h5>Preview</h5>
+                        <img :src="charity.logo" width=200>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                  <h1> -> </h1>
+
+                <div class="col mb-3">
+                    <label for="file" class="form-label">Change Logo</label>
+                    <input type="file" name="file" @change="filePicked" accept="image/png, image/jpeg">
                 </div>
-                <div class="col-md-5">
-                  <h5>Preview</h5>
-                  <img :src="charity.logo" width=200>
+
+                <div class="col mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" v-model="charity.name">
                 </div>
-              </div>
-            </div>
 
-            <div class="col mb-3">
-              <label for="file" class="form-label">Change Logo</label>
-              <input type="file" name="file" @change="filePicked" accept="image/png, image/jpeg">
-            </div>
+                <div class="col mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" v-model="charity.address">
+                </div>
 
-            <div class="col mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" v-model="charity.name">
-            </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="zip" class="form-label">City</label>
+                        <input type="text" class="form-control" id="zip" v-model="charity.city">
+                    </div>
 
+                    <div class="col mb-3">
+                        <label for="state" class="form-label">State</label>
+                        <select id="state" class="form-select" v-model="charity.state">
+                        <option selected>Choose...</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="DC">District Of Columbia</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                        </select>
+                    </div>
 
-            <div class="col mb-3">
-              <label for="address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="address" v-model="charity.address">
-            </div>
+                    <div class="col mb-3">
+                        <label for="zip" class="form-label">Zip Code</label>
+                        <input type="text" class="form-control" id="zip" v-model="charity.zip">
+                    </div>
+                </div>
 
-            <div class="row">
-              <div class="col mb-3">
-                <label for="zip" class="form-label">City</label>
-                <input type="text" class="form-control" id="zip" v-model="charity.city">
-              </div>
+                <div class="col mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" maxlength="14" class="form-control" id="phone" v-model="formPhone">
+                </div>
 
-              <div class="col mb-3">
-                <label for="state" class="form-label">State</label>
-                <select id="state" class="form-select" v-model="charity.state">
-                  <option selected>Choose...</option>
-                  <option value="AL">Alabama</option>
-                  <option value="AK">Alaska</option>
-                  <option value="AZ">Arizona</option>
-                  <option value="AR">Arkansas</option>
-                  <option value="CA">California</option>
-                  <option value="CO">Colorado</option>
-                  <option value="CT">Connecticut</option>
-                  <option value="DE">Delaware</option>
-                  <option value="DC">District Of Columbia</option>
-                  <option value="FL">Florida</option>
-                  <option value="GA">Georgia</option>
-                  <option value="HI">Hawaii</option>
-                  <option value="ID">Idaho</option>
-                  <option value="IL">Illinois</option>
-                  <option value="IN">Indiana</option>
-                  <option value="IA">Iowa</option>
-                  <option value="KS">Kansas</option>
-                  <option value="KY">Kentucky</option>
-                  <option value="LA">Louisiana</option>
-                  <option value="ME">Maine</option>
-                  <option value="MD">Maryland</option>
-                  <option value="MA">Massachusetts</option>
-                  <option value="MI">Michigan</option>
-                  <option value="MN">Minnesota</option>
-                  <option value="MS">Mississippi</option>
-                  <option value="MO">Missouri</option>
-                  <option value="MT">Montana</option>
-                  <option value="NE">Nebraska</option>
-                  <option value="NV">Nevada</option>
-                  <option value="NH">New Hampshire</option>
-                  <option value="NJ">New Jersey</option>
-                  <option value="NM">New Mexico</option>
-                  <option value="NY">New York</option>
-                  <option value="NC">North Carolina</option>
-                  <option value="ND">North Dakota</option>
-                  <option value="OH">Ohio</option>
-                  <option value="OK">Oklahoma</option>
-                  <option value="OR">Oregon</option>
-                  <option value="PA">Pennsylvania</option>
-                  <option value="RI">Rhode Island</option>
-                  <option value="SC">South Carolina</option>
-                  <option value="SD">South Dakota</option>
-                  <option value="TN">Tennessee</option>
-                  <option value="TX">Texas</option>
-                  <option value="UT">Utah</option>
-                  <option value="VT">Vermont</option>
-                  <option value="VA">Virginia</option>
-                  <option value="WA">Washington</option>
-                  <option value="WV">West Virginia</option>
-                  <option value="WI">Wisconsin</option>
-                  <option value="WY">Wyoming</option>
-                </select>
-              </div>
+                <div class="col mb-3">
+                    <label for="contactName" class="form-label">Contact Name</label>
+                    <input type="text" class="form-control" id="contactName" v-model="charity.contactName">
+                </div>
 
-              <div class="col mb-3">
-                <label for="zip" class="form-label">Zip Code</label>
-                <input type="text" class="form-control" id="zip" v-model="charity.zip">
-              </div>
-            </div>
+                <div class="col mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" v-model="charity.email">
+                </div>
 
-            <div class="col mb-3">
-              <label for="phone" class="form-label">Phone</label>
-              <input type="tel" maxlength="14" class="form-control" id="phone" v-model="formPhone">
-            </div>
+                <div class="col mb-3">
+                    <label for="mission" class="form-label">Mission</label>
+                    <textarea rows="2" class="form-control" id="mission" v-model="charity.mission"></textarea>
+                </div>
 
-            <div class="col mb-3">
-              <label for="contactName" class="form-label">Contact Name</label>
-              <input type="text" class="form-control" id="contactName" v-model="charity.contactName">
-            </div>
+                <div class="col mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea rows="4" class="form-control" id="description" v-model="charity.description" ></textarea>
+                </div>
 
-            <div class="col mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" v-model="charity.email">
-            </div>
+                <div class="col mb-3">
+                    <label for="cashDonate" class="form-label">Cash Donation Link</label>
+                    <input type="text" class="form-control" id="cashDonate" v-model="charity.cashDonate">
+                </div>
 
-            <div class="col mb-3">
-              <label for="mission" class="form-label">Mission</label>
-              <textarea rows="2" class="form-control" id="mission" v-model="charity.mission"></textarea>
-            </div>
+                <div class="col mb-3">
+                    <label for="volunteer" class="form-label">Volunteer Signup</label>
+                    <input type="text" class="form-control" id="volunteer" v-model="charity.volunteer">
+                </div>
 
-            <div class="col mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea rows="4" class="form-control" id="description" v-model="charity.description" ></textarea>
-            </div>
+                <div class="col mb-3">
+                    <label for="website" class="form-label">Website</label>
+                    <input type="text" class="form-control" id="website" v-model="charity.website">
+                </div>
 
-            <div class="col mb-3">
-              <label for="cashDonate" class="form-label">Cash Donation Link</label>
-              <input type="text" class="form-control" id="cashDonate" v-model="charity.cashDonate">
-            </div>
+                <div class="col mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="dropoff" v-model="charity.dropoff">
+                        <label class="form-check-label" for="dropoff">We accept drop-offs</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="pickup" v-model="charity.pickup">
+                        <label class="form-check-label" for="pickup">We pick up donations</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="faith" v-model="charity.faith">
+                        <label class="form-check-label" for="faith">Faith-based charity</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="resell" v-model="charity.resell">
+                        <label class="form-check-label" for="resell">We resell items</label>
+                    </div>
+                </div>
 
-            <div class="col mb-3">
-              <label for="volunteer" class="form-label">Volunteer Signup</label>
-              <input type="text" class="form-control" id="volunteer" v-model="charity.volunteer">
-            </div>
-
-            <div class="col mb-3">
-              <label for="website" class="form-label">Website</label>
-              <input type="text" class="form-control" id="website" v-model="charity.website">
-            </div>
-
-            <div class="col mb-3">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="dropoff" v-model="charity.dropoff">
-                <label class="form-check-label" for="dropoff">We accept drop-offs</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="pickup" v-model="charity.pickup">
-                <label class="form-check-label" for="pickup">We pick up donations</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="faith" v-model="charity.faith">
-                <label class="form-check-label" for="faith">Faith-based charity</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="resell" v-model="charity.resell">
-                <label class="form-check-label" for="resell">We resell items</label>
-              </div>
             </div>
 
             <hr>
@@ -187,22 +190,27 @@
             </div>
 
             {{ range .CharityTypes }}
-            <div class="col-md-4 mb-1">
+            <div class="col-lg-4 mb-1">
               <div class="form-check p-1">
                   <input class="form-check-input" type="checkbox" value="{{.Id}}" id="{{.Id}}" v-model="charity.charityTypes">
                   <label for="{{.Id}}" class="form-check-label">{{.Name}}</label>
               </div>
             </div>
             {{ end }}
-
             <hr>
+
             <div class="col-md-12 mb-3">
-              <h2>Items that your charity accepts: </h2>
+                <h2>Items that your charity accepts: </h2>
             </div>
 
-            <div class="col-md-12 mb-3">
-              <input class="form-check-input" type="checkbox" id="newItems" v-model="charity.newItems">
-              <label for="newItems" class="form-check-label">New items only</label>
+            <div class="col-6">
+                <input class="form-check-input" type="checkbox" id="newItems" v-model="charity.newItems">
+                <label for="newItems" class="form-check-label">New items only</label>
+            </div>
+
+            <div class="form-check form-switch col-6">
+                <input type="checkbox" class="form-check-input" name="paused" v-model="charity.paused">
+                <label for="paused" class="form-check-label">Pause Donations</label>
             </div>
             <hr>
 
