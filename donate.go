@@ -15,9 +15,9 @@ import (
 type DonateSearchRequest struct {
 	Zip            string   `json:"zip"`
 	OrgSize        string   `json:"orgSize"`
-	Resell		   bool		`json:"resell"`
-	Faith 		   bool		`json:"faith"`
-	NewItems	   bool		`json:"newItems"`
+	Resell         bool     `json:"resell"`
+	Faith          bool     `json:"faith"`
+	NewItems       bool     `json:"newItems"`
 	ItemTypes      []string `json:"itemTypes"`
 	CharityTypes   []string `json:"charityTypes"`
 	AnyCharityType bool     `json:"anyCharityType"`
@@ -174,23 +174,23 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 
 		// Adding "resells items" to query
 		if req.Resell == true {
-			stmt += "and resell is true "
+			stmt += "AND resell IS true "
 		} else if req.Resell == false {
-			stmt += "and resell is false "
+			stmt += "AND (resell IS false OR resell IS NULL) "
 		}
 
 		// "faith"
 		if req.Faith == true {
-			stmt += "and faith is true "
+			stmt += "AND faith IS true "
 		} else if req.Faith == false {
-			stmt += "and faith is false "
+			stmt += "AND (faith IS false OR faith IS NULL) "
 		}
 
 		// "new items only"
 		if req.NewItems == true {
-			stmt += "and new_items is true "
+			stmt += "AND new_items IS true "
 		} else if req.NewItems == false {
-			stmt += "and new_items is false "
+			stmt += "AND (new_items IS false OR new_items IS NULL) "
 		}
 
 		stmt += "and paused is false and approved is true "
@@ -223,8 +223,8 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 				&charity.Dropoff,
 				&charity.Resell,
 				&charity.NewItems,
-        			&lat,
-        			&lng,
+				&lat,
+				&lng,
 			)
 			if err != nil {
 				log.Println(err)

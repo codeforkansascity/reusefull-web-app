@@ -29,11 +29,11 @@ type Charity struct {
 	Phone                   string   `json:"phone"`
 	Website                 string   `json:"website"`
 	Email                   string   `json:"email"`
-	Faith                   bool     `json:"faith"`
+	Faith                   *bool    `json:"faith"`
 	Pickup                  bool     `json:"pickup"`
 	Dropoff                 bool     `json:"dropoff"`
-	Resell                  bool     `json:"resell"`
-	NewItems				        bool 	   `json:"newItems"`
+	Resell                  *bool    `json:"resell"`
+	NewItems                *bool    `json:"newItems"`
 	AmazonWishlist          string   `json:"amazon"`
 	GoodItems               bool     `json:"goodItems"`
 	CashDonationLink        string   `json:"cashDonate"`
@@ -58,7 +58,7 @@ type Charity struct {
 	UserID                  string   `json:"userID"`
 	Approved                bool     `json:"approved"`
 	EmailVerified           bool     `json:"emailVerified"`
-	Paused					        bool	   `json:"paused"`
+	Paused                  bool     `json:"paused"`
 }
 
 type ErrorPage struct {
@@ -79,8 +79,8 @@ type ItemType struct {
 
 type Message struct {
 	Sender string `json:"sender"`
-	Body string `json:"body"`
-	Name string `json:"name"`
+	Body   string `json:"body"`
+	Name   string `json:"name"`
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
@@ -410,6 +410,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	/**
 	// Geocode
 	go func() {
 		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
@@ -454,6 +455,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}()
+	**/
 
 }
 
@@ -865,9 +867,9 @@ func getCharity(id int) (Charity, error) {
 	charity.LogoURL = linkLogo.String
 	charity.Pickup = pickup.Bool
 	charity.Dropoff = dropoff.Bool
-	charity.Faith = faith.Bool
-	charity.Resell = resell.Bool
-	charity.NewItems = newItems.Bool
+	charity.Faith = &faith.Bool
+	charity.Resell = &resell.Bool
+	charity.NewItems = &newItems.Bool
 	charity.Approved = approved.Bool
 	charity.TaxID = taxID.String
 	charity.UserID = userID.String
@@ -991,11 +993,11 @@ func FormatPhone(phone string) string {
 }
 
 func convertToAbsoluteURL(url string) string {
-    if len(url) > 4 {
-        if url[:4] != "http" {
-            url = "http://" + url
-        }
-    }
+	if len(url) > 4 {
+		if url[:4] != "http" {
+			url = "http://" + url
+		}
+	}
 
-    return url
+	return url
 }
