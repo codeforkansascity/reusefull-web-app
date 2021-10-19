@@ -410,7 +410,6 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	/**
 	// Geocode
 	go func() {
 		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
@@ -455,7 +454,6 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}()
-	**/
 
 }
 
