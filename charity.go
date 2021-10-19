@@ -33,7 +33,7 @@ type Charity struct {
 	Pickup                  bool     `json:"pickup"`
 	Dropoff                 bool     `json:"dropoff"`
 	Resell                  bool     `json:"resell"`
-	NewItems				        bool 	   `json:"newItems"`
+	NewItems                bool     `json:"newItems"`
 	AmazonWishlist          string   `json:"amazon"`
 	GoodItems               bool     `json:"goodItems"`
 	CashDonationLink        string   `json:"cashDonate"`
@@ -58,7 +58,7 @@ type Charity struct {
 	UserID                  string   `json:"userID"`
 	Approved                bool     `json:"approved"`
 	EmailVerified           bool     `json:"emailVerified"`
-	Paused					        bool	   `json:"paused"`
+	Paused                  bool     `json:"paused"`
 }
 
 type ErrorPage struct {
@@ -79,8 +79,8 @@ type ItemType struct {
 
 type Message struct {
 	Sender string `json:"sender"`
-	Body string `json:"body"`
-	Name string `json:"name"`
+	Body   string `json:"body"`
+	Name   string `json:"name"`
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
@@ -991,11 +991,15 @@ func FormatPhone(phone string) string {
 }
 
 func convertToAbsoluteURL(url string) string {
-    if len(url) > 4 {
-        if url[:4] != "http" {
-            url = "http://" + url
-        }
-    }
+	if len(url) > 4 {
+		if strings.Contains(url, "@") {
+			url = "mailto:" + url
+			return url
+		}
+		if !strings.Contains(url, "http") {
+			url = "http://" + url
+		}
+	}
 
-    return url
+	return url
 }
