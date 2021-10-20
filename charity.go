@@ -992,7 +992,11 @@ func FormatPhone(phone string) string {
 
 func convertToAbsoluteURL(url string) string {
 	if len(url) > 4 {
-		if url[:4] != "http" {
+		if strings.Contains(url, "@") {
+			url = "mailto:" + url
+			return url
+		}
+		if !strings.Contains(url, "http") {
 			url = "http://" + url
 		}
 	}
