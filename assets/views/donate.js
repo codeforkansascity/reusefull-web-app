@@ -7,9 +7,9 @@ const app = new Vue({
     errorCharity: false,
     hasError: false,
     donate: {
-      resell: false,
+      resell: true,
       newItems: false,
-      faith: false,
+      faith: true,
       itemTypes: [],
       charityTypes: [],
       anyCharityType: null,
@@ -31,7 +31,6 @@ const app = new Vue({
   methods:{
     checkForm: function (e) {
       e.preventDefault();
-      console.log(this.donate.anyCharityType)
 
       this.hasError = false
       this.errorPickup = false

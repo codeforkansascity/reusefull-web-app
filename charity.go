@@ -29,11 +29,11 @@ type Charity struct {
 	Phone                   string   `json:"phone"`
 	Website                 string   `json:"website"`
 	Email                   string   `json:"email"`
-	Faith                   bool     `json:"faith"`
+	Faith                   *bool    `json:"faith"`
 	Pickup                  bool     `json:"pickup"`
 	Dropoff                 bool     `json:"dropoff"`
-	Resell                  bool     `json:"resell"`
-	NewItems                bool     `json:"newItems"`
+	Resell                  *bool    `json:"resell"`
+	NewItems                *bool    `json:"newItems"`
 	AmazonWishlist          string   `json:"amazon"`
 	GoodItems               bool     `json:"goodItems"`
 	CashDonationLink        string   `json:"cashDonate"`
@@ -865,9 +865,9 @@ func getCharity(id int) (Charity, error) {
 	charity.LogoURL = linkLogo.String
 	charity.Pickup = pickup.Bool
 	charity.Dropoff = dropoff.Bool
-	charity.Faith = faith.Bool
-	charity.Resell = resell.Bool
-	charity.NewItems = newItems.Bool
+	charity.Faith = &faith.Bool
+	charity.Resell = &resell.Bool
+	charity.NewItems = &newItems.Bool
 	charity.Approved = approved.Bool
 	charity.TaxID = taxID.String
 	charity.UserID = userID.String
