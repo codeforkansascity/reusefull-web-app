@@ -172,25 +172,19 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 			stmt += "and dropoff is true "
 		}
 
-		// Adding "resells items" to query
-		if req.Resell == true {
-			stmt += "AND resell IS true "
-		} else if req.Resell == false {
+		// only filter by resell if not selected (include by default)
+		if !req.Resell {
 			stmt += "AND (resell IS false OR resell IS NULL) "
 		}
 
-		// "faith"
-		if req.Faith == true {
-			stmt += "AND faith IS true "
-		} else if req.Faith == false {
+		// only filter by faith if checkbox isn't selected (include by default)
+		if !req.Faith {
 			stmt += "AND (faith IS false OR faith IS NULL) "
 		}
 
-		// "new items only"
-		if req.NewItems == true {
+		// if selected, only include orgs that require new items
+		if req.NewItems {
 			stmt += "AND new_items IS true "
-		} else if req.NewItems == false {
-			stmt += "AND (new_items IS false OR new_items IS NULL) "
 		}
 
 		stmt += "and paused is false and approved is true "
