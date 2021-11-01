@@ -60,6 +60,11 @@ Vue.component('charity-card', {
           <strong>Phone:</strong>
           <a :href="phoneLink">{{phone}}</a>
         </div>
+        <div>
+          <i class="bi bi-globe"></i>
+          <strong>Website:</strong>
+          <a :href="charity.website">{{charity.website}}</a>
+        </div>
       </div>
     </div>
   </div>
