@@ -15,6 +15,12 @@ Vue.component('charity-card', {
         `-${clean.slice(6, 10)}`
       );
     },
+    charityWebsite() {
+      if (this.charity.website.slice(0,4) !== "http") {
+        return "http://" + this.charity.website
+      }
+      return this.charity.website
+    },
     mapLink() {
       return (
         `https://www.google.com/` +
@@ -59,6 +65,11 @@ Vue.component('charity-card', {
           <i class="bi bi-telephone-fill"></i>
           <strong>Phone:</strong>
           <a :href="phoneLink">{{phone}}</a>
+        </div>
+        <div>
+          <i class="bi bi-globe"></i>
+          <strong>Website:</strong>
+          <a :href="charityWebsite">{{charityWebsite}}</a>
         </div>
       </div>
     </div>
