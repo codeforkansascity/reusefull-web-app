@@ -28,32 +28,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </button>
         </div>
         <div class="navbar-collapse collapse order-3 dual-collapse2">
-          <ul class="navbar-nav ms-auto">
+          <ul class="navbar-nav mx-auto">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="https://reusefull.org">Home</a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="/donate">Donate</a>
-            </li>
-
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                FAQs
+              <a class="nav-link dropdown-toggle" href="#" id="donateToggle" role="button" data-bs-toggle="dropdown">
+                Donors
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="https://reusefull.org/faqs/">Donate</a></li>
-                <li><a class="dropdown-item" href="https://reusefull.org/become-a-charity-partner/">Charity Partner</a></li>
+                <li><a class="dropdown-item" href="/donate">Donate</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/faqs/donor-faqs/">Donor FAQs</a></li>
               </ul>
             </li>
 
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="aboutUsDropdown" role="button" data-bs-toggle="dropdown">
-                About Us
+              <a class="nav-link dropdown-toggle" href="#" id="getInvolvedToggle" role="button" data-bs-toggle="dropdown">
+                Get Involved
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="https://reusefull.org/get-involved/">Get Involved</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/contact-us/">Contact Us</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/sign-up-for-our-newsletter/">Sign up for our newsletter!</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/events/">All Events</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/signup-is-open/">Re.Use.Full Reverse Scavenger Hunt</a></li>
               </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="forCharityPartnersDropdown" role="button" data-bs-toggle="dropdown">
+                For Charity Partners
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="https://app.reusefull.org/charity/signup/step/1">Signup</a></li>
+                <li><a class="dropdown-item" href="https://app.reusefull.org/auth/login">Update Profile</a></li>
+                <li><a class="dropdown-item" href="https://reusefull.org/become-a-charity-partner/">Charity Partner FAQs</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-nowrap" href="https://reusefull.org/about-us">About Us</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link text-nowrap" href="https://reusefull.org/blog">Blog</a>
             </li>
 
             {{ if .User.Admin }}
