@@ -37,6 +37,12 @@ type Charity struct {
 	Approved                bool     `json:"approved"`
 	EmailVerified           bool     `json:"emailVerified"`
 	Paused                  bool     `json:"paused"`
+	Facebook                string   `json:"facebook"`
+	Twitter                 string   `json:"twitter"`
+	Instagram               string   `json:"instagram"`
+	YouTube                 string   `json:"youtube"`
+	Snapchat                string   `json:"snapchat"`
+	TikTok                  string   `json:"tiktok"`
 }
 
 type CharityType struct {

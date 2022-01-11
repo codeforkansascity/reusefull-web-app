@@ -488,7 +488,61 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	res, err := tx.Exec("insert into charity (name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, pickup, dropoff, faith, resell, new_items, taxid, paused) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	res, err := tx.Exec(`insert into charity (
+		name, 
+		address, 
+		city, 
+		state, 
+		zip_code, 
+		phone, 
+		email, 
+		contact_name, 
+		mission, description, 
+		link_donate_cash, 
+		link_volunteer, 
+		link_website, 
+		link_wishlist,
+		link_facebook,
+		link_twitter,
+		link_instagram,
+		link_youtube,
+		link_snapchat,
+		link_tiktok, 
+		pickup, 
+		dropoff, 
+		faith, 
+		resell, 
+		new_items, 
+		taxid, 
+		paused
+		) values (
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?, 
+		?,
+		?,
+		?,
+		?,
+		?,
+		?,
+		?)`,
 		charity.Name,
 		charity.Address,
 		charity.City,
@@ -503,6 +557,12 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		charity.VolunteerSignup,
 		charity.Website,
 		charity.AmazonWishlist,
+		charity.Facebook,
+		charity.Twitter,
+		charity.Instagram,
+		charity.YouTube,
+		charity.Snapchat,
+		charity.TikTok,
 		charity.Pickup,
 		charity.Dropoff,
 		charity.Faith,
@@ -604,6 +664,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	/*
 	// Geocode
 	go func() {
 		address := fmt.Sprintf("%s %s, %s %s", charity.Address, charity.City, charity.State, charity.ZipCode)
@@ -644,6 +705,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		}
 
 	}()
+	*/
 
 	go func() {
 		err := updateLogo(charity.Logo, int(charityID))
