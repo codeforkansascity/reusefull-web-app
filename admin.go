@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi"
+	"github.com/hyprcubd/reusefull/models"
 )
 
 func AdminView(w http.ResponseWriter, r *http.Request) {
@@ -29,14 +30,14 @@ func AdminView(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	charities := []Charity{}
+	charities := []models.Charity{}
 	for rows.Next() {
 		logoURL := sql.NullString{}
 		pickup := sql.NullBool{}
 		dropoff := sql.NullBool{}
 		userID := sql.NullString{}
 
-		charity := Charity{}
+		charity := models.Charity{}
 		err := rows.Scan(
 			&charity.Id,
 			&charity.Name,
@@ -104,7 +105,7 @@ func AdminView(w http.ResponseWriter, r *http.Request) {
 
 	err = t.ExecuteTemplate(w, "adminView.tmpl", struct {
 		User      User
-		Charities []Charity
+		Charities []models.Charity
 	}{
 		User:      user,
 		Charities: charities,

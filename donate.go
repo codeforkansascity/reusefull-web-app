@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/RoaringBitmap/roaring"
+	"github.com/hyprcubd/reusefull/models"
 )
 
 type DonateSearchRequest struct {
@@ -48,7 +49,7 @@ func Donate(w http.ResponseWriter, r *http.Request) {
 
 	err = t.ExecuteTemplate(w, "donate.tmpl", struct {
 		User         User
-		CharityTypes []CharityType
+		CharityTypes []models.CharityType
 		ItemTypes    []ItemType
 	}{
 		User:         r.Context().Value("user").(User),
@@ -151,7 +152,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(itBits.String())
 
-	charities := []Charity{}
+	charities := []models.Charity{}
 	if itBits.GetCardinality() > 0 {
 		stmt := "select c.id, c.name, c.address, c.city, c.state, c.zip_code, c.phone, c.mission, c.logo_url, c.pickup, c.dropoff, c.resell, c.new_items, c.lat, c.lng, c.link_website from charity c where c.id in ("
 
@@ -202,7 +203,7 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 			logoURL := sql.NullString{}
 			lat := sql.NullFloat64{}
 			lng := sql.NullFloat64{}
-			charity := Charity{}
+			charity := models.Charity{}
 			err = rows.Scan(
 				&charity.Id,
 				&charity.Name,

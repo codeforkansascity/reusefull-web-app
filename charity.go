@@ -16,60 +16,19 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/go-chi/chi"
+	"github.com/hyprcubd/reusefull/models"
 	"github.com/sethvargo/go-password/password"
 	"golang.org/x/net/context"
 	auth0 "gopkg.in/auth0.v5"
 	"gopkg.in/auth0.v5/management"
 )
 
-type Charity struct {
-	Id                      int      `json:"id"`
-	Name                    string   `json:"name"`
-	ContactName             string   `json:"contactName"`
-	Phone                   string   `json:"phone"`
-	Website                 string   `json:"website"`
-	Email                   string   `json:"email"`
-	Faith                   *bool    `json:"faith"`
-	Pickup                  bool     `json:"pickup"`
-	Dropoff                 bool     `json:"dropoff"`
-	Resell                  *bool    `json:"resell"`
-	NewItems                *bool    `json:"newItems"`
-	AmazonWishlist          string   `json:"amazon"`
-	GoodItems               bool     `json:"goodItems"`
-	CashDonationLink        string   `json:"cashDonate"`
-	VolunteerSignup         string   `json:"volunteer"`
-	Address                 string   `json:"address"`
-	City                    string   `json:"city"`
-	State                   string   `json:"state"`
-	ZipCode                 string   `json:"zip"`
-	LogoURL                 string   `json:"logoURL"`
-	Logo                    string   `json:"logo"`
-	Lat                     float64  `json:"lat"`
-	Lng                     float64  `json:"lng"`
-	Mission                 string   `json:"mission"`
-	Description             string   `json:"description"`
-	ItemTypes               []string `json:"itemTypes"`
-	ItemTypeDescriptions    []string `json:"itemTypeDescriptions"`
-	CharityTypes            []string `json:"charityTypes"`
-	CharityTypeDescriptions []string `json:"charityTypeDescriptions"`
-	CharityTypeOther        string   `json:"other"`
-	Budget                  string   `json:"budget"`
-	TaxID                   string   `json:"taxID"`
-	UserID                  string   `json:"userID"`
-	Approved                bool     `json:"approved"`
-	EmailVerified           bool     `json:"emailVerified"`
-	Paused                  bool     `json:"paused"`
-}
+
 
 type ErrorPage struct {
 	ErrorCode int
 	Error     string
 	Image     string
-}
-
-type CharityType struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
 }
 
 type ItemType struct {
@@ -96,13 +55,13 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	charities := []Charity{}
+	charities := []models.Charity{}
 	for rows.Next() {
 		logoURL := sql.NullString{}
 		pickup := sql.NullBool{}
 		dropoff := sql.NullBool{}
 
-		charity := Charity{}
+		charity := models.Charity{}
 		err := rows.Scan(
 			&charity.Id,
 			&charity.Name,
@@ -133,7 +92,7 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 
 	t.ExecuteTemplate(w, "charityList.tmpl", struct {
 		User      User
-		Charities []Charity
+		Charities []models.Charity
 	}{
 		User:      r.Context().Value("user").(User),
 		Charities: charities,
@@ -170,7 +129,7 @@ func ViewCharity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t.ExecuteTemplate(w, "charityView.tmpl", struct {
-		Charity Charity
+		Charity models.Charity
 		User    User
 	}{
 		Charity: charity,
@@ -261,8 +220,8 @@ func EditCharity(w http.ResponseWriter, r *http.Request) {
 
 	t.ExecuteTemplate(w, "charityEdit.tmpl", struct {
 		User         User
-		Charity      Charity
-		CharityTypes []CharityType
+		Charity      models.Charity
+		CharityTypes []models.CharityType
 		ItemTypes    []ItemType
 	}{
 		User:         user,
@@ -292,7 +251,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	charity := Charity{}
+	charity := models.Charity{}
 	err = json.Unmarshal(buf, &charity)
 	if err != nil {
 		log.Println(err)
@@ -478,7 +437,7 @@ func CharitySignUp2(w http.ResponseWriter, r *http.Request) {
 
 	t.ExecuteTemplate(w, "charitySignUp2.tmpl", struct {
 		User         User
-		CharityTypes []CharityType
+		CharityTypes []models.CharityType
 	}{
 		User:         r.Context().Value("user").(User),
 		CharityTypes: types,
@@ -513,7 +472,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	charity := Charity{}
+	charity := models.Charity{}
 	err = json.Unmarshal(buf, &charity)
 	if err != nil {
 		log.Println(err)
@@ -774,15 +733,15 @@ func updateLogo(data string, id int) error {
 	return err
 }
 
-func getCharityTypes() ([]CharityType, error) {
+func getCharityTypes() ([]models.CharityType, error) {
 	rows, err := db.Query("select id, name from types")
 	if err != nil {
 		return nil, err
 	}
 
-	types := []CharityType{}
+	types := []models.CharityType{}
 	for rows.Next() {
-		t := CharityType{}
+		t := models.CharityType{}
 		err = rows.Scan(&t.Id, &t.Name)
 		if err != nil {
 			return nil, err
@@ -812,7 +771,7 @@ func getItemTypes() ([]ItemType, error) {
 	return types, nil
 }
 
-func getCharity(id int) (Charity, error) {
+func getCharity(id int) (models.Charity, error) {
 	contactName := sql.NullString{}
 	mission := sql.NullString{}
 	description := sql.NullString{}
@@ -830,7 +789,7 @@ func getCharity(id int) (Charity, error) {
 	state := sql.NullString{}
 	paused := sql.NullBool{}
 
-	charity := Charity{}
+	charity := models.Charity{}
 	err := db.QueryRow("select id, name, address, city, state, zip_code, phone, email, contact_name, mission, description, link_donate_cash, link_volunteer, link_website, link_wishlist, link_logo, pickup, dropoff, faith, resell, new_items, approved, taxid, user_id, logo_url, paused from charity where id = ?", id).Scan(
 		&charity.Id,
 		&charity.Name,
