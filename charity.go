@@ -975,6 +975,9 @@ func CharityContact(w http.ResponseWriter, r *http.Request) {
 
 // Formats charity phone nums for display
 func FormatPhone(phone string) string {
+	if len(phone) < 6 {
+		return phone
+	}
 	/*
 		Some phone nums currently contain non-num chars.
 		Once cleaning performed on submission, this regex filter
