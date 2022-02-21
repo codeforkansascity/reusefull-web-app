@@ -225,7 +225,7 @@ func EditCharity(w http.ResponseWriter, r *http.Request) {
 
 	// Only admins or the owner of the charity can edit
 	user := r.Context().Value("user").(User)
-	if user.LoggedIn {
+	if user.Admin {
 		user.CanEdit = true
 	} else if user.LoggedIn {
 		user.CanEdit = user.ID == charity.UserID
