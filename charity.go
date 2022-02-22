@@ -84,7 +84,7 @@ type Message struct {
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url
+	rows, err := db.Query(`select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url, link_website
 		from charity where approved is true order by name`)
 	if err != nil {
 		log.Println(err)
@@ -114,6 +114,7 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 			&charity.ZipCode,
 			&charity.Phone,
 			&logoURL,
+			&charity.Website,
 		)
 		if err != nil {
 			log.Println(err)
@@ -128,6 +129,7 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 		charity.Pickup = pickup.Bool
 		charity.Dropoff = dropoff.Bool
 		charity.LogoURL = logoURL.String
+		charity.Website = convertToAbsoluteURL(charity.Website)
 		charities = append(charities, charity)
 	}
 
