@@ -1,43 +1,50 @@
 body {
-  min-width: 320px;
+    min-width: 320px;
 }
 
 .nav-link {
-  border-bottom: 2px solid transparent;
+    border-bottom: 2px solid transparent;
 }
 
 .nav-link:hover {
-  border-bottom: 2px solid #d0d0d0;
+    border-bottom: 2px solid #d0d0d0;
 }
 
 .marker {
-  background-image: url('pin.svg');
-  background-size: cover;
-  width: 24px;
-  height: 32px;
-  cursor: pointer;
+    background-image: url("pin.svg");
+    background-size: cover;
+    width: 24px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.card-logo {
+    width: 300px;
 }
 
 .mapboxgl-popup {
-  max-width: 200px;
+    max-width: 200px;
 }
 
 .mapboxgl-popup-content {
-  text-align: center;
-  font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
 }
 
 /* wraps long links in profile views */
-.cashDonationLink, .amazonWishlistLink, .volunteerSignupLink, .charityWebsiteLink {
-  word-break: break-all;
+.cashDonationLink,
+.amazonWishlistLink,
+.volunteerSignupLink,
+.charityWebsiteLink {
+    word-break: break-all;
 }
 
 /*
 Places an asterisk after required field labels
 */
 .required-label::after {
-  content: " *";
-  color: red;
+    content: " *";
+    color: red;
 }
 
 /*
@@ -45,7 +52,7 @@ This is to hide elements before Vue.js has loaded
 Prevents "flashing" of an empty error list for example
 */
 [v-cloak] > * {
-  display: none;
+    display: none;
 }
 
 @media (min-width: 768px) {
