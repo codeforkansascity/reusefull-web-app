@@ -84,7 +84,7 @@ type Message struct {
 }
 
 func ListCharities(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query(`select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url
+	rows, err := db.Query(`select id, name, pickup, dropoff, address, city, state, zip_code, phone, logo_url, link_website
 		from charity where approved is true order by name`)
 	if err != nil {
 		log.Println(err)
@@ -114,6 +114,7 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 			&charity.ZipCode,
 			&charity.Phone,
 			&logoURL,
+			&charity.Website,
 		)
 		if err != nil {
 			log.Println(err)
@@ -128,6 +129,7 @@ func ListCharities(w http.ResponseWriter, r *http.Request) {
 		charity.Pickup = pickup.Bool
 		charity.Dropoff = dropoff.Bool
 		charity.LogoURL = logoURL.String
+		charity.Website = convertToAbsoluteURL(charity.Website)
 		charities = append(charities, charity)
 	}
 
@@ -279,12 +281,6 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := r.Context().Value("user").(User)
-	if !user.Admin {
-		http.Error(w, "Forbidden", 403)
-		return
-	}
-
 	buf, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Println(err)
@@ -300,6 +296,17 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user := r.Context().Value("user").(User)
+	if user.Admin {
+		user.CanEdit = true
+	} else if user.LoggedIn {
+		user.CanEdit = user.ID == charity.UserID
+	}
+	if !user.CanEdit {
+		http.Error(w, "Forbidden", 403)
+		return
+	}
+	
 	err = updateLogo(charity.Logo, id)
 	if err != nil {
 		log.Println(err)
