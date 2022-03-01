@@ -87,14 +87,14 @@ func main() {
 	if !exists {
 		panic("HERE_TOKEN not found")
 	}
-/*
+
 	dgraphToken, exists = os.LookupEnv("DGRAPH_TOKEN")
 	if !exists {
 		panic("DGRAPH_TOKEN not found")
 	}
 
 	dc = dgraphql.New("https://reusefull.us-west-2.aws.cloud.dgraph.io/graphql", dgraphToken)
-*/
+
 	var err error
 	authManager, err = management.New("reusefull.us.auth0.com", management.WithClientCredentials(auth0ClientID, auth0ClientSecret))
 	if err != nil {
