@@ -40,7 +40,7 @@ Vue.component("charity-card", {
                 />
             </a>
             <div class="card-body">
-                <h5 class="card-title"><a :href="charityLink">{{ charity.Name }}</a></h5>
+                <h5 class="card-title"><a :href="charityLink">{{ charity.name }}</a></h5>
                 <div class="my-1"><strong>Pick-Up:</strong>
                     <i class="bi bi-check-circle" style="color: green" v-if="charity.pickup"></i>
                     <i class="bi bi-x-circle" style="color: red" v-if="!charity.pickup"></i>
@@ -126,7 +126,6 @@ const app = new Vue({
                         });
 
                         for (const c of charities) {
-                            console.log(c);
                             var el = document.createElement("div");
                             el.className = "marker";
 
