@@ -68,3 +68,8 @@ Prevents "flashing" of an empty error list for example
         max-height: 280px;
     }
 }
+
+/* limits org mission paragraph size */
+.org-card-mission {
+    max-width: 35em;
+}

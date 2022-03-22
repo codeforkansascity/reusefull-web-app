@@ -67,6 +67,9 @@ Vue.component("charity-card", {
                         <a :href="charityWebsite">{{ charityWebsite }}</a>
                     </div>
                 </div>
+                <p class="fst-italic mr-auto my-4 org-card-mission" v-if="charity.mission">
+                    {{ charity.mission }}
+                </p>
             </div>
         </div>
     </div>
