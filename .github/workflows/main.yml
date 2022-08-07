@@ -34,7 +34,7 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ github.token }}
-          repository: codeforkansascity/reusefull-web-app
+          repository: codeforkansascity/reusefull-web-app/reusefull-web-app
           registry: docker.pkg.github.com
           tags: latest,${{ steps.bump.outputs.new_tag }}
 
