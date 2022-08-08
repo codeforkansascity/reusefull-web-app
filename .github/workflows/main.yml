@@ -32,7 +32,7 @@ jobs:
       - name: Docker build and push 
         run: |
           docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
-          docker build -t codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
+          docker build -t ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
           docker push ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
 
       - name: Push tag
