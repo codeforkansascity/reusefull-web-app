@@ -29,11 +29,25 @@ jobs:
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: patch
 
-      - name: Docker build and push 
+      # - name: Docker build and push 
+      #   run: |
+      #     # Login for github container registry 
+      #     docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+      #     docker build -t ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
+      #     docker push ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: 537766411402.dkr.ecr.us-east-2.amazonaws.com/reusefull
+          REPOSITORY: reusefull
+          IMAGE_TAG: ${{ steps.bump.outputs.new_tag }}
         run: |
-          docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
-          docker build -t ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
-          docker push ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Push tag
         uses: anothrNick/github-tag-action@1.36.0
