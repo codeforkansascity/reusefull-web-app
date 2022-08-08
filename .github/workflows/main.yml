@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: codeforkansascity/reusefull-web-app/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
+          tags: codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
 
       - name: Push tag
         uses: anothrNick/github-tag-action@1.36.0
