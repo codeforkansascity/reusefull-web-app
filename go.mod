@@ -1,6 +1,6 @@
-module github.com/hyprcubd/reusefull
+module github.com/codeforkansascity/reusefull-web-app
 
-go 1.14
+go 1.18
 
 require (
 	github.com/RoaringBitmap/roaring v0.5.5
