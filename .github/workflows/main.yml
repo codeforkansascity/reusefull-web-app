@@ -49,8 +49,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: .
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
+          tags: ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
 
       - name: Push tag
         uses: anothrNick/github-tag-action@1.36.0
