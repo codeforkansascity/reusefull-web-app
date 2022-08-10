@@ -39,12 +39,18 @@ jobs:
         with:
           install: true
 
-      - name: Docker build and push 
-        run: |
-          # Login for github container registry 
-          docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
-          docker build --push -t ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
-          docker push ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
 
       - name: Push tag
         uses: anothrNick/github-tag-action@1.36.0
