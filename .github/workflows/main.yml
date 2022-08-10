@@ -29,6 +29,11 @@ jobs:
           RELEASE_BRANCHES: main
           DEFAULT_BUMP: patch
 
+      # For multi-platform docker builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      # Uses docker buildx 
       - uses: docker/setup-buildx-action@v2
         id: buildx
         with:
@@ -38,7 +43,7 @@ jobs:
         run: |
           # Login for github container registry 
           docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
-          docker build -t ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
+          docker build --push -t ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }} . 
           docker push ghcr.io/codeforkansascity/reusefull-web-app:${{ steps.bump.outputs.new_tag }}
 
       - name: Push tag
