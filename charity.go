@@ -768,7 +768,7 @@ func updateLogo(data string, id int) error {
 
 	// Upload the file to S3.
 	result, err := s3Uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String("reusefull"),
+		Bucket: aws.String("reusefullimages"),
 		Key:    aws.String(key),
 		Body:   bytes.NewReader(buf),
 		ACL:    aws.String("public-read"),
