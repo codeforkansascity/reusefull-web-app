@@ -306,7 +306,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Forbidden", 403)
 		return
 	}
-	
+
 	err = updateLogo(charity.Logo, id)
 	if err != nil {
 		log.Println(err)
@@ -426,7 +426,7 @@ func UpdateCharity(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
-		err = dc.RawQuery(context.Background(), fmt.Sprintf(`
+		err = dc.GraphQL(context.Background(), fmt.Sprintf(`
 			mutation {
 				updateCharity(input: {
 					filter: {
@@ -661,7 +661,7 @@ func CharityRegister(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
-		err = dc.RawQuery(context.Background(), fmt.Sprintf(`
+		err = dc.GraphQL(context.Background(), fmt.Sprintf(`
 			mutation MyMutation {
 				addCharity(input: {
 					CharityID: %d,
@@ -933,8 +933,8 @@ func getCharity(id int) (Charity, error) {
 }
 
 /*
-	Sends an email from the contact form on a charity page to the contact email
-	associated with that charity's ID.
+Sends an email from the contact form on a charity page to the contact email
+associated with that charity's ID.
 */
 func CharityContact(w http.ResponseWriter, r *http.Request) {
 

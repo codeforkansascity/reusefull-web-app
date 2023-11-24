@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/aws/aws-sdk-go/service/ses"
@@ -48,6 +49,11 @@ const (
 )
 
 func main() {
+	awsRegion, exists := os.LookupEnv("AWS_DEFAULT_REGION")
+	if !exists {
+		awsRegion = "us-east-2"
+	}
+
 	user, exists := os.LookupEnv("MYSQL_USER")
 	if !exists {
 		panic("MYSQL_USER not found")
@@ -61,6 +67,11 @@ func main() {
 	host, exists := os.LookupEnv("MYSQL_HOST")
 	if !exists {
 		panic("MYSQL_HOST not found")
+	}
+
+	mysqldb, exists := os.LookupEnv("MYSQL_DB")
+	if !exists {
+		panic("MYSQL_DB not found")
 	}
 
 	auth0ClientID, exists = os.LookupEnv("AUTH0_CLIENT_ID")
@@ -93,8 +104,6 @@ func main() {
 		panic("DGRAPH_TOKEN not found")
 	}
 
-	dc = dgraphql.New("https://reusefull.us-west-2.aws.cloud.dgraph.io/graphql", dgraphToken)
-
 	var err error
 	authManager, err = management.New("reusefull.us.auth0.com", management.WithClientCredentials(auth0ClientID, auth0ClientSecret))
 	if err != nil {
@@ -106,7 +115,8 @@ func main() {
 		panic(err)
 	}
 
-	sess, err := session.NewSession()
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String(awsRegion)})
 	if err != nil {
 		panic(err)
 	}
@@ -116,7 +126,7 @@ func main() {
 	// S3 Uploader
 	s3Uploader = s3manager.NewUploader(sess)
 
-	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:3306)/reusefull?parseTime=true&timeout=10s", user, pass, host))
+	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?parseTime=true&timeout=10s", user, pass, host, mysqldb))
 	if err != nil {
 		panic(err)
 	}
