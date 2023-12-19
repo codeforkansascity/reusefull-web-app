@@ -89,7 +89,8 @@ const app = new Vue({
             charityTypes: [],
             anyCharityType: null,
             budget: null,
-            pickupDropoff: null,
+            pickup: null,
+            dropoff: null,
             zip: null,
         },
         loading: true,
@@ -109,7 +110,6 @@ const app = new Vue({
                         itemCategory: item,
                     });
                 }
-
                 fetch("/api/v1/donate/search", {
                     method: "post",
                     body: JSON.stringify(this.donate),

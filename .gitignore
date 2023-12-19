@@ -2,3 +2,4 @@ reusefull
 tmp/
 .env
 parser/
+makefile

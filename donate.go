@@ -21,7 +21,8 @@ type DonateSearchRequest struct {
 	ItemTypes      []string `json:"itemTypes"`
 	CharityTypes   []string `json:"charityTypes"`
 	AnyCharityType bool     `json:"anyCharityType"`
-	PickupDropoff  string   `json:"pickupDropoff"`
+	Pickup         bool     `json:"pickup"`
+	Dropoff        bool     `json:"dropoff"`
 	Proximity      string   `json:"proximity"`
 }
 
@@ -166,10 +167,17 @@ func DonateSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		stmt += ") "
 
-		if req.PickupDropoff == "1" {
-			stmt += "and pickup is true "
-		} else if req.PickupDropoff == "2" {
-			stmt += "and dropoff is true "
+		if !(req.Pickup && req.Dropoff) {
+
+			// check if pickup is required
+			if req.Pickup {
+				stmt += "AND pickup IS true "
+			}
+
+			// check if dropoff is required
+			if req.Dropoff {
+				stmt += "AND dropoff IS true "
+			}
 		}
 
 		// only filter by resell if not selected (include by default)
