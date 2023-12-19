@@ -27,8 +27,8 @@ type PostChangePasswordHook struct {
 }
 
 const (
-	auth0Domain         = "dev-2qrc0rldeicj0jer.us.auth0.com"
-	auth0CallbackSecret = "TgNFBibopbvRCONH6-n6rwL4_BGvYkDAHc3Le26vMjSGx8MVBs5jT8QI315PTMRk"
+	auth0Domain         = "reusefull.us.auth0.com"
+	auth0CallbackSecret = "1plCMKWXIsi1VpzO7gnC2tk6VnvCBX1dnwHDlTDe3Q"
 )
 
 func NewAuthenticator() (*Authenticator, error) {
