@@ -14,7 +14,8 @@ const app = new Vue({
       charityTypes: [],
       anyCharityType: null,
       proximity: null,
-      pickupDropoff: null,
+      pickup: null,
+      dropoff: null,
       zip: null,
     }
   },
@@ -37,7 +38,7 @@ const app = new Vue({
       this.errorItems = false
       this.errorCharity = false
 
-      if (!this.donate.pickupDropoff) {
+      if (!this.donate.pickup && !this.donate.dropoff) {
         this.errorPickup = true
         this.hasError = true
       }
@@ -73,7 +74,8 @@ const app = new Vue({
       this.donate.faith = null
       this.donate.newItems = null
       this.donate.anyCharityType = null
-      this.donate.pickupDropoff = null
+      this.donate.pickup = null
+      this.donate.dropoff = null
       console.log('reset')
       localStorage.removeItem('donate')
     },
