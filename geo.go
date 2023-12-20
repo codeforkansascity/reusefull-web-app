@@ -39,7 +39,7 @@ func Geocode(address string) (*Location, error) {
 	}
 	log.Println(resp.StatusCode)
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("non 200 return code %d", resp.StatusCode)
+		return nil, fmt.Errorf("Geocode non 200 return code %d", resp.StatusCode)
 	}
 
 	out, err := ioutil.ReadAll(resp.Body)

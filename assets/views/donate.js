@@ -39,8 +39,8 @@ const app = new Vue({
       this.errorCharity = false
 
       if (!this.donate.pickup && !this.donate.dropoff) {
-        this.errorPickup = true
-        this.hasError = true
+        this.donate.pickup = true
+        this.donate.dropoff = true
       }
 
       if (this.donate.itemTypes.length == 0) {
