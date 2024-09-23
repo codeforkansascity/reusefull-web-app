@@ -22,3 +22,5 @@ The app is deployed in a docker container.  There is a file naed reusefull.env i
   * Yes, the above is the word “go” followed by a space, then “run” then a space then a period.  The period tells go to compile and run all the code.
   * You should get a message in your terminal that says “Successfully started”
   * Then you can open a browser to http://127.0.0.1 and you should see the site.  Click on the Donors tab and select Donate - this will cause a database connection attempt.
+ 
+  * In DBeaver, you may also need to change Driver Properties (allowPublicKeyRetrieval to true and useSSL=false ) 
