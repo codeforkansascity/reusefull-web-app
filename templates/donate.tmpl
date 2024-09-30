@@ -1,27 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
   {{ template "header" . }}
+  <head>
+    <script>
+      function clearItemSelections() {
+        const elements = document.querySelectorAll('.item-selection-input')
+
+        elements.forEach((element) => {
+          element.checked = false;
+        });
+      }
+    </script>
+  </head>
   <body>
     {{ template "nav" . }}
     <main>
-      <div class="container col-md-10 mt-3" id=app>
-          <div v-cloak>
+      <div class="mt-3 donate" id=app class="donate">
+          <div v-cloak class="d-flex justify-content-center">
               <form
-                class="row"
+                class=""
                 @submit="checkForm"
+                style="max-width: 1000px"
               >
 
 
-              <div class="row">
-                <div class="col text-center">
-                  <h3>Donation Center</h3>
+              <div class="d-flex justify-content-between pt-4 pb-3">
+                <div class="col text-left">
+                  <h3>Tell us more about your items and preferences</h3>
                 </div>
+                <button v-on:click="reset" class="reset">
+                  Reset all selections
+                </button>
               </div>
 
-              <div class="shadow p-4 mb-3 bg-white rounded">
+              <div class="shadow p-4 mb-5 bg-white card" style="max-width: 1000px">
                 <div class="row p-2">
                   <h5 class="p-2">How would you like to get your donation to the charity?</h5>
-                  <div class="col-md-10">
+                  <div class="col-md-10 mb-4">
                     <div class="form-check form-check-inline">
                       <input class="form-check-input" v-bind:class="{'is-invalid': errorPickup }" type="checkbox" name="pickup" id="pickup1" value="1" v-model="donate.pickup" selected>
                       <label class="form-check-label" for="pickup1">Charity will pickup my items</label>
@@ -32,7 +47,7 @@
                     </div>
                   </div>
                   <h5 class="p-2">Do you have any extra considerations?</h5>
-                  <div class="col-md-10">
+                  <div class="col-md-10 mb-4">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" v-model="donate.resell" type="checkbox" name="resell">
                         <label class="form-check-label" for="resell">Include organizations that resell items</label>
@@ -42,56 +57,66 @@
                         <label class="form-check-label" for="faith">Include faith-based organizations</label>
                     </div>
                   </div>
+                  <h5 class="p-2">Are your items new or used?</h5>
+                  <div class="col-md-10">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" v-model="donate.resell" type="checkbox" name="resell">
+                        <label class="form-check-label" for="resell">New items</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" v-model="donate.faith" type="checkbox" name="faith">
+                        <label class="form-check-label" for="faith">Used items</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
 
-              <div class="shadow py-4 mb-3 bg-white rounded">
-                <div class="row pt-4 px-4">
-                  <h5>What kinds of items do you have to donate?</h5>
-
-                  <div class="col-md-4 mb-1">
-                    <div class="form-check p-1">
-                    <input class="form-check-input" type="checkbox" id="newItems" v-model="donate.newItems">
-                    <label for="newItems" class="form-label">New items only</label>
-                    </div>
+              <div class="shadow p-4 mb-5 bg-white card" style="max-width: 1000px">
+                <div class="row p-2">
+                  <h5 class="p-2">What kinds of items do you have to donate?</h5>
+                  <div class="col-md-3 mb-2">
+                    <button type="button" class="btn btn-link m-0 p-0" onclick="clearItemSelections();">Clear selections</button>
                   </div>
-                  <hr>
-
-                  <div class="w-100 d-flex flex-column flex-wrap category-list">
+                  <hr class="mx-2 mt-1" style="width: 90%"/>
+                  <div class="w-100 container category-list">
+                    <div class="row">
                     {{ range .ItemTypes }}
-                    <div class="category-col mb-1">
-                        <div class="form-check p-1">
-                            <input class="form-check-input" v-bind:class="{'is-invalid': errorItems }" type="checkbox" value="{{.Id}}" id="it-{{.Id}}" v-model="donate.itemTypes">
+                      <div class="col-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input item-selection-input" v-bind:class="{'is-invalid': errorItems }" type="checkbox" value="{{.Id}}" id="it-{{.Id}}" v-model="donate.itemTypes">
                             <label for="it-{{.Id}}" class="form-check-label">{{.Name}}</label>
                         </div>
-                    </div>
+                      </div>
                     {{ end }}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="shadow p-4 mb-3 bg-white rounded">
-                <div class="row pt-4 px-4">
-                  <h5>What kind of organization do you want to donate to?</h5>
+              <div class="shadow p-4 mb-5 bg-white card">
+                <div class="row p-2">
+                  <h5 class="p-2">What kind of organization do you want to donate to?</h5>
 
-                  <div class="col-md-4 mb-1">
-                    <div class="form-check p-1">
+                  <div class="col-md-3 mb-2">
+                    <div class="form-check">
                       <input class="form-check-input" v-bind:class="{'is-invalid': errorCharity }" id="anyCharity" type="checkbox" v-model="donate.anyCharityType">
-                      <label for="anyCharity" class="form-check-label">Any</label>
+                      <label for="anyCharity" class="form-check-label">Select all</label>
                     </div>
                   </div>
-                  <hr>
+                  <hr class="mx-2 mt-1" style="width: 90%"/>
                 
-                <div class="w-100 d-flex flex-column flex-wrap org-category-list">
+                <div class="w-100 container org-category-list">
+                  <div class="row">
                     {{ range .CharityTypes }}
-                    <div class="category-col mb-1">
-                        <div class="form-check p-1">
+                    <div class="col-4 mb-2">
+                        <div class="form-check">
                             <input class="form-check-input" :disabled="donate.anyCharityType" v-bind:class="{'is-invalid': errorCharity }" type="checkbox" value="{{.Id}}" id="ct-{{.Id}}" v-model="donate.charityTypes">
                             <label for="ct-{{.Id}}" class="form-check-label">{{.Name}}</label>
                         </div>
                     </div>
                     {{ end }}
+                  </div>
                 </div>
 
                 </div>
@@ -99,8 +124,7 @@
 
               <div class="row mt-3 mb-5">
                 <div class="col text-center">
-                  <button v-on:click="reset" class="btn btn-secondary">Reset</button>
-                  <button type="submit" class="btn btn-primary" id="donorSearch">View Results ></button>
+                  <button type="submit" class="results" id="donorSearch">Continue to results</button>
                 </div>
               </div>
 
