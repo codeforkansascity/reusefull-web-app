@@ -30,46 +30,48 @@ Vue.component("charity-card", {
         },
     },
     template: `
-    <div class="card shadow p-3 mb-3 bg-white rounded">
-        <div class="d-flex flex-column flex-md-row justify-content-center">
-            <a :href="charityLink" class="d-block card-logo align-self-center mb-sm-2 mr-md-2">
-                <img
-                    :src="charity.logoURL"
-                    class="img-fluid"
-                    alt="Org logo"
-                />
-            </a>
-            <div class="card-body">
-                <h5 class="card-title"><a :href="charityLink">{{ charity.name }}</a></h5>
-                <div class="my-1"><strong>Pick-Up:</strong>
-                    <i class="bi bi-check-circle" style="color: green" v-if="charity.pickup"></i>
-                    <i class="bi bi-x-circle" style="color: red" v-if="!charity.pickup"></i>
-                </div>
-                <div class="my-1"><strong>Dropoff:</strong>
-                    <i class="bi bi-check-circle" style="color: green" v-if="charity.dropoff"></i>
-                    <i class="bi bi-x-circle" style="color: red" v-if="!charity.dropoff"></i>
-                </div>
-                <div>
-                    <i class="bi bi-geo-alt-fill"></i>
-                    <strong>Address:</strong>
-                    <em>{{charity.address}}, {{charity.city}}, {{charity.state}} {{charity.zip}}</em>
-                    <a target="_blank" :href="mapLink"><i class="bi bi-geo p-1"></i>Directions</a>
-                </div>
-                <div class="w-100 d-flex flex-column flex-lg-row">
-                    <div class="me-3">
-                        <i class="bi bi-telephone-fill"></i>
-                        <strong>Phone:</strong>
-                        <a class="charityTelephoneLink" :href="phoneLink">{{ phone }}</a>
+    <div class="col-6 py-3 mb-3">
+        <div class="card" style="width: 100%">
+            <div class="d-flex flex-column justify-content-center px-3 pt-5 pb-3">
+                <a :href="charityLink" class="d-block card-logo align-self-center mb-sm-2 mr-md-2">
+                    <img
+                        :src="charity.logoURL"
+                        class="img-fluid"
+                        alt="Org logo"
+                    />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title"><a :href="charityLink">{{ charity.name }}</a></h5>
+                    <div class="my-1"><strong>Pick-Up:</strong>
+                        <i class="bi bi-check-circle" style="color: green" v-if="charity.pickup"></i>
+                        <i class="bi bi-x-circle" style="color: red" v-if="!charity.pickup"></i>
+                    </div>
+                    <div class="my-1"><strong>Dropoff:</strong>
+                        <i class="bi bi-check-circle" style="color: green" v-if="charity.dropoff"></i>
+                        <i class="bi bi-x-circle" style="color: red" v-if="!charity.dropoff"></i>
                     </div>
                     <div>
-                        <i class="bi bi-globe"></i>
-                        <strong>Website:</strong>
-                        <a :href="charityWebsite">{{ charityWebsite }}</a>
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <strong>Address:</strong>
+                        <em>{{charity.address}}, {{charity.city}}, {{charity.state}} {{charity.zip}}</em>
+                        <a target="_blank" :href="mapLink"><i class="bi bi-geo p-1"></i>Directions</a>
                     </div>
+                    <div class="w-100 d-flex flex-column flex-lg-row">
+                        <div class="me-3">
+                            <i class="bi bi-telephone-fill"></i>
+                            <strong>Phone:</strong>
+                            <a class="charityTelephoneLink" :href="phoneLink">{{ phone }}</a>
+                        </div>
+                        <div>
+                            <i class="bi bi-globe"></i>
+                            <strong>Website:</strong>
+                            <a :href="charityWebsite">{{ charityWebsite }}</a>
+                        </div>
+                    </div>
+                    <p class="fst-italic mr-auto mt-4 mb-0 pb-0 org-card-mission" v-if="charity.mission">
+                        {{ charity.mission }}
+                    </p>
                 </div>
-                <p class="fst-italic mr-auto my-4 org-card-mission" v-if="charity.mission">
-                    {{ charity.mission }}
-                </p>
             </div>
         </div>
     </div>

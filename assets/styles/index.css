@@ -113,6 +113,34 @@ Prevents "flashing" of an empty error list for example
     outline: 0;
 }
 
+.donate a.update {
+    box-sizing: border-box;
+    border: 2px solid #FFFFFF;
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
+    font-size: 14px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: 0.3s;
+    text-decoration: none;
+    padding-top: 7px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.donate a.update:hover {
+    background-color: #fff;
+    transition: 0.3s;
+    color: #000;
+}
+
+.donate a.update:focus {
+    outline: 0;
+}
+
 .donate .form-check-inline {
     border: 1px solid #E5E7EB;
     border-radius: 8px;
