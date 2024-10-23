@@ -173,3 +173,7 @@ Prevents "flashing" of an empty error list for example
     /* color: #000; */
     transition: 0.3s
 }
+
+.contrast-icon {
+    color: #EE6C15;
+}
