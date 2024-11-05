@@ -73,3 +73,107 @@ Prevents "flashing" of an empty error list for example
 .org-card-mission {
     max-width: 35em;
 }
+
+.donate {
+    background: #33637E;
+}
+
+.donate h3 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.donate h5 {
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.donate button.reset {
+    box-sizing: border-box;
+    border: 2px solid #FFFFFF;
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
+    font-size: 14px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: 0.3s;
+}
+
+.donate button.reset:hover {
+    background-color: #fff;
+    transition: 0.3s;
+    color: #000;
+}
+
+.donate button:focus {
+    outline: 0;
+}
+
+.donate a.update {
+    box-sizing: border-box;
+    border: 2px solid #FFFFFF;
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
+    font-size: 14px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: 0.3s;
+    text-decoration: none;
+    padding-top: 7px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.donate a.update:hover {
+    background-color: #fff;
+    transition: 0.3s;
+    color: #000;
+}
+
+.donate a.update:focus {
+    outline: 0;
+}
+
+.donate .form-check-inline {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    padding-right: 35px;
+    max-width: 340px;
+    width: 100%;
+}
+
+.donate .card {
+    border-radius: 10px;
+}
+
+.donate button.results {
+    background: #EE6C15;
+    border-radius: 999px;
+    border: none;
+    color: #fff;
+    transition: 0.3s;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+.donate button.results:hover {
+    background: #cd5e13;
+    /* color: #000; */
+    transition: 0.3s
+}
+
+.contrast-icon {
+    color: #EE6C15;
+}

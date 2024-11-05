@@ -4,29 +4,30 @@
   <body>
     {{ template "nav" . }}
     <main>
-        <div class="container" id="app">
-          <a href="/donate">< Refine</a>
-
+        <div class="pt-4 donate" id="app">
           <!-- Results -->
-          <div class="row p-3 mb-5" v-cloak>
-            <div v-if="loading">
-              <div class="spinner-border text-info" role="status"></div>
-            </div>
-
-            <div class="col">
+          <div class="row p-3 d-flex justify-content-center mx-0" v-cloak>
+            <div class="col" style="max-width: 1300px;">
               <div class="row">
                 <div class="col">
-                  <h5>We found ${charities.length} matching charities</h5>
+                <div v-if="loading">
+                  <div class="spinner-border text-info mb-3" role="status"></div>
+                </div>
+                <a href="/donate" class="update">&lsaquo; Update selected filters</a>
+                  <h3 style="color: #fff; margin-top: 40px">We found ${charities.length} charities that match your selections</h3>
                   <div id="map" style='height: 500px;'></div>
                 </div>
               </div>
-              <charity-card
-                v-for="charity in charities"
-                v-bind:key="charity.id"
-                v-bind:charity="charity"
-              >
-              </charity-card>
-
+              <div class="container w-100 p-0 m-0 mt-4">
+                <div class="row gx-4 gy-0">
+                  <charity-card
+                    v-for="charity in charities"
+                    v-bind:key="charity.id"
+                    v-bind:charity="charity"
+                  >
+                  </charity-card>
+                <div />
+              <div />
             </div>
           </div>
       </div>  <!-- container -->
