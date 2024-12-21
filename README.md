@@ -3,6 +3,22 @@
 ## [Application Context Diagram](https://viewer.diagrams.net/?tags=%7B%7D&highlight=0000ff&edit=_blank&layers=1&nav=1&title=Reusefull.AppContextDiagram#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1CONXQebsTXZhY1Vvfp6QXttBu_KPy6aw%26export%3Ddownload)
 # Docker
 The app is deployed in a docker container.  There is a file naed reusefull.env in home\ec2-user folder.  The ec2-user folder has a subfolder named .docker.
+* Open a command prompt on your computer
+* SSH to the EC2 Instance
+  * The command to do that is visible in the EC2 Instance in the AWS Console, click on the Connect button
+    * The command will look like ssh -i "reusefull.pem" ...
+    * Note that you need the pem, aka private key, on your local computer in the directory where you run the above ssh command
+* Run the docker pull command:
+  * https://github.com/codeforkansascity/reusefull-web-app/pkgs/container/reusefull-web-app
+    * docker pull ghcr.io/codeforkansascity/reusefull-web-app:v0.1.11
+      * you will need to change the version at the end of the above command from v0.1.11 to your current version
+* Stop/start/rebuild container (image id must be last)
+  * docker container stop reusefull
+  * docker container rm reusefull
+  * docker run --restart always -d -p 8080:80 --env-file reusefull.env --name reusefull ghcr.io/codeforkansascity/reusefull-web-app:v0.1.11
+    * you will need to change the version at the end of the above command from v0.1.11 to your current version
+
+
 
 # To run this app locally for testing:
 * Copy this repo locally
