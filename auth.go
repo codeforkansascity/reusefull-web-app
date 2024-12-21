@@ -184,6 +184,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			user.ID = profile["sub"].(string)
 			user.Name = profile["nickname"].(string)
 			user.Email = profile["email"].(string)
+			log.Println((profile["email"].(string)) + " logged in")
 
 			err = db.QueryRow("select admin from user where id = ?", user.ID).Scan(&user.Admin)
 			if err != nil && err != sql.ErrNoRows {
@@ -194,6 +195,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			if err != nil && err != sql.ErrNoRows {
 				log.Println(err)
 			}
+		} else {
+			log.Println("Profile not found in session values")
 		}
 		ctx := context.WithValue(r.Context(), "user", user)
 		next.ServeHTTP(w, r.WithContext(ctx))
