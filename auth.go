@@ -58,6 +58,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	log.Println("callback handler")
 
 	if r.URL.Query().Get("state") != session.Values["state"] {
 		http.Error(w, "Invalid state parameter", http.StatusBadRequest)
@@ -70,13 +71,14 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
+	log.Printf("token found: %v", token)
 
 	rawIDToken, ok := token.Extra("id_token").(string)
 	if !ok {
 		http.Error(w, "No id_token field in oauth2 token.", http.StatusInternalServerError)
 		return
 	}
-
+	log.Printf("id_token found: %v", rawIDToken)
 	oidcConfig := &oidc.Config{
 		ClientID: auth0ClientID,
 	}
@@ -87,6 +89,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to verify ID Token: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
+	log.Printf("id_token verified: %v", idToken)
 
 	// Getting now the userInfo
 	var profile map[string]interface{}
@@ -174,11 +177,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
-		}
-
-		// Log each key-value pair in the session
-		for key, value := range session.Values {
-			log.Printf("Session key: %v, value: %v\n", key, value)
 		}
 
 		user := User{}
