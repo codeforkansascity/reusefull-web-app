@@ -176,6 +176,11 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
+		// Log each key-value pair in the session
+		for key, value := range session.Values {
+			log.Printf("Session key: %v, value: %v\n", key, value)
+		}
+
 		user := User{}
 
 		profile, ok := session.Values["profile"].(map[string]interface{})
@@ -195,8 +200,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			if err != nil && err != sql.ErrNoRows {
 				log.Println(err)
 			}
-		} else {
-			log.Println("Profile not found in session values")
 		}
 		ctx := context.WithValue(r.Context(), "user", user)
 		next.ServeHTTP(w, r.WithContext(ctx))
