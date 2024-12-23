@@ -104,8 +104,6 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("profile: %v", profile)
-
 	// Redirect to logged in page
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
@@ -197,8 +195,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			if err != nil && err != sql.ErrNoRows {
 				log.Println(err)
 			}
-		} else {
-			log.Printf("not logged in, profile: %v", profile)
 		}
 		ctx := context.WithValue(r.Context(), "user", user)
 		next.ServeHTTP(w, r.WithContext(ctx))
