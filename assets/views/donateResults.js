@@ -129,6 +129,9 @@ const app = new Vue({
                             zoom: 9, // starting zoom
                         });
 
+                        // Shuffle the charities array
+                        charities = charities.sort(() => Math.random() - 0.5);
+
                         for (const c of charities) {
                             var el = document.createElement("div");
                             el.className = "marker";
