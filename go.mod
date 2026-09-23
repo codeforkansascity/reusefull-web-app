@@ -12,7 +12,7 @@ require (
 	github.com/hyprcubd/dgraphql v0.0.3
 	github.com/joho/godotenv v1.5.1
 	github.com/sethvargo/go-password v0.2.0
-	golang.org/x/net v0.54.0
+	golang.org/x/net v0.55.0
 	golang.org/x/oauth2 v0.8.0
 	gopkg.in/auth0.v5 v5.21.1
 )
